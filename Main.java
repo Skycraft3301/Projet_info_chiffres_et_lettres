@@ -1,17 +1,40 @@
 // Projet informatique
 // des chiffres et des lettres
 
+import java.util.Objects;
 
 public class Main {
 public static void main (String[] args) {
 
-int score_joueurA = 0, score_joueurB = 0 ;
+int scoreJoueurA = 0, scoreJoueurB = 0 ;
 
-System.out.println("hello");
+String nomJoueurA, nomJoueurB ;
 
-for (int i=1 ; i<=6 ; i++) {
 
+String joueurVoyelles ;
+
+
+System.out.println("Joueur A, donnez votre nom :") ;
+nomJoueurA = Lire.S() ;
+
+System.out.println("Joueur B, donnez votre nom :") ;
+nomJoueurB = Lire.S() ;
+
+joueurVoyelles = nomJoueurA;
+
+for (int i=1 ; i<=10 ; i++) {
+    ModeLettres.modeLettres(joueurVoyelles) ;
+    ModeChiffres.modeChiffres() ;
+
+    // Pour changer à chaque tour le joueur qui choisit le nombre de voyelles
+    if (Objects.equals(joueurVoyelles, nomJoueurA)){
+        joueurVoyelles = nomJoueurB;
+    }else {
+        joueurVoyelles = nomJoueurA;
+    }
 }
+
+
 
 }
 }
