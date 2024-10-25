@@ -23,7 +23,7 @@ nomJoueurB = Lire.S() ;
 joueurVoyelles = nomJoueurA;
 
 for (int i=1 ; i<=10 ; i++) {
-    ModeLettres.modeLettres(joueurVoyelles) ;
+    ModeLettres.modeLettres(joueurVoyelles, nomJoueurA, nomJoueurB) ;
     ModeChiffres.modeChiffres() ;
 
     // Pour changer à chaque tour le joueur qui choisit le nombre de voyelles

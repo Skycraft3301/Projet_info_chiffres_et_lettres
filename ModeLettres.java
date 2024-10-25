@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class ModeLettres {
-    public static void modeLettres(String joueurVoyelles) {
+    public static void modeLettres(String joueurVoyelles, String nomJoueurA, String nomJoueurB) {
 
         System.out.println("[ Mode Lettres ]");
 
@@ -52,6 +52,22 @@ public class ModeLettres {
         Arrays.sort(listeLettresDeBase);
 
         System.out.println(listeLettresDeBase);
+
+
+
+        System.out.println(nomJoueurA + " donnez votre résultat");
+        String reponseJoueurA = Lire.S();
+
+        while (reponseJoueurA.length() <= 10){
+            System.out.println("Votre réponse est trop longue, recommencez");
+            reponseJoueurA = Lire.S();
+        }
+
+
+        System.out.println(nomJoueurB + " donnez votre résultat");
+        String reponseJoueurB = Lire.S();
+
+        while (reponseJoueurB.length() <= 10)
 
 
     }
