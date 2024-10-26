@@ -58,6 +58,10 @@ public class ModeLettres {
         System.out.println(nomJoueurA + " donnez votre résultat");
         String reponseJoueurA = Lire.S();
 
+        try {
+
+        }
+
         while (reponseJoueurA.length() <= 10){
             System.out.println("Votre réponse est trop longue, recommencez");
             reponseJoueurA = Lire.S();
