@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class ModeLettres {
-    public static void modeLettres(String joueurVoyelles, String nomJoueurA, String nomJoueurB) {
+    public static void modeLettres(String joueurVoyelles, String nomJoueurA, String nomJoueurB, int scoreJoueurA, int scoreJoueurB) {
 
         System.out.println("[ Mode Lettres ]");
 
@@ -48,31 +48,107 @@ public class ModeLettres {
             listeLettresDeBase[i] = letter ;
         }
 
+
         // Tri de la liste par ordre alphabétique
         Arrays.sort(listeLettresDeBase);
 
         System.out.println(listeLettresDeBase);
 
 
+        // Test réponse du joueur A
+        String reponseJoueurA = "";
+        boolean erreurMotA = false;
 
-        System.out.println(nomJoueurA + " donnez votre résultat");
-        String reponseJoueurA = Lire.S();
-
-        try {
-
+        while (reponseJoueurA.isEmpty()) {
+            try {
+                reponseJoueurA = getResult(nomJoueurA, listeLettresDeBase);
+            } catch (TooLongException | NotGoodLettersException | NotInDictionnaryException e) {
+                //e.printStackTrace();
+                erreurMotA = true;
+            }
         }
 
-        while (reponseJoueurA.length() <= 10){
-            System.out.println("Votre réponse est trop longue, recommencez");
-            reponseJoueurA = Lire.S();
+        System.out.println(reponseJoueurA);
+
+
+        // Test réponse du joueur B
+        String reponseJoueurB = "";
+        boolean erreurMotB = false;
+
+        while (reponseJoueurB.isEmpty()) {
+            try {
+                reponseJoueurB = getResult(nomJoueurB, listeLettresDeBase);
+            } catch (TooLongException | NotGoodLettersException | NotInDictionnaryException e) {
+                //e.printStackTrace();
+                erreurMotB = true;
+            }
         }
 
-
-        System.out.println(nomJoueurB + " donnez votre résultat");
-        String reponseJoueurB = Lire.S();
-
-        while (reponseJoueurB.length() <= 10)
+        System.out.println(reponseJoueurB);
 
 
+        // Déterminer le score de chaque joueur
+        if ((reponseJoueurA.length() >= reponseJoueurB.length()) && (!erreurMotA) && (!erreurMotB)){
+            scoreJoueurA += reponseJoueurA.length();
+        }
+        if ((reponseJoueurB.length() >= reponseJoueurA.length()) && (!erreurMotA) && (!erreurMotB)){
+            scoreJoueurB += reponseJoueurB.length();
+        }
+        if ((!erreurMotA) && (erreurMotB)){
+            scoreJoueurA += max(reponseJoueurA.length(), reponseJoueurB.length());
+        }
+        if ((erreurMotA) && (!erreurMotB)){
+            scoreJoueurB += max(reponseJoueurA.length(), reponseJoueurB.length());
+        }
+        System.out.println("Score de "+nomJoueurA+" = "+scoreJoueurA);
+        System.out.println("Score de "+nomJoueurB+" = "+scoreJoueurB);
+
+    }
+
+    private static String getResult(String nomJoueur, char[] listeLettresDeBase) throws TooLongException , NotGoodLettersException , NotInDictionnaryException  {
+        System.out.println(nomJoueur + " donnez votre résultat");
+        String reponseJoueur = Lire.S();
+
+        if (reponseJoueur.length() > 10){
+            throw new TooLongException();
+        }
+
+        char[] tabReponseJoueur = new char[reponseJoueur.length()];
+        for (int i=0 ; i<10 ; i++){
+            if (reponseJoueur.length() > i){
+                tabReponseJoueur[i] = reponseJoueur.charAt(i);
+            }
+        }
+        System.out.println(tabReponseJoueur);
+
+        Arrays.sort(tabReponseJoueur);
+        System.out.println(tabReponseJoueur);
+
+        int c = 0;
+        while (c < reponseJoueur.length()) {
+            for (int i = 0; i < (reponseJoueur.length()); i++) {
+                if (listeLettresDeBase[i] == tabReponseJoueur[c]) {
+                    c++;
+                }
+            }
+        }
+        if (reponseJoueur.length() != c){
+            throw new NotGoodLettersException();
+        }
+
+        // throw new NotInDictionnaryException();
+
+        return(reponseJoueur);
+    }
+
+    private static int max(int repA, int repB){
+        int result = 0;
+        if (repA >= repB){
+            result = repA;
+        }
+        if (repA < repB){
+            result = repB;
+        }
+        return(result);
     }
 }
