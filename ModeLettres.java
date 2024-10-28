@@ -136,7 +136,9 @@ public class ModeLettres {
             throw new NotGoodLettersException();
         }
 
-        // throw new NotInDictionnaryException();
+        if (IsInDictionary.isInDictionary(reponseJoueur) == false){
+            throw new NotInDictionnaryException();
+        }
 
         return(reponseJoueur);
     }
