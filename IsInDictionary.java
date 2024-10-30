@@ -5,6 +5,11 @@ public class IsInDictionary {
 
         File dico = new File("./dictionnaire.txt");
 
+        // Tester si fichier existe
+        /*if (!dico.exists()){
+
+        }*/
+
 
 
         return();

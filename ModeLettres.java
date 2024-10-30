@@ -15,7 +15,6 @@ public class ModeLettres {
 
 
 
-
         // Création de la liste des voyelles
         String listeDesVoyelles = "";
 
