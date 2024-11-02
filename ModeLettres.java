@@ -60,9 +60,9 @@ public class ModeLettres {
 
         while (reponseJoueurA.isEmpty()) {
             try {
-                reponseJoueurA = getResult(nomJoueurA, listeLettresDeBase);
+                getResult(nomJoueurA, listeLettresDeBase, reponseJoueurA);
             } catch (TooLongException | NotGoodLettersException | NotInDictionnaryException e) {
-                //e.printStackTrace();
+                e.printStackTrace();    // à mettre en commentaire
                 erreurMotA = true;
             }
         }
@@ -76,7 +76,7 @@ public class ModeLettres {
 
         while (reponseJoueurB.isEmpty()) {
             try {
-                reponseJoueurB = getResult(nomJoueurB, listeLettresDeBase);
+                getResult(nomJoueurB, listeLettresDeBase, reponseJoueurB);
             } catch (TooLongException | NotGoodLettersException | NotInDictionnaryException e) {
                 //e.printStackTrace();
                 erreurMotB = true;
@@ -104,7 +104,7 @@ public class ModeLettres {
 
     }
 
-    private static String getResult(String nomJoueur, char[] listeLettresDeBase) throws TooLongException , NotGoodLettersException , NotInDictionnaryException  {
+    private static void getResult(String nomJoueur, char[] listeLettresDeBase, String reponseDuJoueur) throws TooLongException , NotGoodLettersException , NotInDictionnaryException  {
         System.out.println(nomJoueur + " donnez votre résultat");
         String reponseJoueur = Lire.S();
 
@@ -137,9 +137,11 @@ public class ModeLettres {
 
         if (IsInDictionary.isInDictionary(reponseJoueur) == false){
             throw new NotInDictionnaryException();
+        }else {
+            System.out.println("Le mot est dans le dico");
         }
 
-        return(reponseJoueur);
+        reponseDuJoueur = reponseJoueur;
     }
 
     private static int max(int repA, int repB){
