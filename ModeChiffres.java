@@ -23,6 +23,7 @@ public class ModeChiffres {
         System.out.println("Voici les chiffres sélectionnés :" + Arrays.toString(selectedNumbers));
 
         // calculs aléatoires pour obtenir un resultat
+        // donc on sait qu'il est atteignable sans verification necessaire
         List<Integer> operandes;
         do {
             operandes = new ArrayList<>(Arrays.stream(selectedNumbers).boxed().toList());
@@ -37,7 +38,7 @@ public class ModeChiffres {
                     case '*' -> a * b;
                     default -> a - b;
                 };
-                if (c == 0) {
+                if (c == 0) { // pour eviter les operations avec des zeros
                     operandes.add(a);
                     operandes.add(b);
                 } else {
