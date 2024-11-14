@@ -54,36 +54,49 @@ public class ModeLettres {
         System.out.println(listeLettresDeBase);
 
 
+        // Demande réponse du joueur A
+        System.out.println(nomJoueurA + " donnez votre résultat");
+        String reponseJoueurA = Lire.S();
+        //System.out.println(reponseJoueurA);
+
+
+        // Demande réponse du joueur B
+        System.out.println(nomJoueurB + " donnez votre résultat");
+        String reponseJoueurB = Lire.S();
+        //System.out.println(reponseJoueurB);
+
+
         // Test réponse du joueur A
-        String reponseJoueurA = "";
         boolean erreurMotA = false;
 
-        while (reponseJoueurA.isEmpty()) {
+        erreurMotA = testReponse(listeLettresDeBase, reponseJoueurA);
+
+
+        // Test réponse du joueur B
+        boolean erreurMotB = false;
+
+        erreurMotB = testReponse(listeLettresDeBase, reponseJoueurB);
+
+
+
+        /*while (reponseJoueurA.isEmpty()) {
             try {
                 getResult(nomJoueurA, listeLettresDeBase, reponseJoueurA);
             } catch (TooLongException | NotGoodLettersException | NotInDictionnaryException e) {
                 e.printStackTrace();    // à mettre en commentaire
                 erreurMotA = true;
             }
-        }
+        }*/
 
-        System.out.println(reponseJoueurA);
-
-
-        // Test réponse du joueur B
-        String reponseJoueurB = "";
-        boolean erreurMotB = false;
-
-        while (reponseJoueurB.isEmpty()) {
+        /*while (reponseJoueurB.isEmpty()) {
             try {
                 getResult(nomJoueurB, listeLettresDeBase, reponseJoueurB);
             } catch (TooLongException | NotGoodLettersException | NotInDictionnaryException e) {
                 //e.printStackTrace();
                 erreurMotB = true;
             }
-        }
+        }*/
 
-        System.out.println(reponseJoueurB);
 
 
         // Déterminer le score de chaque joueur
@@ -104,17 +117,28 @@ public class ModeLettres {
 
     }
 
-    private static void getResult(String nomJoueur, char[] listeLettresDeBase, String reponseDuJoueur) throws TooLongException , NotGoodLettersException , NotInDictionnaryException  {
-        System.out.println(nomJoueur + " donnez votre résultat");
-        String reponseJoueur = Lire.S();
 
+
+    // Fonction testReponse
+    private static boolean testReponse(char[] listeLettresDeBase, String reponseJoueur){
+        boolean erreur = false;
+
+        System.out.println("hello1");
+
+        // Test de longueur
         if (reponseJoueur.length() > 10){
-            throw new TooLongException();
+            System.out.println("hello2");
+            erreur = true;
+            System.out.println("Votre réponse est trop longue");
+            return erreur;
         }
 
+
+        // Test si les lettres utilisées sont toutes dans la liste
         char[] tabReponseJoueur = new char[reponseJoueur.length()];
         for (int i=0 ; i<10 ; i++){
             if (reponseJoueur.length() > i){
+                System.out.println("hello3");
                 tabReponseJoueur[i] = reponseJoueur.charAt(i);
             }
         }
@@ -123,6 +147,9 @@ public class ModeLettres {
         Arrays.sort(tabReponseJoueur);
         System.out.println(tabReponseJoueur);
 
+        System.out.println("hello4");
+
+        // attention boucle infinie
         int c = 0;
         while (c < reponseJoueur.length()) {
             for (int i = 0; i < (reponseJoueur.length()); i++) {
@@ -132,18 +159,30 @@ public class ModeLettres {
             }
         }
         if (reponseJoueur.length() != c){
-            throw new NotGoodLettersException();
+            System.out.println("hello5");
+            erreur = true;
+            System.out.println("Les lettres utilisées ne sont pas toutes dans la liste");
+            return erreur;
         }
 
+
+        // Teste si le mot est dans le dictionnaire
+        System.out.println("hello6");
         if (IsInDictionary.isInDictionary(reponseJoueur) == false){
-            throw new NotInDictionnaryException();
+            System.out.println("hello7");
+            erreur = true;
+            System.out.println("Le mot n'est pas dans le dictionnaire");
+            return erreur;
         }else {
             System.out.println("Le mot est dans le dico");
         }
+        System.out.println("hello8");
 
-        reponseDuJoueur = reponseJoueur;
+        return(erreur);
     }
 
+
+    // Déterminer la réponse la plus longue (pour le score)
     private static int max(int repA, int repB){
         int result = 0;
         if (repA >= repB){
