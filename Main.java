@@ -15,9 +15,10 @@ public class Main {
         String joueurVoyelles = joueurA.getNom();
 
 
-        for (int i = 1; i <= 10; i++) {
-            // ModeLettres.modeLettres(joueurVoyelles, nomJoueurA, nomJoueurB, scoreJoueurA, scoreJoueurB);
+        for (int i = 1; i <= 5; i++) {
             ModeChiffres.modeChiffres(joueurA, joueurB);
+            // ModeLettres.modeLettres(joueurVoyelles, nomJoueurA, nomJoueurB, scoreJoueurA, scoreJoueurB);
+
 
             // Pour changer à chaque tour le joueur qui choisit le nombre de voyelles
             if (Objects.equals(joueurVoyelles, joueurA.getNom())) {
