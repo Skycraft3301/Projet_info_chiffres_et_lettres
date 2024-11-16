@@ -50,7 +50,7 @@ public class ModeChiffres {
         // saisie des calculs du joueur
         List<Integer> verification = convertIntArrayIntoIntegerList(selectedNumbers);
 
-        System.out.println("Donnez vos étapes de calculs. Indiquez la fin avec " + END);
+        System.out.println("Donnez vos étapes de calculs. Les calculs dont le résultat est égal à zéro ne sont pas admis. Indiquez la fin avec " + END);
         System.out.println("Pour commencer appuyer sur entrée.");
 
         while (!isEqualsToEndWord(Lire.S())) {
@@ -59,7 +59,8 @@ public class ModeChiffres {
                 System.out.println("donner une opérande1");
                 op1 = Lire.i();
             } while (!verification.contains(op1));
-            // TODO retirer de la liste chiffre saisie
+            verification.remove((Integer) op1);
+
             char op;
             do {
                 System.out.println("donner un opérateur");
@@ -71,7 +72,7 @@ public class ModeChiffres {
                 System.out.println("donner une opérande2");
                 op2 = Lire.i();
             } while (!verification.contains(op2));
-            // TODO retirer de la liste chiffre saisie
+            verification.remove((Integer) op2);
 
             int c = switch (op) {
                 case '+' -> op1 + op2;
@@ -81,7 +82,7 @@ public class ModeChiffres {
             };
             if (c == 0) { // pour eviter les operations avec des zeros
                 verification.add(op1);
-                verification.add(op2); // TODO préciser dans un message que les calculs dont le résultat est égal à zéro ne sont pas pris en compte.
+                verification.add(op2);
             } else {
                 verification.add(c);
             }
