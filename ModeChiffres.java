@@ -4,7 +4,9 @@ public class ModeChiffres {
     private final static int[] CHIFFRES = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100};
     private final static List<Character> OPERATEURS = List.of('+', '-', '/', '*');
     private final static int LENGTH_SELECTED_NUMBER = 6;
-    public static final String END = "end";
+    private static final String END = "end";
+    private static final int UPPER_BOUND = 999;
+    private static final int LOWER_BOUND = 101;
 
     public static void modeChiffres(Joueur joueurA, Joueur joueurB) {
 
@@ -26,24 +28,13 @@ public class ModeChiffres {
         do {
             operandes = convertIntArrayIntoIntegerList(selectedNumbers);
             while (operandes.size() > 1) {
-                Integer a = pickNumber(operandes);
-                Integer b = pickNumber(operandes);
+                Integer operande1 = pickNumber(operandes);
+                Integer operande2 = pickNumber(operandes);
 
                 char operateur = OPERATEURS.get(random.nextInt(OPERATEURS.size()));
-                int c = switch (operateur) {
-                    case '+' -> a + b;
-                    case '/' -> a / b;
-                    case '*' -> a * b;
-                    default -> a - b;
-                };
-                if (c == 0) { // pour eviter les operations avec des zeros
-                    operandes.add(a);
-                    operandes.add(b);
-                } else {
-                    operandes.add(c);
-                }
+                compute(operandes, operande1, operateur, operande2);
             }
-        } while (operandes.getFirst() < 101 || operandes.getFirst() > 999);
+        } while (operandes.getFirst() < LOWER_BOUND || operandes.getFirst() > UPPER_BOUND);
 
         System.out.println("Le résultat à obtenir est" + operandes.getFirst());
 
@@ -54,42 +45,51 @@ public class ModeChiffres {
         System.out.println("Pour commencer appuyer sur entrée.");
 
         while (!isEqualsToEndWord(Lire.S())) {
-            int op1;
-            do {
-                System.out.println("donner une opérande1");
-                op1 = Lire.i();
-            } while (!verification.contains(op1));
-            verification.remove((Integer) op1);
+            int operande1 = getOperande("Donner un premier opérande", verification);
 
-            char op;
-            do {
-                System.out.println("donner un opérateur");
-                op = Lire.c();
-            } while (!OPERATEURS.contains(op));
+            char operateur = getOperateur();
 
-            int op2;
-            do {
-                System.out.println("donner une opérande2");
-                op2 = Lire.i();
-            } while (!verification.contains(op2));
-            verification.remove((Integer) op2);
+            int operande2 = getOperande("Donner un deuxième opérande", verification);
 
-            int c = switch (op) {
-                case '+' -> op1 + op2;
-                case '/' -> op1 / op2;
-                case '*' -> op1 * op2;
-                default -> op1 - op2;
-            };
-            if (c == 0) { // pour eviter les operations avec des zeros
-                verification.add(op1);
-                verification.add(op2);
-            } else {
-                verification.add(c);
-            }
+            compute(verification, operande1, operateur, operande2);
 
             System.out.println("Si vous souhaitez continuer appuyez sur entrée, sinon tapez " + END);
         }
 
+    }
+
+    private static char getOperateur() {
+        char operateur;
+        do {
+            System.out.println("Donner un opérateur");
+            operateur = Lire.c();
+        } while (!OPERATEURS.contains(operateur));
+        return operateur;
+    }
+
+    private static int getOperande(String message, List<Integer> numberList) {
+        int operande;
+        do {
+            System.out.println(message);
+            operande = Lire.i();
+        } while (!numberList.contains(operande));
+        numberList.remove((Integer) operande);
+        return operande;
+    }
+
+    private static void compute(List<Integer> numberList, int operande1, char operateur, int operande2) {
+        int result = switch (operateur) {
+            case '+' -> operande1 + operande2;
+            case '/' -> operande1 / operande2;
+            case '*' -> operande1 * operande2;
+            default -> operande1 - operande2;
+        };
+        if (result == 0) { // pour eviter les operations avec des zeros
+            numberList.add(operande1);
+            numberList.add(operande2);
+        } else {
+            numberList.add(result);
+        }
     }
 
     private static boolean isEqualsToEndWord(String saisie) {
@@ -102,8 +102,8 @@ public class ModeChiffres {
 
     private static Integer pickNumber(List<Integer> operandes) {
         int index = new Random().nextInt(operandes.size());
-        Integer nb = operandes.get(index);
+        Integer number = operandes.get(index);
         operandes.remove(index);
-        return nb;
+        return number;
     }
 }
