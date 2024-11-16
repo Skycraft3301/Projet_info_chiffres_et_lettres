@@ -20,8 +20,6 @@ public class ModeChiffres {
             selectedNumbers[i] = CHIFFRES[random.nextInt(CHIFFRES.length)];
         }
 
-        System.out.println("Voici les chiffres sélectionnés :" + Arrays.toString(selectedNumbers));
-
         // calculs aléatoires pour obtenir un resultat
         // donc on sait qu'il est atteignable sans verification necessaire
         List<Integer> operandes;
@@ -35,11 +33,22 @@ public class ModeChiffres {
                 compute(operandes, operande1, operateur, operande2);
             }
         } while (operandes.getFirst() < LOWER_BOUND || operandes.getFirst() > UPPER_BOUND);
-
-        System.out.println("Le résultat à obtenir est" + operandes.getFirst());
+        Integer goal = operandes.getFirst();
 
         // saisie des calculs du joueur
+        Integer resultatJoueurA = computeUserOperations(selectedNumbers, joueurA, goal);
+        Integer resultatJoueurB = computeUserOperations(selectedNumbers, joueurB, goal);
+
+        // TODO score
+    }
+
+    private static Integer computeUserOperations(int[] selectedNumbers, Joueur joueur, Integer goal) {
         List<Integer> verification = convertIntArrayIntoIntegerList(selectedNumbers);
+
+        System.out.println("\nAu tour de " + joueur.getNom() + "\n");
+
+        System.out.println("Voici les chiffres sélectionnés : " + Arrays.toString(selectedNumbers));
+        System.out.println("Le résultat à obtenir est " + goal + "\n");
 
         System.out.println("Donnez vos étapes de calculs. Les calculs dont le résultat est égal à zéro ne sont pas admis. Indiquez la fin avec " + END);
         System.out.println("Pour commencer appuyer sur entrée.");
@@ -53,9 +62,13 @@ public class ModeChiffres {
 
             compute(verification, operande1, operateur, operande2);
 
+            System.out.println("Le résultat de ce calcul est " + verification.getLast());
+            System.out.println("Voici les nouveaux chiffres disponibles : " + Arrays.toString(verification.toArray()));
             System.out.println("Si vous souhaitez continuer appuyez sur entrée, sinon tapez " + END);
         }
 
+        System.out.println("Le résultat final est " + verification.getLast());
+        return verification.getLast();
     }
 
     private static char getOperateur() {
