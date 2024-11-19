@@ -6,7 +6,7 @@ public class ModeLettres {
 
         System.out.println("[ Mode Lettres ]");
 
-        System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?");
+        System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?"); // corriger plusieurs fois (voir Lire)
         int nbrVoyelles = Lire.i();
         if (0>=nbrVoyelles || nbrVoyelles>=10) {
             System.out.println("donnez un nombre de voyelles entre 0 et 10");
@@ -112,8 +112,8 @@ public class ModeLettres {
         if ((erreurMotA) && (!erreurMotB)){
             scoreJoueurB += max(reponseJoueurA.length(), reponseJoueurB.length());
         }
-        System.out.println("Score de "+nomJoueurA+" = "+scoreJoueurA);
-        System.out.println("Score de "+nomJoueurB+" = "+scoreJoueurB);
+        //System.out.println("Score de "+nomJoueurA+" = "+scoreJoueurA);
+        //System.out.println("Score de "+nomJoueurB+" = "+scoreJoueurB);
 
     }
 
@@ -149,11 +149,11 @@ public class ModeLettres {
 
         System.out.println("hello4");
 
-        // attention boucle infinie
+        // attention boucle infinie + ignoreCase
         int c = 0;
         while (c < reponseJoueur.length()) {
-            for (int i = 0; i < (reponseJoueur.length()); i++) {
-                if (listeLettresDeBase[i] == tabReponseJoueur[c]) {
+            for (int i = 0; i < 10; i++) {
+                if (Character.toLowerCase(listeLettresDeBase[i]) == Character.toLowerCase(tabReponseJoueur[c])) {
                     c++;
                 }
             }
@@ -168,7 +168,7 @@ public class ModeLettres {
 
         // Teste si le mot est dans le dictionnaire
         System.out.println("hello6");
-        if (IsInDictionary.isInDictionary(reponseJoueur) == false){
+        if (!IsInDictionary.isInDictionary(reponseJoueur)){
             System.out.println("hello7");
             erreur = true;
             System.out.println("Le mot n'est pas dans le dictionnaire");

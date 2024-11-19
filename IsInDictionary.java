@@ -17,7 +17,7 @@ public class IsInDictionary {
             String line = reader.readLine();
 
             while ((line != null) && (line != reponseJoueur)){
-                System.out.println(line);
+                //System.out.println(line);
                 line = reader.readLine();
             }
 

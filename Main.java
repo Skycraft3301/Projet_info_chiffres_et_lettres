@@ -22,7 +22,7 @@ nomJoueurB = Lire.S() ;
 
 joueurVoyelles = nomJoueurA;
 
-for (int i=1 ; i<=10 ; i++) {
+for (int i=1 ; i<=5 ; i++) {
     ModeLettres.modeLettres(joueurVoyelles, nomJoueurA, nomJoueurB, scoreJoueurA, scoreJoueurB) ;
     ModeChiffres.modeChiffres() ;
 
