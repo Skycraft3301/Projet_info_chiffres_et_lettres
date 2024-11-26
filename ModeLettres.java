@@ -2,17 +2,18 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class ModeLettres {
+
+    private final static Integer MAX_LETTER_NUMBER = 10; // Nombres de lettres max pouvant être sélectionnés
+
+    private final static Integer MIN_VOWEL_NUMBER = 0; // Nombre minimum pour les voyelles
+    private final static Integer MAX_VOWEL_NUMBER = 10; // Nombre maximum pour les voyelles
+
     public static void modeLettres(String joueurVoyelles, String nomJoueurA, String nomJoueurB, int scoreJoueurA, int scoreJoueurB) {
 
         System.out.println("[ Mode Lettres ]");
 
         System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?"); // corriger plusieurs fois (voir Lire)
-        int nbrVoyelles = Lire.i();
-        if (0>=nbrVoyelles || nbrVoyelles>=10) {
-            System.out.println("donnez un nombre de voyelles entre 0 et 10");
-            nbrVoyelles = Lire.i();
-        }
-
+        int nbrVoyelles = Lire.entierCompris(MIN_VOWEL_NUMBER, MAX_VOWEL_NUMBER);
 
 
         // Création de la liste des voyelles
@@ -150,7 +151,7 @@ public class ModeLettres {
         System.out.println("hello4");
 
         // attention boucle infinie + ignoreCase
-        int c = 0;
+        /*int c = 0;
         while (c < reponseJoueur.length()) {
             for (int i = 0; i < 10; i++) {
                 if (Character.toLowerCase(listeLettresDeBase[i]) == Character.toLowerCase(tabReponseJoueur[c])) {
@@ -158,7 +159,24 @@ public class ModeLettres {
                 }
             }
         }
-        if (reponseJoueur.length() != c){
+
+        int c = 0;
+        for (int j = 0; j < (tabReponseJoueur.length); j++) {
+            for (int i = 0; i < MAX_LETTER_NUMBER; i++) {
+                if (String.valueOf(listeLettresDeBase[i]).equalsIgnoreCase(String.valueOf(tabReponseJoueur[j]))) { c++; }
+            }
+        }*/
+
+        int i=0;
+        for (int j = 0; j < (tabReponseJoueur.length); j++) {
+            while ((i < MAX_LETTER_NUMBER) && (!String.valueOf(listeLettresDeBase[i]).equalsIgnoreCase(String.valueOf(tabReponseJoueur[j])))) {
+                i++;
+            }
+        }
+
+
+        //if (reponseJoueur.length() != c){
+        if (i == MAX_LETTER_NUMBER){
             System.out.println("hello5");
             erreur = true;
             System.out.println("Les lettres utilisées ne sont pas toutes dans la liste");
@@ -171,7 +189,7 @@ public class ModeLettres {
         if (!IsInDictionary.isInDictionary(reponseJoueur)){
             System.out.println("hello7");
             erreur = true;
-            System.out.println("Le mot n'est pas dans le dictionnaire");
+            System.out.println("Le mot "+reponseJoueur+" n'est pas dans le dictionnaire");
             return erreur;
         }else {
             System.out.println("Le mot est dans le dico");
