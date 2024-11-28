@@ -39,7 +39,9 @@ public class ModeChiffres {
         Integer resultatJoueurA = computeUserOperations(selectedNumbers, joueurA, goal);
         Integer resultatJoueurB = computeUserOperations(selectedNumbers, joueurB, goal);
 
-        // TODO score
+        // Score
+        scoreChiffre(joueurA, resultatJoueurA, resultatJoueurB, goal);
+        scoreChiffre(joueurB, resultatJoueurB, resultatJoueurA, goal);
     }
 
     private static Integer computeUserOperations(int[] selectedNumbers, Joueur joueur, Integer goal) {
@@ -118,5 +120,18 @@ public class ModeChiffres {
         Integer number = operandes.get(index);
         operandes.remove(index);
         return number;
+    }
+
+    private static void scoreChiffre(Joueur joueur, Integer resultatJoueur, Integer resultatAdversaire, Integer goal) {
+        System.out.println("Le score de " + joueur.getNom() + " était de " + joueur.getScore());
+        int points = 0;
+        if (Objects.equals(resultatJoueur, goal)) {
+            points = 10;
+        } else if ((Math.abs(resultatJoueur - goal) < 100) && (Math.abs(resultatJoueur - goal) <= (Math.abs(resultatAdversaire - goal)))) {
+            points = 7;
+        }
+        joueur.setScore(joueur.getScore() + points);
+        System.out.println(joueur.getNom() + " a gagné " + points + " points sur ce tour");
+        System.out.println("Son score est maintenant de " + joueur.getScore());
     }
 }
