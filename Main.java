@@ -17,7 +17,7 @@ public class Main {
 
         for (int i = 1; i <= 5; i++) {
             ModeChiffres.modeChiffres(joueurA, joueurB);
-            // ModeLettres.modeLettres(joueurVoyelles, nomJoueurA, nomJoueurB, scoreJoueurA, scoreJoueurB);
+            ModeLettres.modeLettres(joueurVoyelles, joueurA, joueurB);
 
 
             // Pour changer à chaque tour le joueur qui choisit le nombre de voyelles
