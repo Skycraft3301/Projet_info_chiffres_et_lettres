@@ -8,7 +8,7 @@ public class ModeLettres {
     private final static Integer MIN_VOWEL_NUMBER = 0; // Nombre minimum pour les voyelles
     private final static Integer MAX_VOWEL_NUMBER = 10; // Nombre maximum pour les voyelles
 
-    public static void modeLettres(String joueurVoyelles, String nomJoueurA, String nomJoueurB, int scoreJoueurA, int scoreJoueurB) {
+    public static void modeLettres(String joueurVoyelles, Joueur joueurA, Joueur joueurB) {
 
         System.out.println("[ Mode Lettres ]");
 
@@ -35,17 +35,14 @@ public class ModeLettres {
 
 
         // Génération lettres aléatoires
-        char[] listeLettresDeBase = new char[10];
+        char[] listeLettresDeBase = new char[MAX_LETTER_NUMBER];
+        Random rand = new Random();
 
         for (int i=0 ; i<nbrVoyelles ; i++) {
-            Random rand = new Random();
-            char letter = listeDesVoyelles.charAt(rand.nextInt(listeDesVoyelles.length()));
-            listeLettresDeBase[i] = letter ;
+            listeLettresDeBase[i] = listeDesVoyelles.charAt(rand.nextInt(listeDesVoyelles.length()));
         }
-        for (int i=(nbrVoyelles) ; i<10 ; i++) {
-            Random rand = new Random();
-            char letter = listeDesConsonnes.charAt(rand.nextInt(listeDesConsonnes.length()));
-            listeLettresDeBase[i] = letter ;
+        for (int i=(nbrVoyelles) ; i<MAX_LETTER_NUMBER ; i++) {
+            listeLettresDeBase[i] = listeDesConsonnes.charAt(rand.nextInt(listeDesConsonnes.length()));
         }
 
 
@@ -56,13 +53,13 @@ public class ModeLettres {
 
 
         // Demande réponse du joueur A
-        System.out.println(nomJoueurA + " donnez votre résultat");
+        System.out.println(joueurA.getNom() + " donnez votre résultat");
         String reponseJoueurA = Lire.S();
         //System.out.println(reponseJoueurA);
 
 
         // Demande réponse du joueur B
-        System.out.println(nomJoueurB + " donnez votre résultat");
+        System.out.println(joueurB.getNom() + " donnez votre résultat");
         String reponseJoueurB = Lire.S();
         //System.out.println(reponseJoueurB);
 
@@ -102,20 +99,17 @@ public class ModeLettres {
 
         // Déterminer le score de chaque joueur
         if ((reponseJoueurA.length() >= reponseJoueurB.length()) && (!erreurMotA) && (!erreurMotB)){
-            scoreJoueurA += reponseJoueurA.length();
+            joueurA.setScore(joueurA.getScore() + reponseJoueurA.length());
         }
         if ((reponseJoueurB.length() >= reponseJoueurA.length()) && (!erreurMotA) && (!erreurMotB)){
-            scoreJoueurB += reponseJoueurB.length();
+            joueurB.setScore(joueurB.getScore() + reponseJoueurB.length());
         }
         if ((!erreurMotA) && (erreurMotB)){
-            scoreJoueurA += max(reponseJoueurA.length(), reponseJoueurB.length());
+            joueurA.setScore(joueurA.getScore() + max(reponseJoueurA.length(), reponseJoueurB.length()));
         }
         if ((erreurMotA) && (!erreurMotB)){
-            scoreJoueurB += max(reponseJoueurA.length(), reponseJoueurB.length());
+            joueurB.setScore(joueurB.getScore() + max(reponseJoueurA.length(), reponseJoueurB.length()));
         }
-        //System.out.println("Score de "+nomJoueurA+" = "+scoreJoueurA);
-        //System.out.println("Score de "+nomJoueurB+" = "+scoreJoueurB);
-
     }
 
 
@@ -124,11 +118,8 @@ public class ModeLettres {
     private static boolean testReponse(char[] listeLettresDeBase, String reponseJoueur){
         boolean erreur = false;
 
-        System.out.println("hello1");
-
         // Test de longueur
         if (reponseJoueur.length() > 10){
-            System.out.println("hello2");
             erreur = true;
             System.out.println("Votre réponse est trop longue");
             return erreur;
@@ -136,40 +127,15 @@ public class ModeLettres {
 
 
         // Test si les lettres utilisées sont toutes dans la liste
-        char[] tabReponseJoueur = new char[reponseJoueur.length()];
-        for (int i=0 ; i<10 ; i++){
-            if (reponseJoueur.length() > i){
-                System.out.println("hello3");
-                tabReponseJoueur[i] = reponseJoueur.charAt(i);
-            }
-        }
-        System.out.println(tabReponseJoueur);
+        char[] tabReponseJoueur = reponseJoueur.toCharArray();
+        //System.out.println(tabReponseJoueur);
 
         Arrays.sort(tabReponseJoueur);
-        System.out.println(tabReponseJoueur);
-
-        System.out.println("hello4");
-
-        // attention boucle infinie + ignoreCase
-        /*int c = 0;
-        while (c < reponseJoueur.length()) {
-            for (int i = 0; i < 10; i++) {
-                if (Character.toLowerCase(listeLettresDeBase[i]) == Character.toLowerCase(tabReponseJoueur[c])) {
-                    c++;
-                }
-            }
-        }
-
-        int c = 0;
-        for (int j = 0; j < (tabReponseJoueur.length); j++) {
-            for (int i = 0; i < MAX_LETTER_NUMBER; i++) {
-                if (String.valueOf(listeLettresDeBase[i]).equalsIgnoreCase(String.valueOf(tabReponseJoueur[j]))) { c++; }
-            }
-        }*/
+        //System.out.println(tabReponseJoueur);
 
         int i=0;
-        for (int j = 0; j < (tabReponseJoueur.length); j++) {
-            while ((i < MAX_LETTER_NUMBER) && (!String.valueOf(listeLettresDeBase[i]).equalsIgnoreCase(String.valueOf(tabReponseJoueur[j])))) {
+        for (char c : tabReponseJoueur) {
+            while ((i < MAX_LETTER_NUMBER) && (!String.valueOf(listeLettresDeBase[i]).equalsIgnoreCase(String.valueOf(c)))) {
                 i++;
             }
         }
@@ -177,7 +143,6 @@ public class ModeLettres {
 
         //if (reponseJoueur.length() != c){
         if (i == MAX_LETTER_NUMBER){
-            System.out.println("hello5");
             erreur = true;
             System.out.println("Les lettres utilisées ne sont pas toutes dans la liste");
             return erreur;
@@ -185,16 +150,13 @@ public class ModeLettres {
 
 
         // Teste si le mot est dans le dictionnaire
-        System.out.println("hello6");
-        if (!IsInDictionary.isInDictionary(reponseJoueur)){
-            System.out.println("hello7");
+        if (!Utils.isInDictionary(reponseJoueur)){
             erreur = true;
             System.out.println("Le mot "+reponseJoueur+" n'est pas dans le dictionnaire");
             return erreur;
         }else {
             System.out.println("Le mot est dans le dico");
         }
-        System.out.println("hello8");
 
         return(erreur);
     }

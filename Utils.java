@@ -1,6 +1,7 @@
 import java.io.*;
+import java.util.Objects;
 
-public class IsInDictionary {
+public class Utils {
     public static boolean isInDictionary(String reponseJoueur) {
 
         boolean testResult = false;
@@ -16,12 +17,12 @@ public class IsInDictionary {
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(dico), "UTF-8"));
             String line = reader.readLine();
 
-            while ((line != null) && (line != reponseJoueur)){
+            while ((line != null) && (!line.equals(reponseJoueur))){
                 //System.out.println(line);
                 line = reader.readLine();
             }
 
-            if (line == reponseJoueur) {
+            if (Objects.equals(line, reponseJoueur)) {
                 testResult = true;
             }
 
