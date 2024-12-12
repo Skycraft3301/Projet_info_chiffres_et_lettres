@@ -16,7 +16,7 @@ public class Main {
 
 
         for (int i = 1; i <= 5; i++) {
-            //ModeChiffres.modeChiffres(joueurA, joueurB);
+            ModeChiffres.modeChiffres(joueurA, joueurB);
             ModeLettres.modeLettres(joueurVoyelles, joueurA, joueurB);
 
             //Afficher le score
