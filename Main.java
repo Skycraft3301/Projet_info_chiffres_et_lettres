@@ -1,7 +1,7 @@
 // Projet informatique
 // des chiffres et des lettres
 
-/* Fichier com.txt
+/* Structure du fichier com.txt
 l1  nom joueurA
 l2  nom joueurB
 l3  score joueurA
@@ -10,6 +10,7 @@ l4 score joueurB
  */
 
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class Main {
@@ -27,6 +28,8 @@ public class Main {
 
         Utils.writeLine(1, joueurA.getNom());
         Utils.writeLine(2, joueurB.getNom());
+
+        LancerProgramme();
 
 
         for (int i = 1; i <= 5; i++) {
@@ -49,5 +52,21 @@ public class Main {
     private static void actualiserCom(Joueur joueurA, Joueur joueurB) {
         Utils.writeLine(3, String.valueOf(joueurA.getScore()));
         Utils.writeLine(4, String.valueOf(joueurB.getScore()));
+    }
+
+
+
+    public static void LancerProgramme() {
+        // Commande à exécuter
+        String commande = "cmd /c start cmd.exe /k java Main2"; // Sous Windows
+
+        try {
+            // Lancer la commande avec ProcessBuilder
+            ProcessBuilder pb = new ProcessBuilder(commande.split(" "));
+            pb.start(); // Démarre le programme
+            System.out.println("Programme lancé dans une nouvelle console !");
+        } catch (IOException e) {
+            System.err.println("Une erreur est survenue : " + e.getMessage());
+        }
     }
 }
