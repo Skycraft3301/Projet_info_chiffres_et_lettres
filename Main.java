@@ -11,7 +11,6 @@ l4 score joueurB
 
 
 import java.util.Objects;
-import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
