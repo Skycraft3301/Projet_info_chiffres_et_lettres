@@ -7,6 +7,7 @@ import java.io.*;
 public class Main {
     public static void main(String[] args) {
 
+        Utils.checkFile();
 
         System.out.println("Joueur A, donnez votre nom :");
         Joueur joueurA = new Joueur();
