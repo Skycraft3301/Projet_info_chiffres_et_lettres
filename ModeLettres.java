@@ -12,7 +12,7 @@ public class ModeLettres {
 
         System.out.println("[ Mode Lettres ]");
 
-        System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?"); // corriger plusieurs fois (voir Lire)
+        System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?");
         int nbrVoyelles = Lire.entierCompris(MIN_VOWEL_NUMBER, MAX_VOWEL_NUMBER);
 
 

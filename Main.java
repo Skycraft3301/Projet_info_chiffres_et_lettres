@@ -2,9 +2,11 @@
 // des chiffres et des lettres
 
 import java.util.Objects;
+import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
+
 
         System.out.println("Joueur A, donnez votre nom :");
         Joueur joueurA = new Joueur();
