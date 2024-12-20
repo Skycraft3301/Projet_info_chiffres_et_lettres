@@ -2,13 +2,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SaisieChiffre {
-    private static Integer computeUserOperations(int[] selectedNumbers, Joueur joueur, Integer goal) {
+    public static Integer computeUserOperations(int[] selectedNumbers) {
         List<Integer> verification = OperationUtils.convertIntArrayIntoIntegerList(selectedNumbers);
-
-        System.out.println("\nAu tour de " + joueur.getNom() + "\n");
-
-        System.out.println("Voici les chiffres sélectionnés : " + Arrays.toString(selectedNumbers));
-        System.out.println("Le résultat à obtenir est " + goal + "\n");
 
         System.out.println("Donnez vos étapes de calculs. Les calculs dont le résultat est égal à zéro ne sont pas admis. Indiquez la fin avec " + OperationUtils.END);
         System.out.println("Pour commencer appuyer sur entrée.");
