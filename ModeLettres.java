@@ -17,109 +17,90 @@ public class ModeLettres {
 
 
         // Création de la liste des voyelles
-        String listeDesVoyelles = "";
+        String listeDesVoyelles = createListeVoyelle();
 
-        for (Voyelle letter : Voyelle.values()){
-            for (int i=0 ; i<letter.getOcc() ; i++) {
-                listeDesVoyelles = listeDesVoyelles.concat(letter.name());
-            }
-        }
         // Création de la liste des consonnes
-        String listeDesConsonnes = "";
-
-        for (Consonne letter : Consonne.values()){
-            for (int i=0 ; i<letter.getOcc() ; i++) {
-                listeDesConsonnes = listeDesConsonnes.concat(letter.name());
-            }
-        }
-
+        String listeDesConsonnes = createListeConsonne();
 
         // Génération lettres aléatoires
-        char[] listeLettresDeBase = new char[MAX_LETTER_NUMBER];
-        Random rand = new Random();
-
-        for (int i=0 ; i<nbrVoyelles ; i++) {
-            listeLettresDeBase[i] = listeDesVoyelles.charAt(rand.nextInt(listeDesVoyelles.length()));
-        }
-        for (int i=(nbrVoyelles) ; i<MAX_LETTER_NUMBER ; i++) {
-            listeLettresDeBase[i] = listeDesConsonnes.charAt(rand.nextInt(listeDesConsonnes.length()));
-        }
-
+        char[] listeLettresDeBase = createRandomLetterList(nbrVoyelles, listeDesVoyelles, listeDesConsonnes);
 
         // Tri de la liste par ordre alphabétique
         Arrays.sort(listeLettresDeBase);
-
+        //TODO revoir message
         System.out.println(listeLettresDeBase);
 
+        // Demande réponses
+        String reponseJoueurA = getReponseJoueur(joueurA);
+        String reponseJoueurB = getReponseJoueur(joueurB);
 
-        // Demande réponse du joueur A
-        System.out.println(joueurA.getNom() + " donnez votre résultat");
-        String reponseJoueurA = Lire.S();
-        //System.out.println(reponseJoueurA);
-
-
-        // Demande réponse du joueur B
-        System.out.println(joueurB.getNom() + " donnez votre résultat");
-        String reponseJoueurB = Lire.S();
-        //System.out.println(reponseJoueurB);
-
-
-        // Test réponse du joueur A
+        // Test réponses
         boolean erreurMotA = false;
-
         erreurMotA = testReponse(listeLettresDeBase, reponseJoueurA);
-
-
-        // Test réponse du joueur B
         boolean erreurMotB = false;
-
         erreurMotB = testReponse(listeLettresDeBase, reponseJoueurB);
 
-
-
-        /*while (reponseJoueurA.isEmpty()) {
-            try {
-                getResult(nomJoueurA, listeLettresDeBase, reponseJoueurA);
-            } catch (TooLongException | NotGoodLettersException | NotInDictionnaryException e) {
-                e.printStackTrace();    // à mettre en commentaire
-                erreurMotA = true;
-            }
-        }*/
-
-        /*while (reponseJoueurB.isEmpty()) {
-            try {
-                getResult(nomJoueurB, listeLettresDeBase, reponseJoueurB);
-            } catch (TooLongException | NotGoodLettersException | NotInDictionnaryException e) {
-                //e.printStackTrace();
-                erreurMotB = true;
-            }
-        }*/
-
-
-
         // Déterminer le score de chaque joueur
-        if ((reponseJoueurA.length() >= reponseJoueurB.length()) && (!erreurMotA) && (!erreurMotB)){
-            joueurA.setScore(joueurA.getScore() + reponseJoueurA.length());
+        scoreLettres(joueurA, reponseJoueurA, reponseJoueurB, erreurMotA, erreurMotB);
+        scoreLettres(joueurB, reponseJoueurB, reponseJoueurA, erreurMotB, erreurMotA);
+    }
+
+    private static char[] createRandomLetterList(int nbrVoyelles, String listeDesVoyelles, String listeDesConsonnes) {
+        char[] listeLettresDeBase = new char[MAX_LETTER_NUMBER];
+        Random rand = new Random();
+
+        for (int i = 0; i < nbrVoyelles; i++) {
+            listeLettresDeBase[i] = listeDesVoyelles.charAt(rand.nextInt(listeDesVoyelles.length()));
         }
-        if ((reponseJoueurB.length() >= reponseJoueurA.length()) && (!erreurMotA) && (!erreurMotB)){
-            joueurB.setScore(joueurB.getScore() + reponseJoueurB.length());
+        for (int i = nbrVoyelles; i < MAX_LETTER_NUMBER; i++) {
+            listeLettresDeBase[i] = listeDesConsonnes.charAt(rand.nextInt(listeDesConsonnes.length()));
         }
-        if ((!erreurMotA) && (erreurMotB)){
-            joueurA.setScore(joueurA.getScore() + max(reponseJoueurA.length(), reponseJoueurB.length()));
+        return listeLettresDeBase;
+    }
+
+    private static String createListeConsonne() {
+        String listeDesConsonnes = "";
+
+        for (Consonne letter : Consonne.values()) {
+            for (int i = 0; i < letter.getOcc(); i++) {
+                listeDesConsonnes = listeDesConsonnes.concat(letter.name());
+            }
         }
-        if ((erreurMotA) && (!erreurMotB)){
-            joueurB.setScore(joueurB.getScore() + max(reponseJoueurA.length(), reponseJoueurB.length()));
+        return listeDesConsonnes;
+    }
+
+    private static String createListeVoyelle() {
+        String listeDesVoyelles = "";
+        for (Voyelle letter : Voyelle.values()) {
+            for (int i = 0; i < letter.getOcc(); i++) {
+                listeDesVoyelles = listeDesVoyelles.concat(letter.name());
+            }
+        }
+        return listeDesVoyelles;
+    }
+
+    private static void scoreLettres(Joueur joueur, String reponseJoueur, String reponseAdversaire, boolean erreurMotJoueur, boolean erreurMotAdversaire) {
+        if ((reponseJoueur.length() >= reponseAdversaire.length()) && (!erreurMotJoueur) && (!erreurMotAdversaire)) {
+            joueur.setScore(joueur.getScore() + reponseJoueur.length());
+        }
+        if ((!erreurMotJoueur) && erreurMotAdversaire) {
+            joueur.setScore(joueur.getScore() + max(reponseJoueur.length(), reponseAdversaire.length()));
         }
     }
 
+    private static String getReponseJoueur(Joueur joueur) {
+        System.out.println(joueur.getNom() + " donnez votre résultat");
+        String reponseJoueur = Lire.S();
+        return reponseJoueur;
+    }
 
 
     // Fonction testReponse
-    private static boolean testReponse(char[] listeLettresDeBase, String reponseJoueur){
+    private static boolean testReponse(char[] listeLettresDeBase, String reponseJoueur) {
         boolean erreur = false;
 
         // Test de longueur
-        if (reponseJoueur.length() > 10){
+        if (reponseJoueur.length() > 10) {
             erreur = true;
             System.out.println("Votre réponse est trop longue");
             return erreur;
@@ -128,21 +109,17 @@ public class ModeLettres {
 
         // Test si les lettres utilisées sont toutes dans la liste
         char[] tabReponseJoueur = reponseJoueur.toCharArray();
-        //System.out.println(tabReponseJoueur);
 
         Arrays.sort(tabReponseJoueur);
-        //System.out.println(tabReponseJoueur);
 
-        int i=0;
+        int i = 0;
         for (char c : tabReponseJoueur) {
             while ((i < MAX_LETTER_NUMBER) && (!String.valueOf(listeLettresDeBase[i]).equalsIgnoreCase(String.valueOf(c)))) {
                 i++;
             }
         }
 
-
-        //if (reponseJoueur.length() != c){
-        if (i == MAX_LETTER_NUMBER){
+        if (i == MAX_LETTER_NUMBER) {
             erreur = true;
             System.out.println("Les lettres utilisées ne sont pas toutes dans la liste");
             return erreur;
@@ -150,27 +127,26 @@ public class ModeLettres {
 
 
         // Teste si le mot est dans le dictionnaire
-        if (!Utils.isInDictionary(reponseJoueur)){
+        if (!Utils.isInDictionary(reponseJoueur)) {
             erreur = true;
-            System.out.println("Le mot "+reponseJoueur+" n'est pas dans le dictionnaire");
+            System.out.println("Le mot " + reponseJoueur + " n'est pas dans le dictionnaire");
             return erreur;
-        }else {
+        } else {
             System.out.println("Le mot est dans le dico");
         }
 
-        return(erreur);
+        return erreur;
     }
 
-
     // Déterminer la réponse la plus longue (pour le score)
-    private static int max(int repA, int repB){
+    private static int max(int repA, int repB) {
         int result = 0;
-        if (repA >= repB){
+        if (repA >= repB) {
             result = repA;
         }
-        if (repA < repB){
+        if (repA < repB) {
             result = repB;
         }
-        return(result);
+        return (result);
     }
 }
