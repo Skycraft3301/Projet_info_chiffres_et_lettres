@@ -32,5 +32,4 @@ public class ModeChiffres {
         Integer goal = operandes.getFirst();
 
     }
-
 }
