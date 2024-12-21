@@ -22,8 +22,9 @@ public class SaisieChiffre {
             System.out.println("Si vous souhaitez continuer appuyez sur entrée, sinon tapez " + OperationUtils.END);
         }
 
-        System.out.println("Le résultat final est " + verification.getLast());
-        return verification.getLast();
+        Integer finalNumber = selectedNumbers.length == verification.size() ? 0 : verification.getLast();
+        System.out.println("Le résultat final est " + finalNumber);
+        return finalNumber;
     }
 
 }

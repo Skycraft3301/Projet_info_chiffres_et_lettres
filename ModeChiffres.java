@@ -24,9 +24,10 @@ public class ModeChiffres {
                 OperationUtils.compute(operandes, operande1, operateur, operande2);
             }
         } while (operandes.getFirst() < OperationUtils.LOWER_BOUND || operandes.getFirst() > OperationUtils.UPPER_BOUND);
+
         Integer goal = operandes.getFirst();
+
         Utils.writeLine(3, ConverterUtils.intArrayToString(selectedNumbers));
-        //TODO revoir numéro de ligne
         Utils.writeLine(4, String.valueOf(goal));
     }
 }
