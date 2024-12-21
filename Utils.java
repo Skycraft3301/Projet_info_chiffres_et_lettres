@@ -133,5 +133,39 @@ public class Utils {
             System.err.println("Une erreur est survenue : " + e.getMessage());
         }
     }
+
+    public static void writeLines(List<FileLine> fileLines) {
+        try {
+            // Lire tout le fichier dans une liste
+            List<String> lignes = new ArrayList<>();
+            BufferedReader reader = new BufferedReader(new FileReader("./com.txt"));
+            String ligne;
+            while ((ligne = reader.readLine()) != null) {
+                lignes.add(ligne);
+            }
+            reader.close();
+
+            for (FileLine fileLine : fileLines) {
+
+                // Modifier la ligne spécifique
+                if (fileLine.numeroLigne() <= lignes.size()) {
+                    lignes.set(fileLine.numeroLigne() - 1, fileLine.valeur()); // Les indices des listes commencent à 0
+                } else {
+                    System.out.println("La ligne demandée n'existe pas.");
+                }
+            }
+
+            // Étape 3 : Réécrire tout le fichier avec les modifications
+            BufferedWriter writer = new BufferedWriter(new FileWriter("./com.txt"));
+            for (String l : lignes) {
+                writer.write(l);
+                writer.newLine(); // Recrée les sauts de ligne
+            }
+            writer.close();
+            System.out.println("Le fichier a été modifié avec succès !");
+        } catch (IOException e) {
+            System.err.println("Une erreur est survenue : " + e.getMessage());
+        }
+    }
 }
 

@@ -25,9 +25,9 @@ public class ModeChiffres {
             }
         } while (operandes.getFirst() < OperationUtils.LOWER_BOUND || operandes.getFirst() > OperationUtils.UPPER_BOUND);
 
-        Integer goal = operandes.getFirst();
-
-        Utils.writeLine(3, ConverterUtils.intArrayToString(selectedNumbers));
-        Utils.writeLine(4, String.valueOf(goal));
+        Utils.writeLines(List.of(
+                new FileLine(3, ConverterUtils.intArrayToString(selectedNumbers)),
+                new FileLine(4, String.valueOf(operandes.getFirst()))
+        ));
     }
 }
