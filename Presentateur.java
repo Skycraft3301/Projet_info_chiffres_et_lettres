@@ -13,7 +13,7 @@ l4 score joueurB
 import java.io.IOException;
 import java.util.Objects;
 
-public class Main {
+public class Presentateur {
     public static void main(String[] args) {
 
         Utils.checkFile();
@@ -29,7 +29,8 @@ public class Main {
         Utils.writeLine(1, joueurA.getNom());
         Utils.writeLine(2, joueurB.getNom());
 
-        LancerProgramme();
+        LancerProgramme('A');
+        LancerProgramme('B');
 
 
         for (int i = 1; i <= 5; i++) {
@@ -55,10 +56,9 @@ public class Main {
     }
 
 
-
-    public static void LancerProgramme() {
+    public static void LancerProgramme(char joueur) {
         // Commande à exécuter
-        String commande = "cmd /c start cmd.exe /k java Main2"; // Sous Windows
+        String commande = "cmd /c start cmd.exe /k java ConsoleJoueur " + joueur; // Sous Windows
 
         try {
             // Lancer la commande avec ProcessBuilder

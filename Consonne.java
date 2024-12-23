@@ -4,7 +4,7 @@ public enum Consonne {
     J(11), K(1), L(113), M(61), N(147), P(62), Q(28), R(135),
     S(164), T(150), V(34), W(2), X(8), Z(3);
 
-    private int occ;
+    private final int occ;
 
     // Constructeur :
     Consonne(int occ) {
