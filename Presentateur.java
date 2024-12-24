@@ -10,6 +10,9 @@ l4 score joueurB
  */
 
 
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -28,6 +31,8 @@ public class Presentateur {
 
         Utils.writeLine(1, joueurA.getNom());
         Utils.writeLine(2, joueurB.getNom());
+
+        CompilerTout();
 
         LancerProgramme('A');
         LancerProgramme('B');
@@ -50,6 +55,7 @@ public class Presentateur {
 
     }
 
+
     private static void actualiserCom(Joueur joueurA, Joueur joueurB) {
         Utils.writeLine(3, String.valueOf(joueurA.getScore()));
         Utils.writeLine(4, String.valueOf(joueurB.getScore()));
@@ -67,6 +73,33 @@ public class Presentateur {
             System.out.println("Programme lancé dans une nouvelle console !");
         } catch (IOException e) {
             System.err.println("Une erreur est survenue : " + e.getMessage());
+        }
+    }
+
+
+    public static void CompilerTout() {
+        String[] ListeProgrammes = {"ConsoleJoueur", "Consonne", "ConverterUtils", "FileLine", "Joueur", "LettresUtils", "Lire", "ModeChiffres", "ModeLettres", "OperationUtils", "SaisieChiffre", "SaisieLettres", "ScoreUtils", "Utils", "Voyelle"};
+
+        for(String nomFichier : ListeProgrammes) {
+            // Chemin du fichier source Java à compiler
+            String cheminFichier = nomFichier+".java";
+
+            // Obtenir le compilateur Java
+            JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+            if (compiler == null) {
+                System.err.println("Le compilateur Java n'est pas disponible. Assurez-vous d'utiliser une JDK et non une JRE.");
+                return;
+            }
+
+            // Compiler le fichier
+            int resultat = compiler.run(null, null, null, cheminFichier);
+
+            // Vérifier si la compilation a réussi
+            if (resultat == 0) {
+                System.out.println("Compilation réussie !");
+            } else {
+                System.err.println("Échec de la compilation.");
+            }
         }
     }
 }
