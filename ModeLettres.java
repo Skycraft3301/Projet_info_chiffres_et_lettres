@@ -20,12 +20,11 @@ public class ModeLettres {
         // Tri de la liste par ordre alphabétique
         Arrays.sort(listeLettresDeBase);
 
-        //TODO à mettre ailleurs
-        //Demande réponses
-        /*String reponseJoueurA = SaisieLettres.getReponseJoueur(joueurA, listeLettresDeBase);
-        String reponseJoueurB = SaisieLettres.getReponseJoueur(joueurB, listeLettresDeBase);
+        // ecriture dans le fichier
+        Utils.writeLine(6, ConverterUtils.charArrayToString(listeLettresDeBase));
 
-        // Test réponses
+        //TODO à mettre ailleurs
+        /*//Test réponses
         boolean erreurMotA = false;
         erreurMotA = SaisieLettres.testReponse(listeLettresDeBase, reponseJoueurA);
         boolean erreurMotB = false;
