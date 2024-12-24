@@ -121,7 +121,7 @@ public class Utils {
                 System.out.println("La ligne demandée n'existe pas.");
             }
 
-            // Étape 3 : Réécrire tout le fichier avec les modifications
+            // Réécrire tout le fichier avec les modifications
             BufferedWriter writer = new BufferedWriter(new FileWriter("./com.txt"));
             for (String l : lignes) {
                 writer.write(l);
@@ -155,7 +155,7 @@ public class Utils {
                 }
             }
 
-            // Étape 3 : Réécrire tout le fichier avec les modifications
+            // Réécrire tout le fichier avec les modifications
             BufferedWriter writer = new BufferedWriter(new FileWriter("./com.txt"));
             for (String l : lignes) {
                 writer.write(l);
