@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Utils {
-    public static final String COM_TXT = "./com.txt";
+    //public static final String COM_TXT = "./com.txt";
 
     public static boolean isInDictionary(String reponseJoueur) {
 
@@ -37,12 +37,13 @@ public class Utils {
 
     public static long getLastUpdate(String fileName) {
         File file = new File(fileName);
+        System.out.println("fileName : "+fileName);
         return file.lastModified();
     }
 
     public static long updateFile(String fileName, int numeroDeLigne, String nouveauTexte) {
         File file = new File(fileName);
-        writeLine(numeroDeLigne, nouveauTexte);
+        writeLine(fileName, numeroDeLigne, nouveauTexte);
         return file.lastModified();
     }
 
@@ -69,14 +70,14 @@ public class Utils {
     }
 
 
-    public static void checkFile() {
+    public static void checkFile(String comJ) {
         try {
             // Vérifier si le fichier existe
-            File com = new File("./com.txt");
+            File com = new File("./"+comJ+".txt");
             if (!com.exists()) {
                 // Créer le fichier
                 if (com.createNewFile()) {
-                    System.out.println("Fichier créé avec succès : " + "./com.txt");
+                    System.out.println("Fichier créé avec succès : " + "./"+comJ+".txt");
                 } else {
                     System.out.println("Impossible de créer le fichier.");
                 }
@@ -89,7 +90,7 @@ public class Utils {
 
         // Ajouter des sauts de ligne
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("./com.txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("./"+comJ+".txt"));
             for (int i = 0; i < 10; i++) {
                 writer.newLine();
             }
@@ -101,13 +102,11 @@ public class Utils {
     }
 
 
-    public static void writeLine(int ligneASupprimer, String nouveauTexte) {
-        String nomFichier = "monFichier.txt";
-
+    public static void writeLine(String fileName, int ligneASupprimer, String nouveauTexte) {
         try {
             // Lire tout le fichier dans une liste
             List<String> lignes = new ArrayList<>();
-            BufferedReader reader = new BufferedReader(new FileReader("./com.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
             String ligne;
             while ((ligne = reader.readLine()) != null) {
                 lignes.add(ligne);
@@ -122,7 +121,7 @@ public class Utils {
             }
 
             // Réécrire tout le fichier avec les modifications
-            BufferedWriter writer = new BufferedWriter(new FileWriter("./com.txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
             for (String l : lignes) {
                 writer.write(l);
                 writer.newLine(); // Recrée les sauts de ligne

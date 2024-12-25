@@ -19,23 +19,24 @@ import java.util.Objects;
 public class Presentateur {
     public static void main(String[] args) {
 
-        Utils.checkFile();
-
-        System.out.println("Joueur A, donnez votre nom :");
-        Joueur joueurA = new Joueur();
-
-        System.out.println("Joueur B, donnez votre nom :");
-        Joueur joueurB = new Joueur();
-
-        String joueurVoyelles = joueurA.getNom();
-
-        Utils.writeLine(1, joueurA.getNom());
-        Utils.writeLine(2, joueurB.getNom());
+        Utils.checkFile("comA");
+        Utils.checkFile("comB");
 
         CompilerTout();
 
         LancerProgramme('A');
         LancerProgramme('B');
+
+        //System.out.println("Joueur A, donnez votre nom :");
+        Joueur joueurA = new Joueur();
+
+        //System.out.println("Joueur B, donnez votre nom :");
+        Joueur joueurB = new Joueur();
+
+        //Utils.writeLine(1, joueurA.getNom());
+        //Utils.writeLine(2, joueurB.getNom());
+
+        String joueurVoyelles = joueurA.getNom();
 
 
         for (int i = 1; i <= 5; i++) {
@@ -57,8 +58,8 @@ public class Presentateur {
 
 
     private static void actualiserCom(Joueur joueurA, Joueur joueurB) {
-        Utils.writeLine(3, String.valueOf(joueurA.getScore()));
-        Utils.writeLine(4, String.valueOf(joueurB.getScore()));
+        Utils.writeLine("./comA.txt", 2, String.valueOf(joueurA.getScore()));
+        Utils.writeLine("./comB.txt", 2, String.valueOf(joueurB.getScore()));
     }
 
 
@@ -101,5 +102,20 @@ public class Presentateur {
                 System.err.println("Échec de la compilation.");
             }
         }
+    }
+
+
+    private static long waitForUpdate(long referenceTime, String file) {
+        long updateTime = Utils.getLastUpdate(file);
+        while (referenceTime == updateTime) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException _) {
+
+            }
+
+            updateTime = Utils.getLastUpdate(file);
+        }
+        return updateTime;
     }
 }
