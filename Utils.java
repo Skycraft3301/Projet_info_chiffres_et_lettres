@@ -47,10 +47,10 @@ public class Utils {
         return file.lastModified();
     }
 
-    public static String getLine(int n) {
+    public static String getLine(int n, String file) {
         String result = "";
 
-        File com = new File("./com.txt");
+        File com = new File(file);
 
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(com), "UTF-8"));
@@ -73,11 +73,11 @@ public class Utils {
     public static void checkFile(String comJ) {
         try {
             // Vérifier si le fichier existe
-            File com = new File("./"+comJ+".txt");
+            File com = new File(comJ);
             if (!com.exists()) {
                 // Créer le fichier
                 if (com.createNewFile()) {
-                    System.out.println("Fichier créé avec succès : " + "./"+comJ+".txt");
+                    System.out.println("Fichier créé avec succès : " +comJ);
                 } else {
                     System.out.println("Impossible de créer le fichier.");
                 }
@@ -90,7 +90,7 @@ public class Utils {
 
         // Ajouter des sauts de ligne
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("./"+comJ+".txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(comJ));
             for (int i = 0; i < 10; i++) {
                 writer.newLine();
             }

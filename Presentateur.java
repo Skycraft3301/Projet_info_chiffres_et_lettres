@@ -17,21 +17,35 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Presentateur {
+
+    private final static String comA = "./comA.txt";
+    private final static String comB = "./comB.txt";
+
     public static void main(String[] args) {
 
-        Utils.checkFile("comA");
-        Utils.checkFile("comB");
+        Utils.checkFile(comA);
+        Utils.checkFile(comB);
+
+        long referenceTimeA = Utils.getLastUpdate(comA);
+        long referenceTimeB = Utils.getLastUpdate(comB);
 
         CompilerTout();
 
         LancerProgramme('A');
         LancerProgramme('B');
 
+        ConsoleJoueur.waitForUpdate(referenceTimeA, comA);
+        ConsoleJoueur.waitForUpdate(referenceTimeB, comB);
+
         //System.out.println("Joueur A, donnez votre nom :");
-        Joueur joueurA = new Joueur();
+        Joueur joueurA = new Joueur("A");
+        joueurA.setNom(Utils.getLine(1, comA));
+        System.out.println("nom joueurA : "+joueurA.getNom());
 
         //System.out.println("Joueur B, donnez votre nom :");
-        Joueur joueurB = new Joueur();
+        Joueur joueurB = new Joueur("B");
+        joueurB.setNom(Utils.getLine(1, comB));
+        System.out.println("nom joueurB : "+joueurB.getNom());
 
         //Utils.writeLine(1, joueurA.getNom());
         //Utils.writeLine(2, joueurB.getNom());
@@ -58,22 +72,42 @@ public class Presentateur {
 
 
     private static void actualiserCom(Joueur joueurA, Joueur joueurB) {
-        Utils.writeLine("./comA.txt", 2, String.valueOf(joueurA.getScore()));
-        Utils.writeLine("./comB.txt", 2, String.valueOf(joueurB.getScore()));
+        Utils.writeLine(comA, 2, String.valueOf(joueurA.getScore()));
+        Utils.writeLine(comB, 2, String.valueOf(joueurB.getScore()));
     }
 
 
     public static void LancerProgramme(char joueur) {
-        // Commande à exécuter
-        String commande = "cmd /c start cmd.exe /k java ConsoleJoueur " + joueur; // Sous Windows
+
+        // Programme Java à exécuter
+        String classeJava = "ConsoleJoueur "+joueur; // Nom de la classe principale à exécuter (sans .class)
+        String cheminFichierClasse = ".";  // Répertoire contenant le fichier .class
+
+        // Détecter le système d'exploitation
+        String os = System.getProperty("os.name").toLowerCase();
 
         try {
-            // Lancer la commande avec ProcessBuilder
-            ProcessBuilder pb = new ProcessBuilder(commande.split(" "));
-            pb.start(); // Démarre le programme
-            System.out.println("Programme lancé dans une nouvelle console !");
+            if (os.contains("win")) {
+                // Commande pour Windows
+                String commande = "cmd /c start cmd.exe /k java -cp " + cheminFichierClasse + " " + classeJava;
+                commande += " && mode con: cols=100 lines=30"; // Ajuster la taille
+                System.out.println("Commande : " + commande);
+                Runtime.getRuntime().exec(commande);
+            } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+                // Commande pour Linux
+                String commande = "xterm -geometry 100x30+200+200 -hold -e java -cp " + cheminFichierClasse + " " + classeJava;
+                System.out.println("Commande : " + commande);
+                Runtime.getRuntime().exec(new String[] { "bash", "-c", commande });
+            } else if (os.contains("mac")) {
+                // Commande pour macOS
+                String commande = "osascript -e 'tell application \"Terminal\" to do script \"java -cp " + cheminFichierClasse + " " + classeJava + "\"'";
+                System.out.println("Commande : " + commande);
+                Runtime.getRuntime().exec(new String[] { "bash", "-c", commande });
+            } else {
+                System.out.println("Système d'exploitation non pris en charge.");
+            }
         } catch (IOException e) {
-            System.err.println("Une erreur est survenue : " + e.getMessage());
+            System.err.println("Erreur lors de l'exécution de la commande : " + e.getMessage());
         }
     }
 
@@ -102,20 +136,5 @@ public class Presentateur {
                 System.err.println("Échec de la compilation.");
             }
         }
-    }
-
-
-    private static long waitForUpdate(long referenceTime, String file) {
-        long updateTime = Utils.getLastUpdate(file);
-        while (referenceTime == updateTime) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException _) {
-
-            }
-
-            updateTime = Utils.getLastUpdate(file);
-        }
-        return updateTime;
     }
 }

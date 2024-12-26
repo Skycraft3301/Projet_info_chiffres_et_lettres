@@ -1,9 +1,13 @@
 public class Joueur {
-    private final String nom;
+    private String nom;
     private int score = 0;
 
-    public Joueur() {
-        this.nom = Lire.S();
+    public Joueur(String a) {
+        //this.nom = Lire.S();
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public String getNom() {

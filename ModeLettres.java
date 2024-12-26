@@ -21,7 +21,7 @@ public class ModeLettres {
         Arrays.sort(listeLettresDeBase);
 
         // ecriture dans le fichier
-        Utils.writeLine(6, ConverterUtils.charArrayToString(listeLettresDeBase));
+        //Utils.writeLine(6, ConverterUtils.charArrayToString(listeLettresDeBase));
 
         //TODO à mettre ailleurs
         /*//Test réponses

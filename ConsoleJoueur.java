@@ -9,32 +9,34 @@ public class ConsoleJoueur {
         System.out.println("COM_TXT : "+COM_TXT);
 
         System.out.println("Joueur " + (args.length > 0 ? args[0] : "") + ", donnez votre nom :");
-        Joueur joueur = new Joueur();
+        Joueur joueur = new Joueur((args.length > 0 ? args[0] : ""));
+        joueur.setNom(Lire.S());
 
         waitForUpdate(COM_TXT, 1, joueur.getNom());
 
         for (int i = 1; i <= 5; i++) {
             System.out.println("Manche " + i);
             System.out.println("[ Mode Chiffres ]");
-            int[] selectedNumbers = ConverterUtils.toArray(Utils.getLine(3));
+            int[] selectedNumbers = ConverterUtils.toArray(Utils.getLine(3, COM_TXT));
             System.out.println("Voici les chiffres sélectionnés : " + Arrays.toString(selectedNumbers) + "\n");
-            System.out.println("Le résultat à obtenir est " + Utils.getLine(4) + "\n");
+            System.out.println("Le résultat à obtenir est " + Utils.getLine(4, COM_TXT) + "\n");
             timer(40);
             String resultatChiffre = String.valueOf(SaisieChiffre.computeUserOperations(selectedNumbers));
             long referenceTime = waitForUpdate(COM_TXT, 5, resultatChiffre);
-            System.out.println("Votre score est maintenant de " + Utils.getLine(2) + " points" + "\n");
+            // attendre la modification du score
+            System.out.println("Votre score est maintenant de " + Utils.getLine(2, COM_TXT) + " points" + "\n");
 
 
             System.out.println("[ Mode Lettres ]");
             waitForUpdate(referenceTime, COM_TXT);
-            System.out.println("Voici les lettres sélectionnées : " + Utils.getLine(6) + "\n");
+            System.out.println("Voici les lettres sélectionnées : " + Utils.getLine(6, COM_TXT) + "\n");
             timer(30);
             String resultatLettre = SaisieLettres.getReponseJoueur(joueur);
             referenceTime = waitForUpdate(COM_TXT, 7, resultatLettre);
-            System.out.println("Votre score est maintenant de " + Utils.getLine(2) + " points" + "\n");
+            System.out.println("Votre score est maintenant de " + Utils.getLine(2, COM_TXT) + " points" + "\n");
             waitForUpdate(referenceTime, COM_TXT);
         }
-        System.out.println("Fin du jeu ! Vous avez " + Utils.getLine(9));
+        System.out.println("Fin du jeu ! Vous avez " + Utils.getLine(9, COM_TXT));
     }
 
     public static void timer(int duree) {
@@ -62,7 +64,7 @@ public class ConsoleJoueur {
         return waitForUpdate(referenceTime, file);
     }
 
-    private static long waitForUpdate(long referenceTime, String file) {
+    public static long waitForUpdate(long referenceTime, String file) {
         long updateTime = Utils.getLastUpdate(file);
         while (referenceTime == updateTime) {
             try {
