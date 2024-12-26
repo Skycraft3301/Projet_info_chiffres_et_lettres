@@ -1,7 +1,10 @@
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import static java.lang.Math.max;
 
 public class ConsoleJoueur {
     public static void main(String[] args) {
@@ -28,7 +31,15 @@ public class ConsoleJoueur {
 
 
             System.out.println("[ Mode Lettres ]");
-            waitForUpdate(referenceTime, COM_TXT);
+            referenceTime = waitForUpdate(referenceTime, COM_TXT);
+            if (Objects.equals(Utils.getLine(8, COM_TXT), joueur.getNom())) {
+                System.out.println(joueur + ", combien de voyelles voulez vous ?");
+                int nbrVoyelles = Lire.entierCompris(LettresUtils.MIN_VOWEL_NUMBER, LettresUtils.MAX_VOWEL_NUMBER);
+                referenceTime = waitForUpdate(COM_TXT, 8, String.valueOf(nbrVoyelles));
+                referenceTime = waitForUpdate(referenceTime, COM_TXT);
+            }else {
+                referenceTime = waitForUpdate(referenceTime, COM_TXT);
+            }
             System.out.println("Voici les lettres sélectionnées : " + Utils.getLine(6, COM_TXT) + "\n");
             timer(30);
             String resultatLettre = SaisieLettres.getReponseJoueur(joueur);
@@ -76,6 +87,21 @@ public class ConsoleJoueur {
             updateTime = Utils.getLastUpdate(file);
         }
         return updateTime;
+    }
+
+    public static long waitForUpdate(long referenceTime, String fileA, String fileB) {
+        long updateTimeA = Utils.getLastUpdate(fileA);
+        long updateTimeB = Utils.getLastUpdate(fileB);
+        while (referenceTime == updateTimeA && referenceTime == updateTimeB) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException _) {
+
+            }
+            updateTimeA = Utils.getLastUpdate(fileA);
+            updateTimeB = Utils.getLastUpdate(fileB);
+        }
+        return max(updateTimeA, updateTimeB);
     }
 
 }

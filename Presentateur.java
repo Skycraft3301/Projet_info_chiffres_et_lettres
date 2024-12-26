@@ -1,13 +1,16 @@
 // Projet informatique
 // des chiffres et des lettres
 
-/* Structure du fichier com.txt
-l1  nom joueurA
-l2  nom joueurB
-l3  score joueurA
-l4 score joueurB
-
- */
+/* Structure des fichiers comJ.txt
+1.	Nom joueur
+2.	Score joueur
+3.	Liste des chiffres sélectionnés
+4.	Objectif de chiffre
+5.	Résultat du joueur chiffre
+6.	Liste des lettres sélectionnées
+7.	Résultat du joueur lettre
+8.	Nombre de voyelles
+*/
 
 
 import javax.tools.JavaCompiler;
@@ -15,6 +18,7 @@ import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.awt.*;
 
 public class Presentateur {
 
@@ -23,8 +27,7 @@ public class Presentateur {
 
     public static void main(String[] args) {
 
-        Utils.checkFile(comA);
-        Utils.checkFile(comB);
+        Utils.checkFile("all");
 
         long referenceTimeA = Utils.getLastUpdate(comA);
         long referenceTimeB = Utils.getLastUpdate(comB);
@@ -47,23 +50,22 @@ public class Presentateur {
         joueurB.setNom(Utils.getLine(1, comB));
         System.out.println("nom joueurB : "+joueurB.getNom());
 
-        //Utils.writeLine(1, joueurA.getNom());
-        //Utils.writeLine(2, joueurB.getNom());
-
-        String joueurVoyelles = joueurA.getNom();
+        String joueurVoyelles = "A";
 
 
         for (int i = 1; i <= 5; i++) {
             ModeChiffres.modeChiffres(joueurA, joueurB);
+
+
             ModeLettres.modeLettres(joueurVoyelles, joueurA, joueurB);
 
             actualiserCom(joueurA, joueurB);
 
             // Pour changer à chaque tour le joueur qui choisit le nombre de voyelles
             if (Objects.equals(joueurVoyelles, joueurA.getNom())) {
-                joueurVoyelles = joueurB.getNom();
+                joueurVoyelles = "B";
             } else {
-                joueurVoyelles = joueurA.getNom();
+                joueurVoyelles = "A";
             }
         }
 
@@ -83,14 +85,19 @@ public class Presentateur {
         String classeJava = "ConsoleJoueur "+joueur; // Nom de la classe principale à exécuter (sans .class)
         String cheminFichierClasse = ".";  // Répertoire contenant le fichier .class
 
+        // Obtenir les dimensions de l'écran
+        Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
+        int largeurConsole = (int) (tailleEcran.getWidth() / 10); // Largeur en caractères
+        int hauteurConsole = (int) (tailleEcran.getHeight() / 20); // Hauteur en lignes
+
         // Détecter le système d'exploitation
         String os = System.getProperty("os.name").toLowerCase();
 
         try {
             if (os.contains("win")) {
                 // Commande pour Windows
-                String commande = "cmd /c start cmd.exe /k java -cp " + cheminFichierClasse + " " + classeJava;
-                commande += " && mode con: cols=100 lines=30"; // Ajuster la taille
+                String commande = String.format("cmd /c start cmd.exe /k java -cp " + cheminFichierClasse + " " + classeJava+" && mode con: cols=%d lines=%d",
+                largeurConsole, hauteurConsole); // Ajuster la taille de la console (ne fonctionne pas)
                 System.out.println("Commande : " + commande);
                 Runtime.getRuntime().exec(commande);
             } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {

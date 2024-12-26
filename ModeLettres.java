@@ -1,12 +1,21 @@
 import java.util.Arrays;
 
 public class ModeLettres {
+
+    private final static String comA = "./comA.txt";
+    private final static String comB = "./comB.txt";
+
     public static void modeLettres(String joueurVoyelles, Joueur joueurA, Joueur joueurB) {
 
         System.out.println("[ Mode Lettres ]");
 
-        System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?");
-        int nbrVoyelles = Lire.entierCompris(LettresUtils.MIN_VOWEL_NUMBER, LettresUtils.MAX_VOWEL_NUMBER);
+        Utils.writeLine("all", 8, "joueurVoyelles");
+
+        /*System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?");
+        int nbrVoyelles = Lire.entierCompris(LettresUtils.MIN_VOWEL_NUMBER, LettresUtils.MAX_VOWEL_NUMBER);*/
+
+        timeReference = ConsoleJoueur.waitForUpdate(timeReference, comA, comB);
+
 
         // Création de la liste des voyelles
         String listeDesVoyelles = LettresUtils.createListeVoyelle();
