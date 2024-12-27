@@ -11,7 +11,7 @@ public class ScoreUtils {
     }
 
     private static void scoreChiffre(Joueur joueur, Integer resultatJoueur, Integer resultatAdversaire, Integer goal) {
-        System.out.println("\nLe score de " + joueur.getNom() + " était de " + joueur.getScore());
+        //System.out.println("\nLe score de " + joueur.getNom() + " était de " + joueur.getScore());
         int points = 0;
         if (Objects.equals(resultatJoueur, goal)) {
             points = 10;
@@ -19,8 +19,8 @@ public class ScoreUtils {
             points = 7;
         }
         joueur.setScore(joueur.getScore() + points);
-        System.out.println(joueur.getNom() + " a gagné " + points + " points sur ce tour");
-        System.out.println("Son score est maintenant de " + joueur.getScore() + "\n");
+        /*System.out.println(joueur.getNom() + " a gagné " + points + " points sur ce tour");
+        System.out.println("Son score est maintenant de " + joueur.getScore() + "\n");*/
     }
 
     private static void scoreLettres(Joueur joueur, String reponseJoueur, String reponseAdversaire, boolean erreurMotJoueur, boolean erreurMotAdversaire) {

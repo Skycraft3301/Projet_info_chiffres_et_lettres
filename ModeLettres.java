@@ -4,7 +4,7 @@ public class ModeLettres {
     public static void modeLettres(String joueurVoyelles, Joueur joueurA, Joueur joueurB) {
 
         System.out.println("[ Mode Lettres ]");
-
+        //TODO à mettre dans la consoleJoueur pour affichage
         System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?");
         int nbrVoyelles = Lire.entierCompris(LettresUtils.MIN_VOWEL_NUMBER, LettresUtils.MAX_VOWEL_NUMBER);
 
@@ -21,9 +21,10 @@ public class ModeLettres {
         Arrays.sort(listeLettresDeBase);
 
         // ecriture dans le fichier
-        //Utils.writeLine(6, ConverterUtils.charArrayToString(listeLettresDeBase));
+        Utils.writeLine(Presentateur.comA, 6, ConverterUtils.charArrayToString(listeLettresDeBase));
+        Utils.writeLine(Presentateur.comB, 6, ConverterUtils.charArrayToString(listeLettresDeBase));
 
-        //TODO à mettre ailleurs
+        //TODO à mettre dans Presentateur pour calculer score
         /*//Test réponses
         boolean erreurMotA = false;
         erreurMotA = SaisieLettres.testReponse(listeLettresDeBase, reponseJoueurA);

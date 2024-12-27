@@ -5,12 +5,11 @@ import java.util.concurrent.TimeUnit;
 
 public class ConsoleJoueur {
     public static void main(String[] args) {
-        String COM_TXT = "./com"+(args.length > 0 ? args[0] : "")+".txt";
-        System.out.println("COM_TXT : "+COM_TXT);
+        String COM_TXT = "./com" + (args.length > 0 ? args[0] : "") + ".txt";
+        //System.out.println("COM_TXT : "+COM_TXT);
 
         System.out.println("Joueur " + (args.length > 0 ? args[0] : "") + ", donnez votre nom :");
-        Joueur joueur = new Joueur((args.length > 0 ? args[0] : ""));
-        joueur.setNom(Lire.S());
+        Joueur joueur = new Joueur(Lire.S());
 
         waitForUpdate(COM_TXT, 1, joueur.getNom());
 
@@ -29,6 +28,7 @@ public class ConsoleJoueur {
 
             System.out.println("[ Mode Lettres ]");
             waitForUpdate(referenceTime, COM_TXT);
+            //TODO gestion joueurVoyelle
             System.out.println("Voici les lettres sélectionnées : " + Utils.getLine(6, COM_TXT) + "\n");
             timer(30);
             String resultatLettre = SaisieLettres.getReponseJoueur(joueur);

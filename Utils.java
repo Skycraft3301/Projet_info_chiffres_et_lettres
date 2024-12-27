@@ -37,7 +37,7 @@ public class Utils {
 
     public static long getLastUpdate(String fileName) {
         File file = new File(fileName);
-        System.out.println("fileName : "+fileName);
+        System.out.println("fileName : " + fileName);
         return file.lastModified();
     }
 
@@ -47,10 +47,10 @@ public class Utils {
         return file.lastModified();
     }
 
-    public static String getLine(int n, String file) {
+    public static String getLine(int n, String fileName) {
         String result = "";
 
-        File com = new File(file);
+        File com = new File(fileName);
 
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(com), "UTF-8"));
@@ -77,7 +77,7 @@ public class Utils {
             if (!com.exists()) {
                 // Créer le fichier
                 if (com.createNewFile()) {
-                    System.out.println("Fichier créé avec succès : " +comJ);
+                    System.out.println("Fichier créé avec succès : " + comJ);
                 } else {
                     System.out.println("Impossible de créer le fichier.");
                 }
@@ -115,7 +115,7 @@ public class Utils {
 
             // Modifier la ligne spécifique
             if (ligneASupprimer <= lignes.size()) {
-                lignes.set(ligneASupprimer - 1, nouveauTexte); // Les indices des listes commencent à 0
+                lignes.set(ligneASupprimer - 1, nouveauTexte);
             } else {
                 System.out.println("La ligne demandée n'existe pas.");
             }
@@ -133,11 +133,11 @@ public class Utils {
         }
     }
 
-    public static void writeLines(List<FileLine> fileLines) {
+    public static void writeLines(String filename, List<FileLine> fileLines) {
         try {
             // Lire tout le fichier dans une liste
             List<String> lignes = new ArrayList<>();
-            BufferedReader reader = new BufferedReader(new FileReader("./com.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
             String ligne;
             while ((ligne = reader.readLine()) != null) {
                 lignes.add(ligne);
@@ -148,14 +148,14 @@ public class Utils {
 
                 // Modifier la ligne spécifique
                 if (fileLine.numeroLigne() <= lignes.size()) {
-                    lignes.set(fileLine.numeroLigne() - 1, fileLine.valeur()); // Les indices des listes commencent à 0
+                    lignes.set(fileLine.numeroLigne() - 1, fileLine.valeur());
                 } else {
                     System.out.println("La ligne demandée n'existe pas.");
                 }
             }
 
             // Réécrire tout le fichier avec les modifications
-            BufferedWriter writer = new BufferedWriter(new FileWriter("./com.txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
             for (String l : lignes) {
                 writer.write(l);
                 writer.newLine(); // Recrée les sauts de ligne
