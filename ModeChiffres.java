@@ -1,8 +1,15 @@
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
+import static java.lang.Math.max;
+
 public class ModeChiffres {
-    public static void modeChiffres() {
+
+    private final static String comA = "./comA.txt";
+    private final static String comB = "./comB.txt";
+    
+    public static void modeChiffres(Joueur joueurA, Joueur joueurB) throws InterruptedException {
 
         int[] selectedNumbers = new int[OperationUtils.LENGTH_SELECTED_NUMBER];
 
@@ -33,5 +40,25 @@ public class ModeChiffres {
                 new FileLine(3, ConverterUtils.intArrayToString(selectedNumbers)),
                 new FileLine(4, String.valueOf(operandes.getFirst()))
         ));
+
+
+
+        long referenceTime = max(Utils.getLastUpdate(comA), Utils.getLastUpdate(comB));
+
+        while (Objects.equals(Utils.getLine(5, comA), "") || Objects.equals(Utils.getLine(5, comB), "")){
+            Thread.sleep(500);
+        }
+        int charA = Integer.parseInt(Utils.getLine(5, comA));
+        int charB = Integer.parseInt(Utils.getLine(5, comB));
+        //int charA = (int) (Utils.getLine(5, comA)).charAt(0) -48;
+        //int charB = (int) (Utils.getLine(5, comB)).charAt(0) -48;
+        while ((OperationUtils.LOWER_BOUND >= charA
+                || charA >= OperationUtils.UPPER_BOUND)
+                && (OperationUtils.LOWER_BOUND >= charB
+                || charB >= OperationUtils.UPPER_BOUND)){
+            referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA, comB);
+            charA = (int) (Utils.getLine(5, comA)).charAt(0) -48;
+            charB = (int) (Utils.getLine(5, comB)).charAt(0) -48;
+        }
     }
 }

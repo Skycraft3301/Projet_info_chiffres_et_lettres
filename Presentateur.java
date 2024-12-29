@@ -1,7 +1,7 @@
 // Projet informatique
 // des chiffres et des lettres
 
-/*Structure de chaque fichier .txt
+/* Structure des fichiers comJ.txt
 1.	Nom joueur
 2.	Score joueur
 3.	Liste des chiffres sélectionnés
@@ -11,25 +11,24 @@
 7.	Résultat du joueur lettre
 8.	Nombre de voyelles
 9.  resultat fin de partie (victoire ou défaite)
-10. indication joueur voyelle
-
- */
+*/
 
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.awt.*;
 
 public class Presentateur {
 
     public final static String comA = "./comA.txt";
     public final static String comB = "./comB.txt";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
-        Utils.checkFile(comA);
-        Utils.checkFile(comB);
+        Utils.checkFile("all");
 
         long referenceTimeA = Utils.getLastUpdate(comA);
         long referenceTimeB = Utils.getLastUpdate(comB);
@@ -53,7 +52,9 @@ public class Presentateur {
 
 
         for (int i = 1; i <= 5; i++) {
-            ModeChiffres.modeChiffres();
+            ModeChiffres.modeChiffres(joueurA, joueurB);
+
+
             ModeLettres.modeLettres(joueurVoyelles, joueurA, joueurB);
             //TODO implémenter waitForUpdate
             // calculer score
@@ -64,6 +65,7 @@ public class Presentateur {
             if (Objects.equals(joueurVoyelles, joueurA.getNom())) {
                 joueurVoyelles = joueurB.getNom();
                 //TODO ecrire joueur voyelle dans l'un des fichiers
+                ConsoleJoueur.waitForUpdate("all", 10, joueurVoyelles);
             } else {
                 joueurVoyelles = joueurA.getNom();
 
@@ -86,26 +88,31 @@ public class Presentateur {
         String classeJava = "ConsoleJoueur " + joueur; // Nom de la classe principale à exécuter (sans .class)
         String cheminFichierClasse = ".";  // Répertoire contenant le fichier .class
 
+        // Obtenir les dimensions de l'écran
+        Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
+        int largeurConsole = (int) (tailleEcran.getWidth() / 10); // Largeur en caractères
+        int hauteurConsole = (int) (tailleEcran.getHeight() / 20); // Hauteur en lignes
+
         // Détecter le système d'exploitation
         String os = System.getProperty("os.name").toLowerCase();
 
         try {
             if (os.contains("win")) {
                 // Commande pour Windows
-                String commande = "cmd /c start cmd.exe /k java -cp " + cheminFichierClasse + " " + classeJava;
-                commande += " && mode con: cols=100 lines=30"; // Ajuster la taille
+                String commande = String.format("cmd /c start cmd.exe /k java -cp " + cheminFichierClasse + " " + classeJava+" && mode con: cols=%d lines=%d",
+                largeurConsole, hauteurConsole); // Ajuster la taille de la console (ne fonctionne pas)
                 System.out.println("Commande : " + commande);
                 Runtime.getRuntime().exec(commande);
             } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
                 // Commande pour Linux
                 String commande = "xterm -geometry 100x30+200+200 -hold -e java -cp " + cheminFichierClasse + " " + classeJava;
                 System.out.println("Commande : " + commande);
-                Runtime.getRuntime().exec(new String[]{"bash", "-c", commande});
+                Runtime.getRuntime().exec(new String[] { "bash", "-c", commande });
             } else if (os.contains("mac")) {
                 // Commande pour macOS
                 String commande = "osascript -e 'tell application \"Terminal\" to do script \"java -cp " + cheminFichierClasse + " " + classeJava + "\"'";
                 System.out.println("Commande : " + commande);
-                Runtime.getRuntime().exec(new String[]{"bash", "-c", commande});
+                Runtime.getRuntime().exec(new String[] { "bash", "-c", commande });
             } else {
                 System.out.println("Système d'exploitation non pris en charge.");
             }

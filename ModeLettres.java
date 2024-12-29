@@ -1,12 +1,46 @@
 import java.util.Arrays;
+import static java.lang.Math.max;
 
 public class ModeLettres {
+
+    private final static String comA = "./comA.txt";
+    private final static String comB = "./comB.txt";
+
     public static void modeLettres(String joueurVoyelles, Joueur joueurA, Joueur joueurB) {
 
         System.out.println("[ Mode Lettres ]");
-        //TODO à mettre dans la consoleJoueur pour affichage
-        System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?");
-        int nbrVoyelles = Lire.entierCompris(LettresUtils.MIN_VOWEL_NUMBER, LettresUtils.MAX_VOWEL_NUMBER);
+
+        Utils.writeLine("all", 8, joueurVoyelles);
+        long referenceTime = max(Utils.getLastUpdate(comA), Utils.getLastUpdate(comB));
+        
+        int charA = (int) (Utils.getLine(8, comA)).charAt(0) -48;
+        int charB = (int) (Utils.getLine(8, comB)).charAt(0) -48;
+        while ((LettresUtils.MIN_VOWEL_NUMBER >= charA
+                || charA >= LettresUtils.MAX_VOWEL_NUMBER)
+                && (LettresUtils.MIN_VOWEL_NUMBER >= charB
+                || charB >= LettresUtils.MAX_VOWEL_NUMBER)){
+            referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA, comB);
+            charA = (int) (Utils.getLine(8, comA)).charAt(0) -48;
+            charB = (int) (Utils.getLine(8, comB)).charAt(0) -48;
+        }
+
+        /*System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?");
+        int nbrVoyelles = Lire.entierCompris(LettresUtils.MIN_VOWEL_NUMBER, LettresUtils.MAX_VOWEL_NUMBER);*/
+
+        referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA, comB);
+
+
+        // Récupération du nombre de voyelles
+        int nbrVoyelles = -1;
+        if (LettresUtils.MIN_VOWEL_NUMBER <= charA && charA <= LettresUtils.MAX_VOWEL_NUMBER
+                && (LettresUtils.MIN_VOWEL_NUMBER >= charB || charB >= LettresUtils.MAX_VOWEL_NUMBER)) {
+            nbrVoyelles = charA;
+        } else if (LettresUtils.MIN_VOWEL_NUMBER <= charB && charB <= LettresUtils.MAX_VOWEL_NUMBER
+                && (LettresUtils.MIN_VOWEL_NUMBER >= charA || charA >= LettresUtils.MAX_VOWEL_NUMBER)) {
+            nbrVoyelles = charB;
+        } else {
+            System.out.println("erreur sur nbrVoyelles");
+        }
 
         // Création de la liste des voyelles
         String listeDesVoyelles = LettresUtils.createListeVoyelle();
@@ -21,8 +55,7 @@ public class ModeLettres {
         Arrays.sort(listeLettresDeBase);
 
         // ecriture dans le fichier
-        Utils.writeLine(Presentateur.comA, 6, ConverterUtils.charArrayToString(listeLettresDeBase));
-        Utils.writeLine(Presentateur.comB, 6, ConverterUtils.charArrayToString(listeLettresDeBase));
+        //Utils.writeLine(6, ConverterUtils.charArrayToString(listeLettresDeBase));
 
         //TODO à mettre dans Presentateur pour calculer score
         /*//Test réponses
@@ -64,7 +97,7 @@ public class ModeLettres {
 
 
         // Teste si le mot est dans le dictionnaire
-        if (!Utils.isInDictionary(reponseJoueur)) {
+        if (!LettresUtils.isInDictionary(reponseJoueur)) {
             erreur = true;
             System.out.println("Le mot " + reponseJoueur + " n'est pas dans le dictionnaire");
             return erreur;

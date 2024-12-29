@@ -5,8 +5,8 @@ public class SaisieChiffre {
     public static Integer computeUserOperations(int[] selectedNumbers) {
         List<Integer> verification = OperationUtils.convertIntArrayIntoIntegerList(selectedNumbers);
 
-        System.out.println("Donnez vos étapes de calculs. Les calculs dont le résultat est égal à zéro ne sont pas admis. Indiquez la fin avec " + OperationUtils.END);
-        System.out.println("Pour commencer appuyer sur entrée.");
+        //System.out.println("Donnez vos étapes de calculs. Les calculs dont le résultat est égal à zéro ne sont pas admis. Indiquez la fin avec " + OperationUtils.END);
+        //System.out.println("Pour commencer appuyer sur entrée.");
 
         while (!OperationUtils.isEqualsToEndWord(Lire.S())) {
             int operande1 = OperationUtils.getOperande("Donner un premier opérande", verification);
@@ -19,6 +19,7 @@ public class SaisieChiffre {
 
             System.out.println("Le résultat de ce calcul est " + verification.getLast());
             System.out.println("Voici les nouveaux chiffres disponibles : " + Arrays.toString(verification.toArray()));
+            System.out.println("Le résultat à obtenir est " + Utils.getLine(4, Presentateur.comA) + "\n");
             System.out.println("Si vous souhaitez continuer appuyez sur entrée, sinon tapez " + OperationUtils.END);
         }
 

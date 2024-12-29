@@ -4,40 +4,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class Utils {
-    //public static final String COM_TXT = "./com.txt";
-
-    public static boolean isInDictionary(String reponseJoueur) {
-
-        boolean testResult = false;
-
-        File dico = new File("./dictionnaire.txt");
-
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(dico), "UTF-8"));
-            String line = reader.readLine();
-
-            while ((line != null) && (!line.equals(reponseJoueur))) {
-                //System.out.println(line);
-                line = reader.readLine();
-            }
-
-            if (Objects.equals(line, reponseJoueur)) {
-                testResult = true;
-            }
-
-            reader.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        return testResult;
-    }
+    private final static String comA = "./comA.txt";
+    private final static String comB = "./comB.txt";
 
     public static long getLastUpdate(String fileName) {
         File file = new File(fileName);
-        System.out.println("fileName : " + fileName);
+        System.out.print("fileName : " + fileName);
         return file.lastModified();
     }
 
@@ -70,74 +42,84 @@ public class Utils {
     }
 
 
-    public static void checkFile(String comJ) {
-        try {
-            // Vérifier si le fichier existe
-            File com = new File(comJ);
-            if (!com.exists()) {
-                // Créer le fichier
-                if (com.createNewFile()) {
-                    System.out.println("Fichier créé avec succès : " + comJ);
-                } else {
-                    System.out.println("Impossible de créer le fichier.");
+    public static void checkFile(String fileName) {
+        if (Objects.equals(fileName, "all")){
+            checkFile(comA);
+            checkFile(comB);
+        }else {
+            try {
+                // Vérifier si le fichier existe
+                File com = new File(fileName);
+                if (!com.exists()) {
+                    // Créer le fichier
+                    if (com.createNewFile()) {
+                        System.out.println("Fichier créé avec succès : " + fileName);
+                    } else {
+                        System.out.println("Impossible de créer le fichier.");
+                    }
                 }
+            } catch (IOException e) {
+                // Gestion des erreurs
+                System.err.println("Une erreur est survenue : " + e.getMessage());
+                throw new RuntimeException(e);
             }
-        } catch (IOException e) {
-            // Gestion des erreurs
-            System.err.println("Une erreur est survenue : " + e.getMessage());
-            throw new RuntimeException(e);
-        }
 
-        // Ajouter des sauts de ligne
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(comJ));
-            for (int i = 0; i < 10; i++) {
-                writer.newLine();
+            // Ajouter des sauts de ligne
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+                for (int i = 0; i < 10; i++) {
+                    writer.newLine();
+                }
+                writer.close();
+                System.out.println("Le fichier a été modifié avec succès !");
+            } catch (IOException e) {
+                System.err.println("Une erreur est survenue : " + e.getMessage());
             }
-            writer.close();
-            System.out.println("Le fichier a été modifié avec succès !");
-        } catch (IOException e) {
-            System.err.println("Une erreur est survenue : " + e.getMessage());
         }
     }
 
 
     public static void writeLine(String fileName, int ligneASupprimer, String nouveauTexte) {
+        if (Objects.equals(fileName, "all")){
+            writeLine(comA, ligneASupprimer, nouveauTexte);
+            writeLine(comB, ligneASupprimer, nouveauTexte);
+        }else {
+            try {
+                // Lire tout le fichier dans une liste
+                List<String> lignes = new ArrayList<>();
+                BufferedReader reader = new BufferedReader(new FileReader(fileName));
+                String ligne;
+                while ((ligne = reader.readLine()) != null) {
+                    lignes.add(ligne);
+                }
+                reader.close();
+
+                // Modifier la ligne spécifique
+                if (ligneASupprimer <= lignes.size()) {
+                    lignes.set(ligneASupprimer - 1, nouveauTexte); // Les indices des listes commencent à 0
+                } else {
+                    System.out.println("La ligne demandée n'existe pas.");
+                }
+
+                // Réécrire tout le fichier avec les modifications
+                BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+                for (String l : lignes) {
+                    writer.write(l);
+                    writer.newLine(); // Recrée les sauts de ligne
+                }
+                writer.close();
+                System.out.println("Le fichier a été modifié avec succès !");
+            } catch (IOException e) {
+                System.err.println("Une erreur est survenue : " + e.getMessage());
+            }
+        }
+    }
+
+    public static void writeLines(String fileName, List<FileLine> fileLines) {
         try {
             // Lire tout le fichier dans une liste
             List<String> lignes = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
-            String ligne;
-            while ((ligne = reader.readLine()) != null) {
-                lignes.add(ligne);
-            }
-            reader.close();
-
-            // Modifier la ligne spécifique
-            if (ligneASupprimer <= lignes.size()) {
-                lignes.set(ligneASupprimer - 1, nouveauTexte);
-            } else {
-                System.out.println("La ligne demandée n'existe pas.");
-            }
-
-            // Réécrire tout le fichier avec les modifications
-            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-            for (String l : lignes) {
-                writer.write(l);
-                writer.newLine(); // Recrée les sauts de ligne
-            }
-            writer.close();
-            System.out.println("Le fichier a été modifié avec succès !");
-        } catch (IOException e) {
-            System.err.println("Une erreur est survenue : " + e.getMessage());
-        }
-    }
-
-    public static void writeLines(String filename, List<FileLine> fileLines) {
-        try {
-            // Lire tout le fichier dans une liste
-            List<String> lignes = new ArrayList<>();
-            BufferedReader reader = new BufferedReader(new FileReader(filename));
             String ligne;
             while ((ligne = reader.readLine()) != null) {
                 lignes.add(ligne);
@@ -155,7 +137,7 @@ public class Utils {
             }
 
             // Réécrire tout le fichier avec les modifications
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
             for (String l : lignes) {
                 writer.write(l);
                 writer.newLine(); // Recrée les sauts de ligne
