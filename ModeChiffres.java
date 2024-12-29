@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.Random;
 
 public class ModeChiffres {
-    public static void modeChiffres(Joueur joueurA, Joueur joueurB) {
+    public static void modeChiffres() {
 
         int[] selectedNumbers = new int[OperationUtils.LENGTH_SELECTED_NUMBER];
 
@@ -25,7 +25,11 @@ public class ModeChiffres {
             }
         } while (operandes.getFirst() < OperationUtils.LOWER_BOUND || operandes.getFirst() > OperationUtils.UPPER_BOUND);
 
-        Utils.writeLines(List.of(
+        Utils.writeLines(Presentateur.comA, List.of(
+                new FileLine(3, ConverterUtils.intArrayToString(selectedNumbers)),
+                new FileLine(4, String.valueOf(operandes.getFirst()))
+        ));
+        Utils.writeLines(Presentateur.comB, List.of(
                 new FileLine(3, ConverterUtils.intArrayToString(selectedNumbers)),
                 new FileLine(4, String.valueOf(operandes.getFirst()))
         ));

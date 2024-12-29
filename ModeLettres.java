@@ -1,21 +1,12 @@
 import java.util.Arrays;
 
 public class ModeLettres {
-
-    private final static String comA = "./comA.txt";
-    private final static String comB = "./comB.txt";
-
     public static void modeLettres(String joueurVoyelles, Joueur joueurA, Joueur joueurB) {
 
         System.out.println("[ Mode Lettres ]");
-
-        Utils.writeLine("all", 8, "joueurVoyelles");
-
-        /*System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?");
-        int nbrVoyelles = Lire.entierCompris(LettresUtils.MIN_VOWEL_NUMBER, LettresUtils.MAX_VOWEL_NUMBER);*/
-
-        timeReference = ConsoleJoueur.waitForUpdate(timeReference, comA, comB);
-
+        //TODO à mettre dans la consoleJoueur pour affichage
+        System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?");
+        int nbrVoyelles = Lire.entierCompris(LettresUtils.MIN_VOWEL_NUMBER, LettresUtils.MAX_VOWEL_NUMBER);
 
         // Création de la liste des voyelles
         String listeDesVoyelles = LettresUtils.createListeVoyelle();
@@ -30,9 +21,10 @@ public class ModeLettres {
         Arrays.sort(listeLettresDeBase);
 
         // ecriture dans le fichier
-        //Utils.writeLine(6, ConverterUtils.charArrayToString(listeLettresDeBase));
+        Utils.writeLine(Presentateur.comA, 6, ConverterUtils.charArrayToString(listeLettresDeBase));
+        Utils.writeLine(Presentateur.comB, 6, ConverterUtils.charArrayToString(listeLettresDeBase));
 
-        //TODO à mettre ailleurs
+        //TODO à mettre dans Presentateur pour calculer score
         /*//Test réponses
         boolean erreurMotA = false;
         erreurMotA = SaisieLettres.testReponse(listeLettresDeBase, reponseJoueurA);

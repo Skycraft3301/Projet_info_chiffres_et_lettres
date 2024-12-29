@@ -1,7 +1,7 @@
 // Projet informatique
 // des chiffres et des lettres
 
-/* Structure des fichiers comJ.txt
+/*Structure de chaque fichier .txt
 1.	Nom joueur
 2.	Score joueur
 3.	Liste des chiffres sélectionnés
@@ -10,24 +10,26 @@
 6.	Liste des lettres sélectionnées
 7.	Résultat du joueur lettre
 8.	Nombre de voyelles
-*/
+9.  resultat fin de partie (victoire ou défaite)
+10. indication joueur voyelle
+
+ */
 
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
-import java.awt.*;
 
 public class Presentateur {
 
-    private final static String comA = "./comA.txt";
-    private final static String comB = "./comB.txt";
+    public final static String comA = "./comA.txt";
+    public final static String comB = "./comB.txt";
 
     public static void main(String[] args) {
 
-        Utils.checkFile("all");
+        Utils.checkFile(comA);
+        Utils.checkFile(comB);
 
         long referenceTimeA = Utils.getLastUpdate(comA);
         long referenceTimeB = Utils.getLastUpdate(comB);
@@ -40,32 +42,31 @@ public class Presentateur {
         ConsoleJoueur.waitForUpdate(referenceTimeA, comA);
         ConsoleJoueur.waitForUpdate(referenceTimeB, comB);
 
-        //System.out.println("Joueur A, donnez votre nom :");
-        Joueur joueurA = new Joueur("A");
-        joueurA.setNom(Utils.getLine(1, comA));
-        System.out.println("nom joueurA : "+joueurA.getNom());
 
-        //System.out.println("Joueur B, donnez votre nom :");
-        Joueur joueurB = new Joueur("B");
-        joueurB.setNom(Utils.getLine(1, comB));
-        System.out.println("nom joueurB : "+joueurB.getNom());
+        Joueur joueurA = new Joueur(Utils.getLine(1, comA));
+        //System.out.println("nom joueurA : " + joueurA.getNom());
 
-        String joueurVoyelles = "A";
+        Joueur joueurB = new Joueur(Utils.getLine(1, comB));
+        //System.out.println("nom joueurB : " + joueurB.getNom());
+
+        String joueurVoyelles = joueurA.getNom();
 
 
         for (int i = 1; i <= 5; i++) {
-            ModeChiffres.modeChiffres(joueurA, joueurB);
-
-
+            ModeChiffres.modeChiffres();
             ModeLettres.modeLettres(joueurVoyelles, joueurA, joueurB);
-
+            //TODO implémenter waitForUpdate
+            // calculer score
+            // inscrire score après chaque mode
             actualiserCom(joueurA, joueurB);
 
             // Pour changer à chaque tour le joueur qui choisit le nombre de voyelles
             if (Objects.equals(joueurVoyelles, joueurA.getNom())) {
-                joueurVoyelles = "B";
+                joueurVoyelles = joueurB.getNom();
+                //TODO ecrire joueur voyelle dans l'un des fichiers
             } else {
-                joueurVoyelles = "A";
+                joueurVoyelles = joueurA.getNom();
+
             }
         }
 
@@ -82,13 +83,8 @@ public class Presentateur {
     public static void LancerProgramme(char joueur) {
 
         // Programme Java à exécuter
-        String classeJava = "ConsoleJoueur "+joueur; // Nom de la classe principale à exécuter (sans .class)
+        String classeJava = "ConsoleJoueur " + joueur; // Nom de la classe principale à exécuter (sans .class)
         String cheminFichierClasse = ".";  // Répertoire contenant le fichier .class
-
-        // Obtenir les dimensions de l'écran
-        Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
-        int largeurConsole = (int) (tailleEcran.getWidth() / 10); // Largeur en caractères
-        int hauteurConsole = (int) (tailleEcran.getHeight() / 20); // Hauteur en lignes
 
         // Détecter le système d'exploitation
         String os = System.getProperty("os.name").toLowerCase();
@@ -96,20 +92,20 @@ public class Presentateur {
         try {
             if (os.contains("win")) {
                 // Commande pour Windows
-                String commande = String.format("cmd /c start cmd.exe /k java -cp " + cheminFichierClasse + " " + classeJava+" && mode con: cols=%d lines=%d",
-                largeurConsole, hauteurConsole); // Ajuster la taille de la console (ne fonctionne pas)
+                String commande = "cmd /c start cmd.exe /k java -cp " + cheminFichierClasse + " " + classeJava;
+                commande += " && mode con: cols=100 lines=30"; // Ajuster la taille
                 System.out.println("Commande : " + commande);
                 Runtime.getRuntime().exec(commande);
             } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
                 // Commande pour Linux
                 String commande = "xterm -geometry 100x30+200+200 -hold -e java -cp " + cheminFichierClasse + " " + classeJava;
                 System.out.println("Commande : " + commande);
-                Runtime.getRuntime().exec(new String[] { "bash", "-c", commande });
+                Runtime.getRuntime().exec(new String[]{"bash", "-c", commande});
             } else if (os.contains("mac")) {
                 // Commande pour macOS
                 String commande = "osascript -e 'tell application \"Terminal\" to do script \"java -cp " + cheminFichierClasse + " " + classeJava + "\"'";
                 System.out.println("Commande : " + commande);
-                Runtime.getRuntime().exec(new String[] { "bash", "-c", commande });
+                Runtime.getRuntime().exec(new String[]{"bash", "-c", commande});
             } else {
                 System.out.println("Système d'exploitation non pris en charge.");
             }
@@ -122,9 +118,9 @@ public class Presentateur {
     public static void CompilerTout() {
         String[] ListeProgrammes = {"ConsoleJoueur", "Consonne", "ConverterUtils", "FileLine", "Joueur", "LettresUtils", "Lire", "ModeChiffres", "ModeLettres", "OperationUtils", "SaisieChiffre", "SaisieLettres", "ScoreUtils", "Utils", "Voyelle"};
 
-        for(String nomFichier : ListeProgrammes) {
+        for (String nomFichier : ListeProgrammes) {
             // Chemin du fichier source Java à compiler
-            String cheminFichier = nomFichier+".java";
+            String cheminFichier = nomFichier + ".java";
 
             // Obtenir le compilateur Java
             JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();

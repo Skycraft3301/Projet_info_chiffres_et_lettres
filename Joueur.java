@@ -1,14 +1,14 @@
 public class Joueur {
-    private String nom;
+    private final String nom;
     private int score = 0;
 
-    public Joueur(String a) {
-        //this.nom = Lire.S();
-    }
-
-    public void setNom(String nom) {
+    public Joueur(String nom) {
         this.nom = nom;
     }
+
+   /* public void setNom(String nom) {
+        this.nom = nom;
+    }*/
 
     public String getNom() {
         return nom;

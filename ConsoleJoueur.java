@@ -1,19 +1,15 @@
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static java.lang.Math.max;
-
 public class ConsoleJoueur {
     public static void main(String[] args) {
-        String COM_TXT = "./com"+(args.length > 0 ? args[0] : "")+".txt";
-        System.out.println("COM_TXT : "+COM_TXT);
+        String COM_TXT = "./com" + (args.length > 0 ? args[0] : "") + ".txt";
+        //System.out.println("COM_TXT : "+COM_TXT);
 
         System.out.println("Joueur " + (args.length > 0 ? args[0] : "") + ", donnez votre nom :");
-        Joueur joueur = new Joueur((args.length > 0 ? args[0] : ""));
-        joueur.setNom(Lire.S());
+        Joueur joueur = new Joueur(Lire.S());
 
         waitForUpdate(COM_TXT, 1, joueur.getNom());
 
@@ -31,15 +27,8 @@ public class ConsoleJoueur {
 
 
             System.out.println("[ Mode Lettres ]");
-            referenceTime = waitForUpdate(referenceTime, COM_TXT);
-            if (Objects.equals(Utils.getLine(8, COM_TXT), joueur.getNom())) {
-                System.out.println(joueur + ", combien de voyelles voulez vous ?");
-                int nbrVoyelles = Lire.entierCompris(LettresUtils.MIN_VOWEL_NUMBER, LettresUtils.MAX_VOWEL_NUMBER);
-                referenceTime = waitForUpdate(COM_TXT, 8, String.valueOf(nbrVoyelles));
-                referenceTime = waitForUpdate(referenceTime, COM_TXT);
-            }else {
-                referenceTime = waitForUpdate(referenceTime, COM_TXT);
-            }
+            waitForUpdate(referenceTime, COM_TXT);
+            //TODO gestion joueurVoyelle
             System.out.println("Voici les lettres sélectionnées : " + Utils.getLine(6, COM_TXT) + "\n");
             timer(30);
             String resultatLettre = SaisieLettres.getReponseJoueur(joueur);
@@ -87,21 +76,6 @@ public class ConsoleJoueur {
             updateTime = Utils.getLastUpdate(file);
         }
         return updateTime;
-    }
-
-    public static long waitForUpdate(long referenceTime, String fileA, String fileB) {
-        long updateTimeA = Utils.getLastUpdate(fileA);
-        long updateTimeB = Utils.getLastUpdate(fileB);
-        while (referenceTime == updateTimeA && referenceTime == updateTimeB) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException _) {
-
-            }
-            updateTimeA = Utils.getLastUpdate(fileA);
-            updateTimeB = Utils.getLastUpdate(fileB);
-        }
-        return max(updateTimeA, updateTimeB);
     }
 
 }
