@@ -9,7 +9,7 @@ public class Utils {
 
     public static long getLastUpdate(String fileName) {
         File file = new File(fileName);
-        System.out.print("fileName : " + fileName);
+        //System.out.print("fileName : " + fileName);
         return file.lastModified();
     }
 

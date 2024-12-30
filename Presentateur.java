@@ -26,12 +26,15 @@ public class Presentateur {
     public final static String comA = "./comA.txt";
     public final static String comB = "./comB.txt";
 
+    private static long referenceTimeA;
+    private static long referenceTimeB;
+
     public static void main(String[] args) throws InterruptedException {
 
         Utils.checkFile("all");
 
-        long referenceTimeA = Utils.getLastUpdate(comA);
-        long referenceTimeB = Utils.getLastUpdate(comB);
+        referenceTimeA = Utils.getLastUpdate(comA);
+        referenceTimeB = Utils.getLastUpdate(comB);
 
         CompilerTout();
 
@@ -50,21 +53,24 @@ public class Presentateur {
 
         String joueurVoyelles = joueurA.getNom();
 
+        errorDetector.file();
 
         for (int i = 1; i <= 5; i++) {
             ModeChiffres.modeChiffres(joueurA, joueurB);
 
+            afficherScore(joueurA, joueurB);
 
             ModeLettres.modeLettres(joueurVoyelles, joueurA, joueurB);
+
+            afficherScore(joueurA, joueurB);
+
+
             //TODO implémenter waitForUpdate
-            // calculer score
             // inscrire score après chaque mode
-            actualiserCom(joueurA, joueurB);
 
             // Pour changer à chaque tour le joueur qui choisit le nombre de voyelles
             if (Objects.equals(joueurVoyelles, joueurA.getNom())) {
                 joueurVoyelles = joueurB.getNom();
-                //TODO ecrire joueur voyelle dans l'un des fichiers
                 ConsoleJoueur.waitForUpdate("all", 10, joueurVoyelles);
             } else {
                 joueurVoyelles = joueurA.getNom();
@@ -73,6 +79,14 @@ public class Presentateur {
         }
 
 
+    }
+
+    private static void afficherScore(Joueur joueurA, Joueur joueurB) {
+        ConsoleJoueur.waitForUpdate(referenceTimeA, comA);
+        ConsoleJoueur.waitForUpdate(referenceTimeB, comB);
+
+        System.out.println("Score "+joueurA.getNom()+" : "+Utils.getLine(2, comA));
+        System.out.println("Score "+joueurB.getNom()+" : "+Utils.getLine(2, comB));
     }
 
 
@@ -99,7 +113,7 @@ public class Presentateur {
         try {
             if (os.contains("win")) {
                 // Commande pour Windows
-                String commande = String.format("cmd /c start cmd.exe /k java -cp " + cheminFichierClasse + " " + classeJava+" && mode con: cols=%d lines=%d",
+                String commande = String.format("cmd /c start cmd.exe /k title %s", joueur," java -cp " + cheminFichierClasse + " " + classeJava+" && mode con: cols=%d lines=%d",
                 largeurConsole, hauteurConsole); // Ajuster la taille de la console (ne fonctionne pas)
                 System.out.println("Commande : " + commande);
                 Runtime.getRuntime().exec(commande);

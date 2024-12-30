@@ -30,6 +30,7 @@ public class ConsoleJoueur {
             String resultatChiffre = String.valueOf(SaisieChiffre.computeUserOperations(selectedNumbers));
             long referenceTime = waitForUpdate(COM_TXT, 5, resultatChiffre);
             // attendre la modification du score
+            referenceTime = waitForUpdate(referenceTime, COM_TXT);
             System.out.println("Votre score est maintenant de " + Utils.getLine(2, COM_TXT) + " points" + "\n");
 
 

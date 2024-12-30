@@ -60,5 +60,8 @@ public class ModeChiffres {
             charA = (int) (Utils.getLine(5, comA)).charAt(0) -48;
             charB = (int) (Utils.getLine(5, comB)).charAt(0) -48;
         }
+
+        ScoreUtils.scoreChiffre(joueurA, Presentateur.comB, charA, charB, Integer.parseInt(Utils.getLine(4, comA)));
+        ScoreUtils.scoreChiffre(joueurB, Presentateur.comB, charB, charA, Integer.parseInt(Utils.getLine(4, comB)));
     }
 }
