@@ -7,6 +7,10 @@ import java.util.concurrent.TimeUnit;
 import static java.lang.Math.max;
 
 public class ConsoleJoueur {
+
+    private static int timerChiffres = 5;   // 40
+    private static int timerLettres = 5;    // 30
+
     public static void main(String[] args) throws InterruptedException {
         String COM_TXT = "./com"+(args.length > 0 ? args[0] : "")+".txt";
         //System.out.println("COM_TXT : "+COM_TXT);
@@ -19,17 +23,21 @@ public class ConsoleJoueur {
         for (int i = 1; i <= 5; i++) {
             System.out.println("Manche " + i);
             System.out.println("[ Mode Chiffres ]");
+            long referenceTime = Utils.getLastUpdate(COM_TXT);
+            while (Objects.equals(Utils.getLine(3, COM_TXT), "")){
+                referenceTime = waitForUpdate(referenceTime, COM_TXT);
+            }
             int[] selectedNumbers = ConverterUtils.toArray(Utils.getLine(3, COM_TXT));
             System.out.println("Voici les chiffres sélectionnés : " + Arrays.toString(selectedNumbers) + "\n");
             System.out.println("Le résultat à obtenir est " + Utils.getLine(4, COM_TXT) + "\n");
             System.out.println("Donnez vos étapes de calculs. Les calculs dont le résultat est égal à zéro ne sont pas admis. Indiquez la fin avec " + OperationUtils.END);
-            timer(40);
-            Thread.sleep(40000);
+            timer(timerChiffres);
+            Thread.sleep(timerChiffres* 1000L);
             System.out.println();
             System.out.println("Pour commencer appuyer sur entrée.");
             String resultatChiffre = String.valueOf(SaisieChiffre.computeUserOperations(selectedNumbers));
             Utils.writeLine(COM_TXT, 5, resultatChiffre);
-            long referenceTime = Utils.getLastUpdate(COM_TXT);
+            referenceTime = Utils.getLastUpdate(COM_TXT);
             //long referenceTime = waitForUpdate(COM_TXT, 5, resultatChiffre);
             // attendre la modification du score
             referenceTime = waitForUpdate(referenceTime, COM_TXT);
@@ -50,12 +58,12 @@ public class ConsoleJoueur {
                 referenceTime = waitForUpdate(referenceTime, COM_TXT);
             }
             System.out.println("Voici les lettres sélectionnées : " + Utils.getLine(6, COM_TXT) + "\n");
-            timer(30);
-            Thread.sleep(30000);
+            timer(timerLettres);
+            Thread.sleep(timerLettres *1000L);
             String resultatLettre = SaisieLettres.getReponseJoueur(joueur);
             referenceTime = waitForUpdate(COM_TXT, 7, resultatLettre);
             System.out.println("Votre score est maintenant de " + Utils.getLine(2, COM_TXT) + " points" + "\n");
-            waitForUpdate(referenceTime, COM_TXT);
+            //waitForUpdate(referenceTime, COM_TXT);
         }
         System.out.println("Fin du jeu ! Vous avez " + Utils.getLine(9, COM_TXT));
     }

@@ -73,9 +73,18 @@ public class Presentateur {
 
             afficherScore(joueurA, joueurB);
 
-            //TODO clear fichiers
+            clear();
         }
 
+        if (joueurA.getScore() > joueurB.getScore()) {
+            Utils.writeLine(comA, 9, "gagné");
+            Utils.writeLine(comB, 9, "perdu");
+        }
+        if (joueurA.getScore() < joueurB.getScore()) {
+            Utils.writeLine(comB, 9, "gagné");
+            Utils.writeLine(comA, 9, "perdu");
+        }
+        //TODO voir égalités
 
     }
 
@@ -157,6 +166,12 @@ public class Presentateur {
             } else {
                 System.err.println("Échec de la compilation.");
             }
+        }
+    }
+
+    public static void clear() {
+        for (int i=3 ; i<=8 ; i++) {
+            Utils.writeLine("all", i, "");
         }
     }
 }

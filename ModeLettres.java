@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.Objects;
+
 import static java.lang.Math.max;
 
 public class ModeLettres {
@@ -11,21 +13,34 @@ public class ModeLettres {
         System.out.println("[ Mode Lettres ]");
 
         long referenceTime = max(Utils.getLastUpdate(comA), Utils.getLastUpdate(comB));
-        
-        int charA = (int) (Utils.getLine(8, comA)).charAt(0) -48;
-        int charB = (int) (Utils.getLine(8, comB)).charAt(0) -48;
+
+        // Attendre le nombre de voyelles
+        int charA;
+        int charB;
+        if (!Objects.equals(Utils.getLine(8, comA), "")) {
+            charA = (int) (Utils.getLine(8, comA)).charAt(0) -48;
+        }else {
+            charA = -1;
+        }
+        if (!Objects.equals(Utils.getLine(8, comB), "")) {
+            charB = (int) (Utils.getLine(8, comB)).charAt(0) -48;
+        }else {
+            charB = -1;
+        }
+
         while ((LettresUtils.MIN_VOWEL_NUMBER >= charA
                 || charA >= LettresUtils.MAX_VOWEL_NUMBER)
                 && (LettresUtils.MIN_VOWEL_NUMBER >= charB
                 || charB >= LettresUtils.MAX_VOWEL_NUMBER)){
             referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA, comB);
-            charA = (int) (Utils.getLine(8, comA)).charAt(0) -48;
-            charB = (int) (Utils.getLine(8, comB)).charAt(0) -48;
+
+            if (!Objects.equals(Utils.getLine(8, comA), "")) {
+                charA = (int) (Utils.getLine(8, comA)).charAt(0) -48;
+            }
+            if (!Objects.equals(Utils.getLine(8, comB), "")) {
+                charB = (int) (Utils.getLine(8, comB)).charAt(0) -48;
+            }
         }
-
-
-        //referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA, comB);
-
 
         // Récupération du nombre de voyelles
         int nbrVoyelles = -1;
@@ -52,15 +67,28 @@ public class ModeLettres {
         // Tri de la liste par ordre alphabétique
         Arrays.sort(listeLettresDeBase);
 
-        // ecriture dans le fichier
+        // Écriture dans le fichier
         Utils.writeLine("all", 6, ConverterUtils.charArrayToString(listeLettresDeBase));
 
-        //TODO à mettre dans Presentateur pour calculer score
-        /*//Test réponses
+        // Attendre les réponses des joueurs
+        while (Objects.equals(Utils.getLine(7, comA), "")) {
+            referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA);
+        }
+        while (Objects.equals(Utils.getLine(7, comB), "")) {
+            referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comB);
+        }
+        String reponseJoueurA = Utils.getLine(7, comA);
+        String reponseJoueurB = Utils.getLine(7, comB);
+
+        // Test des réponses
         boolean erreurMotA = false;
-        erreurMotA = SaisieLettres.testReponse(listeLettresDeBase, reponseJoueurA);
+        erreurMotA = testReponse(listeLettresDeBase, reponseJoueurA);
         boolean erreurMotB = false;
-        erreurMotB = SaisieLettres.testReponse(listeLettresDeBase, reponseJoueurB);*/
+        erreurMotB = testReponse(listeLettresDeBase, reponseJoueurB);
+
+        // Calcul du score
+        ScoreUtils.scoreLettres(joueurA, comA, reponseJoueurA, reponseJoueurB, erreurMotA, erreurMotB);
+        ScoreUtils.scoreLettres(joueurB, comB, reponseJoueurB, reponseJoueurA, erreurMotB, erreurMotA);
     }
 
     // Fonction testReponse
