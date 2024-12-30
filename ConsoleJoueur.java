@@ -9,7 +9,7 @@ import static java.lang.Math.max;
 public class ConsoleJoueur {
     public static void main(String[] args) throws InterruptedException {
         String COM_TXT = "./com"+(args.length > 0 ? args[0] : "")+".txt";
-        System.out.println("COM_TXT : "+COM_TXT);
+        //System.out.println("COM_TXT : "+COM_TXT);
 
         System.out.println("Joueur " + (args.length > 0 ? args[0] : "") + ", donnez votre nom :");
         Joueur joueur = new Joueur(Lire.S());
@@ -28,22 +28,27 @@ public class ConsoleJoueur {
             System.out.println();
             System.out.println("Pour commencer appuyer sur entrée.");
             String resultatChiffre = String.valueOf(SaisieChiffre.computeUserOperations(selectedNumbers));
-            long referenceTime = waitForUpdate(COM_TXT, 5, resultatChiffre);
+            Utils.writeLine(COM_TXT, 5, resultatChiffre);
+            long referenceTime = Utils.getLastUpdate(COM_TXT);
+            //long referenceTime = waitForUpdate(COM_TXT, 5, resultatChiffre);
             // attendre la modification du score
             referenceTime = waitForUpdate(referenceTime, COM_TXT);
             System.out.println("Votre score est maintenant de " + Utils.getLine(2, COM_TXT) + " points" + "\n");
 
 
             System.out.println("[ Mode Lettres ]");
-            referenceTime = waitForUpdate(referenceTime, COM_TXT);
+            //referenceTime = waitForUpdate(referenceTime, COM_TXT);
             if (Objects.equals(Utils.getLine(8, COM_TXT), joueur.getNom())) {
-                System.out.println(joueur + ", combien de voyelles voulez vous ?");
+                System.out.println(joueur.getNom() + ", combien de voyelles voulez vous ?");
                 int nbrVoyelles = Lire.entierCompris(LettresUtils.MIN_VOWEL_NUMBER, LettresUtils.MAX_VOWEL_NUMBER);
                 referenceTime = waitForUpdate(COM_TXT, 8, String.valueOf(nbrVoyelles));
-            }
-            while (LettresUtils.MIN_VOWEL_NUMBER >= Integer.parseInt(Utils.getLine(8, COM_TXT)) || Integer.parseInt(Utils.getLine(8, COM_TXT)) >= LettresUtils.MAX_VOWEL_NUMBER){
+            } else {
                 referenceTime = waitForUpdate(referenceTime, COM_TXT);
             }
+            /*while (LettresUtils.MIN_VOWEL_NUMBER >= Integer.parseInt(Utils.getLine(8, COM_TXT)) || Integer.parseInt(Utils.getLine(8, COM_TXT)) >= LettresUtils.MAX_VOWEL_NUMBER){
+                referenceTime = waitForUpdate(referenceTime, COM_TXT);
+            }*/
+            referenceTime = waitForUpdate(referenceTime, COM_TXT);
             System.out.println("Voici les lettres sélectionnées : " + Utils.getLine(6, COM_TXT) + "\n");
             timer(30);
             Thread.sleep(30000);

@@ -113,8 +113,8 @@ public class Presentateur {
         try {
             if (os.contains("win")) {
                 // Commande pour Windows
-                String commande = String.format("cmd /c start cmd.exe /k title %s", joueur," java -cp " + cheminFichierClasse + " " + classeJava+" && mode con: cols=%d lines=%d",
-                largeurConsole, hauteurConsole); // Ajuster la taille de la console (ne fonctionne pas)
+                String commande = String.format("cmd /c start \"%s\" cmd.exe /k \"java -cp %s %s\"", "joueur "+joueur, cheminFichierClasse, classeJava);
+                /* Ajuster la taille de la console (ne fonctionne pas)  && mode con: cols=%d lines=%d" ,largeurConsole, hauteurConsole*/
                 System.out.println("Commande : " + commande);
                 Runtime.getRuntime().exec(commande);
             } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
