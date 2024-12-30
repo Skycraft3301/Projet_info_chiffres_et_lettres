@@ -41,14 +41,14 @@ public class ConsoleJoueur {
             if (Objects.equals(Utils.getLine(8, COM_TXT), joueur.getNom())) {
                 System.out.println(joueur.getNom() + ", combien de voyelles voulez vous ?");
                 int nbrVoyelles = Lire.entierCompris(LettresUtils.MIN_VOWEL_NUMBER, LettresUtils.MAX_VOWEL_NUMBER);
-                referenceTime = waitForUpdate(COM_TXT, 8, String.valueOf(nbrVoyelles));
-            } else {
-                referenceTime = waitForUpdate(referenceTime, COM_TXT);
+                Utils.writeLine(COM_TXT, 8, String.valueOf(nbrVoyelles));
             }
             /*while (LettresUtils.MIN_VOWEL_NUMBER >= Integer.parseInt(Utils.getLine(8, COM_TXT)) || Integer.parseInt(Utils.getLine(8, COM_TXT)) >= LettresUtils.MAX_VOWEL_NUMBER){
                 referenceTime = waitForUpdate(referenceTime, COM_TXT);
             }*/
-            referenceTime = waitForUpdate(referenceTime, COM_TXT);
+            while (Objects.equals(Utils.getLine(6, COM_TXT), "")) {
+                referenceTime = waitForUpdate(referenceTime, COM_TXT);
+            }
             System.out.println("Voici les lettres sélectionnées : " + Utils.getLine(6, COM_TXT) + "\n");
             timer(30);
             Thread.sleep(30000);

@@ -51,11 +51,20 @@ public class Presentateur {
         Joueur joueurB = new Joueur(Utils.getLine(1, comB));
         //System.out.println("nom joueurB : " + joueurB.getNom());
 
-        String joueurVoyelles = joueurA.getNom();
+        String joueurVoyelles = joueurB.getNom();
 
         errorDetector.file();
 
         for (int i = 1; i <= 5; i++) {
+            // Pour changer à chaque tour le joueur qui choisit le nombre de voyelles
+            if (Objects.equals(joueurVoyelles, joueurA.getNom())) {
+                joueurVoyelles = joueurB.getNom();
+            } else {
+                joueurVoyelles = joueurA.getNom();
+            }
+            Utils.writeLine("all", 8, joueurVoyelles);
+
+
             ModeChiffres.modeChiffres(joueurA, joueurB);
 
             afficherScore(joueurA, joueurB);
@@ -64,18 +73,7 @@ public class Presentateur {
 
             afficherScore(joueurA, joueurB);
 
-
-            //TODO implémenter waitForUpdate
-            // inscrire score après chaque mode
-
-            // Pour changer à chaque tour le joueur qui choisit le nombre de voyelles
-            if (Objects.equals(joueurVoyelles, joueurA.getNom())) {
-                joueurVoyelles = joueurB.getNom();
-                ConsoleJoueur.waitForUpdate("all", 10, joueurVoyelles);
-            } else {
-                joueurVoyelles = joueurA.getNom();
-
-            }
+            //TODO clear fichiers
         }
 
 

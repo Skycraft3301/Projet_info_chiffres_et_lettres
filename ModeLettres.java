@@ -10,7 +10,6 @@ public class ModeLettres {
 
         System.out.println("[ Mode Lettres ]");
 
-        Utils.writeLine("all", 8, joueurVoyelles);
         long referenceTime = max(Utils.getLastUpdate(comA), Utils.getLastUpdate(comB));
         
         int charA = (int) (Utils.getLine(8, comA)).charAt(0) -48;
@@ -24,10 +23,8 @@ public class ModeLettres {
             charB = (int) (Utils.getLine(8, comB)).charAt(0) -48;
         }
 
-        /*System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?");
-        int nbrVoyelles = Lire.entierCompris(LettresUtils.MIN_VOWEL_NUMBER, LettresUtils.MAX_VOWEL_NUMBER);*/
 
-        referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA, comB);
+        //referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA, comB);
 
 
         // Récupération du nombre de voyelles
@@ -41,6 +38,7 @@ public class ModeLettres {
         } else {
             System.out.println("erreur sur nbrVoyelles");
         }
+        System.out.println("nbrVoyelles : "+nbrVoyelles);
 
         // Création de la liste des voyelles
         String listeDesVoyelles = LettresUtils.createListeVoyelle();
@@ -55,7 +53,7 @@ public class ModeLettres {
         Arrays.sort(listeLettresDeBase);
 
         // ecriture dans le fichier
-        //Utils.writeLine(6, ConverterUtils.charArrayToString(listeLettresDeBase));
+        Utils.writeLine("all", 6, ConverterUtils.charArrayToString(listeLettresDeBase));
 
         //TODO à mettre dans Presentateur pour calculer score
         /*//Test réponses
