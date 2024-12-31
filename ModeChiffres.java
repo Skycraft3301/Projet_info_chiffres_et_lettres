@@ -42,7 +42,7 @@ public class ModeChiffres {
         ));
 
 
-
+        // Attendre les réponses des joueurs
         long referenceTime = max(Utils.getLastUpdate(comA), Utils.getLastUpdate(comB));
 
         while (Objects.equals(Utils.getLine(5, comA), "") || Objects.equals(Utils.getLine(5, comB), "")){
@@ -52,14 +52,14 @@ public class ModeChiffres {
         int charB = Integer.parseInt(Utils.getLine(5, comB));
         //int charA = (int) (Utils.getLine(5, comA)).charAt(0) -48;
         //int charB = (int) (Utils.getLine(5, comB)).charAt(0) -48;
-        while ((OperationUtils.LOWER_BOUND >= charA
+        /*while ((OperationUtils.LOWER_BOUND >= charA
                 || charA >= OperationUtils.UPPER_BOUND)
                 && (OperationUtils.LOWER_BOUND >= charB
                 || charB >= OperationUtils.UPPER_BOUND)){
             referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA, comB);
             charA = (int) (Utils.getLine(5, comA)).charAt(0) -48;
             charB = (int) (Utils.getLine(5, comB)).charAt(0) -48;
-        }
+        }*/
 
         System.out.println("charA : "+charA+" | charB : "+charB);
 
