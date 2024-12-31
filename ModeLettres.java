@@ -72,10 +72,10 @@ public class ModeLettres {
 
         // Attendre les réponses des joueurs
         while (Objects.equals(Utils.getLine(7, comA), "")) {
-            referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA);
+            referenceTime = FileChecker.waitForUpdate(referenceTime, comA);
         }
         while (Objects.equals(Utils.getLine(7, comB), "")) {
-            referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comB);
+            referenceTime = FileChecker.waitForUpdate(referenceTime, comB);
         }
         String reponseJoueurA = Utils.getLine(7, comA);
         String reponseJoueurB = Utils.getLine(7, comB);

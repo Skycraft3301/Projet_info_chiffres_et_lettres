@@ -18,6 +18,12 @@ public class Utils {
         return file.lastModified();
     }
 
+    public static long updateFile(String fileName, List<FileLine> fileLines) {
+        File file = new File(fileName);
+        writeLines(fileName, fileLines);
+        return file.lastModified();
+    }
+
     public static String getLine(int n, String fileName) {
         String result = "";
 

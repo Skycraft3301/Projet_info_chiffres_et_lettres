@@ -40,15 +40,13 @@ public class Presentateur {
         LancerProgramme('A');
         LancerProgramme('B');
 
-        ConsoleJoueur.waitForUpdate(referenceTimeA, comA);
-        ConsoleJoueur.waitForUpdate(referenceTimeB, comB);
+        FileChecker.waitForUpdate(referenceTimeA, comA);
+        FileChecker.waitForUpdate(referenceTimeB, comB);
 
 
         Joueur joueurA = new Joueur(Utils.getLine(1, comA));
-        //System.out.println("nom joueurA : " + joueurA.getNom());
 
         Joueur joueurB = new Joueur(Utils.getLine(1, comB));
-        //System.out.println("nom joueurB : " + joueurB.getNom());
 
         String joueurVoyelles = joueurB.getNom();
 
@@ -88,8 +86,8 @@ public class Presentateur {
     }
 
     private static void afficherScore(Joueur joueurA, Joueur joueurB) {
-        ConsoleJoueur.waitForUpdate(referenceTimeA, comA);
-        ConsoleJoueur.waitForUpdate(referenceTimeB, comB);
+        FileChecker.waitForUpdate(referenceTimeA, comA);
+        FileChecker.waitForUpdate(referenceTimeB, comB);
 
         System.out.println("Score " + joueurA.getNom() + " : " + Utils.getLine(2, comA));
         System.out.println("Score " + joueurB.getNom() + " : " + Utils.getLine(2, comB));
@@ -143,7 +141,7 @@ public class Presentateur {
 
 
     public static void CompilerTout() {
-        String[] ListeProgrammes = {"ConsoleJoueur", "Consonne", "ConverterUtils", "FileLine", "Joueur", "LettresUtils", "Lire", "ModeChiffres", "ModeLettres", "OperationUtils", "SaisieChiffre", "SaisieLettres", "ScoreUtils", "Utils", "Voyelle"};
+        String[] ListeProgrammes = {"FileChecker", "ConsoleJoueur", "Consonne", "ConverterUtils", "FileLine", "Joueur", "LettresUtils", "Lire", "ModeChiffres", "ModeLettres", "OperationUtils", "SaisieChiffre", "SaisieLettres", "ScoreUtils", "Utils", "Voyelle"};
 
         for (String nomFichier : ListeProgrammes) {
             // Chemin du fichier source Java à compiler
