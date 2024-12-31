@@ -1,7 +1,7 @@
 // Projet informatique
 // des chiffres et des lettres
 
-/*Structure de chaque fichier .txt
+/* Structure des fichiers comJ.txt
 1.	Nom joueur
 2.	Score joueur
 3.	Liste des chiffres sélectionnés
@@ -11,13 +11,12 @@
 7.	Résultat du joueur lettre
 8.	Nombre de voyelles
 9.  resultat fin de partie (victoire ou défaite)
-10. indication joueur voyelle
-
- */
+*/
 
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
+import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -26,13 +25,15 @@ public class Presentateur {
     public final static String comA = "./comA.txt";
     public final static String comB = "./comB.txt";
 
-    public static void main(String[] args) {
+    private static long referenceTimeA;
+    private static long referenceTimeB;
 
-        Utils.checkFile(comA);
-        Utils.checkFile(comB);
+    public static void main(String[] args) throws InterruptedException {
 
-        long referenceTimeA = Utils.getLastUpdate(comA);
-        long referenceTimeB = Utils.getLastUpdate(comB);
+        Utils.checkFile("all");
+
+        referenceTimeA = Utils.getLastUpdate(comA);
+        referenceTimeB = Utils.getLastUpdate(comB);
 
         CompilerTout();
 
@@ -49,28 +50,49 @@ public class Presentateur {
         Joueur joueurB = new Joueur(Utils.getLine(1, comB));
         //System.out.println("nom joueurB : " + joueurB.getNom());
 
-        String joueurVoyelles = joueurA.getNom();
+        String joueurVoyelles = joueurB.getNom();
 
+        ErrorDetector.file();
 
         for (int i = 1; i <= 5; i++) {
-            ModeChiffres.modeChiffres();
-            ModeLettres.modeLettres(joueurVoyelles, joueurA, joueurB);
-            //TODO implémenter waitForUpdate
-            // calculer score
-            // inscrire score après chaque mode
-            actualiserCom(joueurA, joueurB);
-
             // Pour changer à chaque tour le joueur qui choisit le nombre de voyelles
             if (Objects.equals(joueurVoyelles, joueurA.getNom())) {
                 joueurVoyelles = joueurB.getNom();
-                //TODO ecrire joueur voyelle dans l'un des fichiers
             } else {
                 joueurVoyelles = joueurA.getNom();
-
             }
+            Utils.writeLine("all", 8, joueurVoyelles);
+
+
+            ModeChiffres.modeChiffres(joueurA, joueurB);
+
+            afficherScore(joueurA, joueurB);
+
+            ModeLettres.modeLettres(joueurVoyelles, joueurA, joueurB);
+
+            afficherScore(joueurA, joueurB);
+
+            clear();
         }
 
+        if (joueurA.getScore() > joueurB.getScore()) {
+            Utils.writeLine(comA, 9, "gagné");
+            Utils.writeLine(comB, 9, "perdu");
+        }
+        if (joueurA.getScore() < joueurB.getScore()) {
+            Utils.writeLine(comB, 9, "gagné");
+            Utils.writeLine(comA, 9, "perdu");
+        }
+        //TODO voir égalités
 
+    }
+
+    private static void afficherScore(Joueur joueurA, Joueur joueurB) {
+        ConsoleJoueur.waitForUpdate(referenceTimeA, comA);
+        ConsoleJoueur.waitForUpdate(referenceTimeB, comB);
+
+        System.out.println("Score " + joueurA.getNom() + " : " + Utils.getLine(2, comA));
+        System.out.println("Score " + joueurB.getNom() + " : " + Utils.getLine(2, comB));
     }
 
 
@@ -86,14 +108,19 @@ public class Presentateur {
         String classeJava = "ConsoleJoueur " + joueur; // Nom de la classe principale à exécuter (sans .class)
         String cheminFichierClasse = ".";  // Répertoire contenant le fichier .class
 
+        // Obtenir les dimensions de l'écran
+        Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
+        int largeurConsole = (int) (tailleEcran.getWidth() / 10); // Largeur en caractères
+        int hauteurConsole = (int) (tailleEcran.getHeight() / 20); // Hauteur en lignes
+
         // Détecter le système d'exploitation
         String os = System.getProperty("os.name").toLowerCase();
 
         try {
             if (os.contains("win")) {
                 // Commande pour Windows
-                String commande = "cmd /c start cmd.exe /k java -cp " + cheminFichierClasse + " " + classeJava;
-                commande += " && mode con: cols=100 lines=30"; // Ajuster la taille
+                String commande = String.format("cmd /c start \"%s\" cmd.exe /k \"java -cp %s %s\"", "joueur " + joueur, cheminFichierClasse, classeJava);
+                /* Ajuster la taille de la console (ne fonctionne pas)  && mode con: cols=%d lines=%d" ,largeurConsole, hauteurConsole*/
                 System.out.println("Commande : " + commande);
                 Runtime.getRuntime().exec(commande);
             } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
@@ -138,6 +165,12 @@ public class Presentateur {
             } else {
                 System.err.println("Échec de la compilation.");
             }
+        }
+    }
+
+    public static void clear() {
+        for (int i = 3; i <= 8; i++) {
+            Utils.writeLine("all", i, "");
         }
     }
 }

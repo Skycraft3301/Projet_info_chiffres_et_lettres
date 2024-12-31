@@ -1,8 +1,9 @@
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class ModeChiffres {
-    public static void modeChiffres() {
+    public static void modeChiffres(Joueur joueurA, Joueur joueurB) throws InterruptedException {
 
         int[] selectedNumbers = new int[OperationUtils.LENGTH_SELECTED_NUMBER];
 
@@ -33,5 +34,29 @@ public class ModeChiffres {
                 new FileLine(3, ConverterUtils.intArrayToString(selectedNumbers)),
                 new FileLine(4, String.valueOf(operandes.getFirst()))
         ));
+
+        // Attendre les réponses des joueurs
+        long referenceTime = Math.max(Utils.getLastUpdate(Presentateur.comA), Utils.getLastUpdate(Presentateur.comB));
+
+        while (Objects.equals(Utils.getLine(5, Presentateur.comA), "") || Objects.equals(Utils.getLine(5, Presentateur.comB), "")) {
+            Thread.sleep(500);
+        }
+        int charA = Integer.parseInt(Utils.getLine(5, Presentateur.comA));
+        int charB = Integer.parseInt(Utils.getLine(5, Presentateur.comB));
+        //int charA = (int) (Utils.getLine(5, comA)).charAt(0) -48;
+        //int charB = (int) (Utils.getLine(5, comB)).charAt(0) -48;
+        /*while ((OperationUtils.LOWER_BOUND >= charA
+                || charA >= OperationUtils.UPPER_BOUND)
+                && (OperationUtils.LOWER_BOUND >= charB
+                || charB >= OperationUtils.UPPER_BOUND)){
+            referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA, comB);
+            charA = (int) (Utils.getLine(5, comA)).charAt(0) -48;
+            charB = (int) (Utils.getLine(5, comB)).charAt(0) -48;
+        }*/
+
+        System.out.println("charA : " + charA + " | charB : " + charB);
+
+        ScoreUtils.scoreChiffre(joueurA, Presentateur.comA, charA, charB, Integer.parseInt(Utils.getLine(4, Presentateur.comA)));
+        ScoreUtils.scoreChiffre(joueurB, Presentateur.comB, charB, charA, Integer.parseInt(Utils.getLine(4, Presentateur.comB)));
     }
 }

@@ -1,12 +1,59 @@
 import java.util.Arrays;
+import java.util.Objects;
+
+import static java.lang.Math.max;
 
 public class ModeLettres {
+
+    private final static String comA = "./comA.txt";
+    private final static String comB = "./comB.txt";
+
     public static void modeLettres(String joueurVoyelles, Joueur joueurA, Joueur joueurB) {
 
         System.out.println("[ Mode Lettres ]");
-        //TODO à mettre dans la consoleJoueur pour affichage
-        System.out.println(joueurVoyelles + ", combien de voyelles voulez vous ?");
-        int nbrVoyelles = Lire.entierCompris(LettresUtils.MIN_VOWEL_NUMBER, LettresUtils.MAX_VOWEL_NUMBER);
+
+        long referenceTime = max(Utils.getLastUpdate(comA), Utils.getLastUpdate(comB));
+
+        // Attendre le nombre de voyelles
+        int charA;
+        int charB;
+        if (!Objects.equals(Utils.getLine(8, comA), "")) {
+            charA = (int) (Utils.getLine(8, comA)).charAt(0) - 48;
+        } else {
+            charA = -1;
+        }
+        if (!Objects.equals(Utils.getLine(8, comB), "")) {
+            charB = (int) (Utils.getLine(8, comB)).charAt(0) - 48;
+        } else {
+            charB = -1;
+        }
+
+        while ((LettresUtils.MIN_VOWEL_NUMBER >= charA
+                || charA >= LettresUtils.MAX_VOWEL_NUMBER)
+                && (LettresUtils.MIN_VOWEL_NUMBER >= charB
+                || charB >= LettresUtils.MAX_VOWEL_NUMBER)) {
+            referenceTime = FileChecker.waitForUpdate(referenceTime, comA, comB);
+
+            if (!Objects.equals(Utils.getLine(8, comA), "")) {
+                charA = (int) (Utils.getLine(8, comA)).charAt(0) - 48;
+            }
+            if (!Objects.equals(Utils.getLine(8, comB), "")) {
+                charB = (int) (Utils.getLine(8, comB)).charAt(0) - 48;
+            }
+        }
+
+        // Récupération du nombre de voyelles
+        int nbrVoyelles = -1;
+        if (LettresUtils.MIN_VOWEL_NUMBER <= charA && charA <= LettresUtils.MAX_VOWEL_NUMBER
+                && (LettresUtils.MIN_VOWEL_NUMBER >= charB || charB >= LettresUtils.MAX_VOWEL_NUMBER)) {
+            nbrVoyelles = charA;
+        } else if (LettresUtils.MIN_VOWEL_NUMBER <= charB && charB <= LettresUtils.MAX_VOWEL_NUMBER
+                && (LettresUtils.MIN_VOWEL_NUMBER >= charA || charA >= LettresUtils.MAX_VOWEL_NUMBER)) {
+            nbrVoyelles = charB;
+        } else {
+            System.out.println("erreur sur nbrVoyelles");
+        }
+        System.out.println("nbrVoyelles : " + nbrVoyelles);
 
         // Création de la liste des voyelles
         String listeDesVoyelles = LettresUtils.createListeVoyelle();
@@ -20,16 +67,28 @@ public class ModeLettres {
         // Tri de la liste par ordre alphabétique
         Arrays.sort(listeLettresDeBase);
 
-        // ecriture dans le fichier
-        Utils.writeLine(Presentateur.comA, 6, ConverterUtils.charArrayToString(listeLettresDeBase));
-        Utils.writeLine(Presentateur.comB, 6, ConverterUtils.charArrayToString(listeLettresDeBase));
+        // Écriture dans le fichier
+        Utils.writeLine("all", 6, ConverterUtils.charArrayToString(listeLettresDeBase));
 
-        //TODO à mettre dans Presentateur pour calculer score
-        /*//Test réponses
+        // Attendre les réponses des joueurs
+        while (Objects.equals(Utils.getLine(7, comA), "")) {
+            referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA);
+        }
+        while (Objects.equals(Utils.getLine(7, comB), "")) {
+            referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comB);
+        }
+        String reponseJoueurA = Utils.getLine(7, comA);
+        String reponseJoueurB = Utils.getLine(7, comB);
+
+        // Test des réponses
         boolean erreurMotA = false;
-        erreurMotA = SaisieLettres.testReponse(listeLettresDeBase, reponseJoueurA);
+        erreurMotA = testReponse(listeLettresDeBase, reponseJoueurA);
         boolean erreurMotB = false;
-        erreurMotB = SaisieLettres.testReponse(listeLettresDeBase, reponseJoueurB);*/
+        erreurMotB = testReponse(listeLettresDeBase, reponseJoueurB);
+
+        // Calcul du score
+        ScoreUtils.scoreLettres(joueurA, comA, reponseJoueurA, reponseJoueurB, erreurMotA, erreurMotB);
+        ScoreUtils.scoreLettres(joueurB, comB, reponseJoueurB, reponseJoueurA, erreurMotB, erreurMotA);
     }
 
     // Fonction testReponse
@@ -64,7 +123,7 @@ public class ModeLettres {
 
 
         // Teste si le mot est dans le dictionnaire
-        if (!Utils.isInDictionary(reponseJoueur)) {
+        if (!LettresUtils.isInDictionary(reponseJoueur)) {
             erreur = true;
             System.out.println("Le mot " + reponseJoueur + " n'est pas dans le dictionnaire");
             return erreur;
