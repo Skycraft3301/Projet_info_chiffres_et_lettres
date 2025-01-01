@@ -4,6 +4,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.Math.max;
+
 public class ConsoleJoueur {
 
     private static int timerChiffres = 5;   // 40
@@ -27,12 +29,13 @@ public class ConsoleJoueur {
             System.out.println("Le résultat à obtenir est " + Utils.getLine(4, COM_TXT) + "\n");
             timer(timerChiffres);
             Thread.sleep(timerChiffres * 1000L);
-            System.out.println("Donnez vos étapes de calculs. Les calculs dont le résultat est égal à zéro ne sont pas admis. Indiquez la fin avec " + OperationUtils.END);
             System.out.println();
+            System.out.println("Donnez vos étapes de calculs. Les calculs dont le résultat est égal à zéro ne sont pas admis. Indiquez la fin avec " + OperationUtils.END);
             System.out.println("Pour commencer appuyer sur entrée.");
             String resultatChiffre = String.valueOf(SaisieChiffre.computeUserOperations(selectedNumbers));
             referenceTime = FileChecker.waitForUpdate(COM_TXT, 5, resultatChiffre);
             // attendre la modification du score
+            referenceTime = FileChecker.waitForUpdate(referenceTime, COM_TXT);
             System.out.println("Votre score est maintenant de " + Utils.getLine(2, COM_TXT) + " points" + "\n");
 
 
@@ -50,12 +53,13 @@ public class ConsoleJoueur {
             String resultatLettre = SaisieLettres.getReponseJoueur(joueur);
             referenceTime = FileChecker.waitForUpdate(COM_TXT, 7, resultatLettre);
             System.out.println("Votre score est maintenant de " + Utils.getLine(2, COM_TXT) + " points" + "\n");
-            FileChecker.waitForUpdate(referenceTime, COM_TXT);
+            //FileChecker.waitForUpdate(referenceTime, COM_TXT);
         }
         System.out.println("Fin du jeu ! Vous avez " + Utils.getLine(9, COM_TXT));
     }
 
     public static void timer(int duree) {
+        // Visuel de la barre d'avancement
         String barreIndication = "[";
         for (int i = 0; i < ((duree / 2) - 2); i++) {
             barreIndication = barreIndication.concat(" ");

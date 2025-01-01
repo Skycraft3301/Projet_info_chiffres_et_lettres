@@ -41,8 +41,8 @@ public class Presentateur {
         LancerProgramme('A');
         LancerProgramme('B');
 
-        ConsoleJoueur.waitForUpdate(referenceTimeA, comA);
-        ConsoleJoueur.waitForUpdate(referenceTimeB, comB);
+        FileChecker.waitForUpdate(referenceTimeA, comA);
+        FileChecker.waitForUpdate(referenceTimeB, comB);
 
 
         Joueur joueurA = new Joueur(Utils.getLine(1, comA));
@@ -89,8 +89,8 @@ public class Presentateur {
     }
 
     private static void afficherScore(Joueur joueurA, Joueur joueurB) {
-        ConsoleJoueur.waitForUpdate(referenceTimeA, comA);
-        ConsoleJoueur.waitForUpdate(referenceTimeB, comB);
+        FileChecker.waitForUpdate(referenceTimeA, comA);
+        FileChecker.waitForUpdate(referenceTimeB, comB);
 
         System.out.println("Score "+joueurA.getNom()+" : "+Utils.getLine(2, comA));
         System.out.println("Score "+joueurB.getNom()+" : "+Utils.getLine(2, comB));
@@ -123,7 +123,10 @@ public class Presentateur {
                 String commande = String.format("cmd /c start \"%s\" cmd.exe /k \"java -cp %s %s\"", "joueur "+joueur, cheminFichierClasse, classeJava);
                 /* Ajuster la taille de la console (ne fonctionne pas)  && mode con: cols=%d lines=%d" ,largeurConsole, hauteurConsole*/
                 System.out.println("Commande : " + commande);
-                Runtime.getRuntime().exec(commande);
+
+                //TODO utiliser la 2ème temporairement
+                //Runtime.getRuntime().exec(new String[] { commande });
+                Runtime.getRuntime().exec(commande);    // instruction temporaire, ne marche pas sur l'invite de commande
             } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
                 // Commande pour Linux
                 String commande = "xterm -geometry 100x30+200+200 -hold -e java -cp " + cheminFichierClasse + " " + classeJava;

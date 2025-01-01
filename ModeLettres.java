@@ -32,7 +32,7 @@ public class ModeLettres {
                 || charA >= LettresUtils.MAX_VOWEL_NUMBER)
                 && (LettresUtils.MIN_VOWEL_NUMBER >= charB
                 || charB >= LettresUtils.MAX_VOWEL_NUMBER)){
-            referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA, comB);
+            referenceTime = FileChecker.waitForUpdate(referenceTime, comA, comB);
 
             if (!Objects.equals(Utils.getLine(8, comA), "")) {
                 charA = (int) (Utils.getLine(8, comA)).charAt(0) -48;
@@ -72,10 +72,10 @@ public class ModeLettres {
 
         // Attendre les réponses des joueurs
         while (Objects.equals(Utils.getLine(7, comA), "")) {
-            referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA);
+            referenceTime = FileChecker.waitForUpdate(referenceTime, comA);
         }
         while (Objects.equals(Utils.getLine(7, comB), "")) {
-            referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comB);
+            referenceTime = FileChecker.waitForUpdate(referenceTime, comB);
         }
         String reponseJoueurA = Utils.getLine(7, comA);
         String reponseJoueurB = Utils.getLine(7, comB);
