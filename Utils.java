@@ -19,6 +19,12 @@ public class Utils {
         return file.lastModified();
     }
 
+    public static long updateFile(String fileName, List<FileLine> fileLines) {
+        File file = new File(fileName);
+        writeLines(fileName, fileLines);
+        return file.lastModified();
+    }
+
     public static String getLine(int n, String fileName) {
         String result = "";
 
@@ -43,10 +49,10 @@ public class Utils {
 
 
     public static void checkFile(String fileName) {
-        if (Objects.equals(fileName, "all")){
+        if (Objects.equals(fileName, "all")) {
             checkFile(comA);
             checkFile(comB);
-        }else {
+        } else {
             try {
                 // Vérifier si le fichier existe
                 File com = new File(fileName);
@@ -80,10 +86,10 @@ public class Utils {
 
 
     public static void writeLine(String fileName, int ligneASupprimer, String nouveauTexte) {
-        if (Objects.equals(fileName, "all")){
+        if (Objects.equals(fileName, "all")) {
             writeLine(comA, ligneASupprimer, nouveauTexte);
             writeLine(comB, ligneASupprimer, nouveauTexte);
-        }else {
+        } else {
             try {
                 // Lire tout le fichier dans une liste
                 List<String> lignes = new ArrayList<>();

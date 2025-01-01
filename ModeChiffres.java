@@ -1,14 +1,11 @@
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
-
-import static java.lang.Math.max;
 
 public class ModeChiffres {
 
     private final static String comA = "./comA.txt";
     private final static String comB = "./comB.txt";
-    
+
     public static void modeChiffres(Joueur joueurA, Joueur joueurB) throws InterruptedException {
 
         int[] selectedNumbers = new int[OperationUtils.LENGTH_SELECTED_NUMBER];
@@ -32,24 +29,21 @@ public class ModeChiffres {
             }
         } while (operandes.getFirst() < OperationUtils.LOWER_BOUND || operandes.getFirst() > OperationUtils.UPPER_BOUND);
 
-        Utils.writeLines(Presentateur.comA, List.of(
+        long referenceTimeA = Utils.updateFile(Presentateur.comA, List.of(
                 new FileLine(3, ConverterUtils.intArrayToString(selectedNumbers)),
                 new FileLine(4, String.valueOf(operandes.getFirst()))
         ));
-        Utils.writeLines(Presentateur.comB, List.of(
+        long referenceTimeB = Utils.updateFile(Presentateur.comB, List.of(
                 new FileLine(3, ConverterUtils.intArrayToString(selectedNumbers)),
                 new FileLine(4, String.valueOf(operandes.getFirst()))
         ));
 
 
         // Attendre les réponses des joueurs
-        long referenceTime = max(Utils.getLastUpdate(comA), Utils.getLastUpdate(comB));
-
-        while (Objects.equals(Utils.getLine(5, comA), "") || Objects.equals(Utils.getLine(5, comB), "")){
-            Thread.sleep(500);
-        }
+        FileChecker.checkForUpdate(Presentateur.comA, Presentateur.comB, 5, referenceTimeA, referenceTimeB);
         int charA = Integer.parseInt(Utils.getLine(5, comA));
         int charB = Integer.parseInt(Utils.getLine(5, comB));
+        
         //int charA = (int) (Utils.getLine(5, comA)).charAt(0) -48;
         //int charB = (int) (Utils.getLine(5, comB)).charAt(0) -48;
         /*while ((OperationUtils.LOWER_BOUND >= charA
@@ -61,7 +55,7 @@ public class ModeChiffres {
             charB = (int) (Utils.getLine(5, comB)).charAt(0) -48;
         }*/
 
-        System.out.println("charA : "+charA+" | charB : "+charB);
+        System.out.println("charA : " + charA + " | charB : " + charB);
 
         ScoreUtils.scoreChiffre(joueurA, Presentateur.comA, charA, charB, Integer.parseInt(Utils.getLine(4, comA)));
         ScoreUtils.scoreChiffre(joueurB, Presentateur.comB, charB, charA, Integer.parseInt(Utils.getLine(4, comB)));
