@@ -27,7 +27,7 @@ public class OperationUtils {
         return operande;
     }
 
-    public static void compute(List<Integer> numberList, int operande1, char operateur, int operande2) {
+    public static String compute(List<Integer> numberList, int operande1, char operateur, int operande2) {
         int result = switch (operateur) {
             case '+' -> operande1 + operande2;
             case '/' -> operande1 / operande2;
@@ -39,7 +39,9 @@ public class OperationUtils {
             numberList.add(operande2);
         } else {
             numberList.add(result);
+            return String.valueOf(operande1) + String.valueOf(operateur) + String.valueOf(operande2) + "=" + result + " ,";
         }
+        return "";
     }
 
     public static boolean isEqualsToEndWord(String saisie) {

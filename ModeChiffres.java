@@ -20,24 +20,28 @@ public class ModeChiffres {
         // calculs aléatoires pour obtenir un resultat
         // donc on sait qu'il est atteignable sans verification necessaire
         List<Integer> operandes;
+        StringBuilder operations;
         do {
             operandes = OperationUtils.convertIntArrayIntoIntegerList(selectedNumbers);
+            operations = new StringBuilder();
             while (operandes.size() > 1) {
                 Integer operande1 = OperationUtils.pickNumber(operandes);
                 Integer operande2 = OperationUtils.pickNumber(operandes);
 
                 char operateur = OperationUtils.OPERATEURS.get(random.nextInt(OperationUtils.OPERATEURS.size()));
-                OperationUtils.compute(operandes, operande1, operateur, operande2);
+                operations.append(OperationUtils.compute(operandes, operande1, operateur, operande2));
             }
         } while (operandes.getFirst() < OperationUtils.LOWER_BOUND || operandes.getFirst() > OperationUtils.UPPER_BOUND);
 
         long referenceTimeA = Utils.updateFile(Presentateur.comA, List.of(
                 new FileLine(3, ConverterUtils.intArrayToString(selectedNumbers)),
-                new FileLine(4, String.valueOf(operandes.getFirst()))
+                new FileLine(4, String.valueOf(operandes.getFirst())),
+                new FileLine(12, operations.toString())
         ));
         long referenceTimeB = Utils.updateFile(Presentateur.comB, List.of(
                 new FileLine(3, ConverterUtils.intArrayToString(selectedNumbers)),
-                new FileLine(4, String.valueOf(operandes.getFirst()))
+                new FileLine(4, String.valueOf(operandes.getFirst())),
+                new FileLine(12, operations.toString())
         ));
 
 
@@ -45,7 +49,7 @@ public class ModeChiffres {
         FileChecker.checkForUpdate(Presentateur.comA, Presentateur.comB, 5, referenceTimeA, referenceTimeB);
         int charA = Integer.parseInt(Utils.getLine(5, comA));
         int charB = Integer.parseInt(Utils.getLine(5, comB));
-        
+
         System.out.println("charA : " + charA + " | charB : " + charB);
 
         ScoreUtils.scoreChiffre(joueurA, Presentateur.comA, charA, charB, Integer.parseInt(Utils.getLine(4, comA)));

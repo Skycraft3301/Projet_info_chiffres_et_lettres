@@ -36,14 +36,14 @@ public class ConsoleJoueur {
             System.out.println("Pour commencer appuyer sur entrée.");
             String resultatChiffre = String.valueOf(SaisieChiffre.computeUserOperations(selectedNumbers));
             FileChecker.waitForUpdate(COM_TXT, 5, resultatChiffre);
-            while (Objects.equals(Utils.getLine(10, COM_TXT), "")){
+            while (Objects.equals(Utils.getLine(10, COM_TXT), "")) {
                 System.out.println("l 36");
                 FileChecker.waitForUpdate(referenceTime, COM_TXT);
             }
+            System.out.println("Une solution était :");
+            System.out.println(Utils.getLine(12, COM_TXT));
             afficherScore(COM_TXT);
             //TODO afficher la solution optimale
-
-
 
 
             System.out.println("\n" + "[ Mode Lettres ]" + "\n");
@@ -64,7 +64,7 @@ public class ConsoleJoueur {
 
             String resultatLettre = SaisieLettres.getReponseJoueur(joueur);
             referenceTime = FileChecker.waitForUpdate(COM_TXT, 7, resultatLettre);
-            while (Objects.equals(Utils.getLine(10, COM_TXT), "")){
+            while (Objects.equals(Utils.getLine(10, COM_TXT), "")) {
                 System.out.println("l 58");
                 FileChecker.waitForUpdate(referenceTime, COM_TXT);
             }
