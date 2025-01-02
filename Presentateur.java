@@ -11,6 +11,8 @@
 7.	Résultat du joueur lettre
 8.	Nombre de voyelles
 9.  resultat fin de partie (victoire ou défaite)
+10. modification du score
+11. message d'erreur mode lettres
 */
 
 
@@ -20,6 +22,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Presentateur {
 
@@ -53,12 +56,12 @@ public class Presentateur {
 
         for (int i = 1; i <= 5; i++) {
             // Pour changer à chaque tour le joueur qui choisit le nombre de voyelles
-            if (joueurB.isVoyellePlayer()) {
-                joueurB.setVoyellePlayer(false);
-                joueurA.setVoyellePlayer(true);
-            } else {
-                joueurB.setVoyellePlayer(true);
+            if (joueurA.isVoyellePlayer()) {
                 joueurA.setVoyellePlayer(false);
+                joueurB.setVoyellePlayer(true);
+            } else {
+                joueurA.setVoyellePlayer(true);
+                joueurB.setVoyellePlayer(false);
             }
             List<FileLine> fileLineList = viderLeFichier();
             fileLineList.add(new FileLine(8, isPlayerVoyelle(joueurA)));
@@ -178,7 +181,7 @@ public class Presentateur {
 
     public static List<FileLine> viderLeFichier() {
         List<FileLine> fileLineList = new ArrayList<>();
-        for (int i = 3; i < 8; i++) {
+        for (int i = 3; i <= 9; i++) {
             fileLineList.add(new FileLine(i, ""));
         }
         return fileLineList;

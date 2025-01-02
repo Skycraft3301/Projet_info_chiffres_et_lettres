@@ -55,8 +55,8 @@ public class ModeLettres {
         String reponseJoueurB = Utils.getLine(7, comB);
 
         // Test des réponses
-        boolean erreurMotA = testReponse(listeLettresDeBase, reponseJoueurA);
-        boolean erreurMotB = testReponse(listeLettresDeBase, reponseJoueurB);
+        boolean erreurMotA = testReponse(listeLettresDeBase, reponseJoueurA, comA);
+        boolean erreurMotB = testReponse(listeLettresDeBase, reponseJoueurB, comB);
 
         // Calcul du score
         ScoreUtils.scoreLettres(joueurA, comA, reponseJoueurA, reponseJoueurB, erreurMotA, erreurMotB);
@@ -64,13 +64,14 @@ public class ModeLettres {
     }
 
     // Fonction testReponse
-    public static boolean testReponse(char[] listeLettresDeBase, String reponseJoueur) {
+    public static boolean testReponse(char[] listeLettresDeBase, String reponseJoueur, String file) {
         boolean erreur = false;
 
         // Test de longueur
         if (reponseJoueur.length() > 10) {
             erreur = true;
             System.out.println("Votre réponse est trop longue");
+            Utils.writeLine(file, 11, "Votre réponse est trop longue");
             return erreur;
         }
 
@@ -90,6 +91,7 @@ public class ModeLettres {
         if (i == LettresUtils.MAX_LETTER_NUMBER) {
             erreur = true;
             System.out.println("Les lettres utilisées ne sont pas toutes dans la liste");
+            Utils.writeLine(file, 11, "Les lettres utilisées ne sont pas toutes dans la liste");
             return erreur;
         }
 
@@ -98,9 +100,11 @@ public class ModeLettres {
         if (!LettresUtils.isInDictionary(reponseJoueur)) {
             erreur = true;
             System.out.println("Le mot " + reponseJoueur + " n'est pas dans le dictionnaire");
+            Utils.writeLine(file, 11, "Le mot " + reponseJoueur + " n'est pas dans le dictionnaire");
             return erreur;
         } else {
-            System.out.println("Le mot est dans le dico");
+            System.out.println("Le mot est dans le dictionnaire");
+            //Utils.writeLine(file, 11, "Le mot est dans le dictionnaire");
         }
 
         return erreur;

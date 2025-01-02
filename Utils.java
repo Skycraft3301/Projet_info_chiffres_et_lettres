@@ -72,7 +72,7 @@ public class Utils {
             // Ajouter des sauts de ligne
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 12; i++) {
                     writer.newLine();
                 }
                 writer.close();
@@ -113,7 +113,7 @@ public class Utils {
                     writer.newLine(); // Recrée les sauts de ligne
                 }
                 writer.close();
-                System.out.println("Le fichier a été modifié avec succès !");
+                //System.out.println("Le fichier a été modifié avec succès !");
             } catch (IOException e) {
                 System.err.println("Une erreur est survenue : " + e.getMessage());
             }
@@ -152,7 +152,7 @@ public class Utils {
                     writer.newLine(); // Recrée les sauts de ligne
                 }
                 writer.close();
-                System.out.println("Le fichier a été modifié avec succès !");
+                //System.out.println("Le fichier a été modifié avec succès !");
             } catch (IOException e) {
                 System.err.println("Une erreur est survenue : " + e.getMessage());
             }
