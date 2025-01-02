@@ -1,5 +1,6 @@
-import java.io.*;
-import java.util.Objects;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Random;
 
 public class LettresUtils {
@@ -46,28 +47,26 @@ public class LettresUtils {
 
         boolean testResult = false;
 
-        File dico = new File("./dictionnaire.txt");
+        String dico = "./dictionnaire.txt";
 
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(dico), "UTF-8"));
-            String line = reader.readLine();
+        try (BufferedReader br = new BufferedReader(new FileReader(dico))) {
+            String ligne;
 
-            while ((line != null) && (!line.equals(reponseJoueur))) {
-                //System.out.println(line);
-                line = reader.readLine();
+            while ((ligne = br.readLine()) != null) {
+                if (ligne.equalsIgnoreCase(reponseJoueur)) {
+                    testResult = true;
+                    break;
+                }
             }
-
-            if (Objects.equals(line, reponseJoueur)) {
-                testResult = true;
-            }
-
-            reader.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
+        if (testResult) {
+            System.out.println("Le mot \"" + reponseJoueur + "\" a été trouvé dans le fichier.");
+        } else {
+            System.out.println("Le mot \"" + reponseJoueur + "\" n'a pas été trouvé dans le fichier.");
+        }
         return testResult;
     }
 }
