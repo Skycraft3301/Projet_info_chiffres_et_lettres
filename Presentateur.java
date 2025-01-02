@@ -181,7 +181,7 @@ public class Presentateur {
 
     public static List<FileLine> viderLeFichier() {
         List<FileLine> fileLineList = new ArrayList<>();
-        for (int i = 3; i <= 9; i++) {
+        for (int i = 3; i <= Utils.NBLIGNES; i++) {
             fileLineList.add(new FileLine(i, ""));
         }
         return fileLineList;

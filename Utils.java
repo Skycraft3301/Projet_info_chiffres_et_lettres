@@ -6,6 +6,7 @@ import java.util.Objects;
 public class Utils {
     private final static String comA = "./comA.txt";
     private final static String comB = "./comB.txt";
+    public final static int NBLIGNES = 15;
 
     public static long getLastUpdate(String fileName) {
         File file = new File(fileName);
@@ -72,7 +73,7 @@ public class Utils {
             // Ajouter des sauts de ligne
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-                for (int i = 0; i < 12; i++) {
+                for (int i = 0; i < NBLIGNES; i++) {
                     writer.newLine();
                 }
                 writer.close();
