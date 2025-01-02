@@ -9,7 +9,6 @@ public class Utils {
 
     public static long getLastUpdate(String fileName) {
         File file = new File(fileName);
-        //System.out.print("fileName : " + fileName);
         return file.lastModified();
     }
 
@@ -122,37 +121,41 @@ public class Utils {
     }
 
     public static void writeLines(String fileName, List<FileLine> fileLines) {
-        try {
-            // Lire tout le fichier dans une liste
-            List<String> lignes = new ArrayList<>();
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
-            String ligne;
-            while ((ligne = reader.readLine()) != null) {
-                lignes.add(ligne);
-            }
-            reader.close();
-
-            for (FileLine fileLine : fileLines) {
-
-                // Modifier la ligne spécifique
-                if (fileLine.numeroLigne() <= lignes.size()) {
-                    lignes.set(fileLine.numeroLigne() - 1, fileLine.valeur());
-                } else {
-                    System.out.println("La ligne demandée n'existe pas.");
+        if (Objects.equals(fileName, "all")) {
+            writeLines(comA, fileLines);
+            writeLines(comB, fileLines);
+        } else {
+            try {
+                // Lire tout le fichier dans une liste
+                List<String> lignes = new ArrayList<>();
+                BufferedReader reader = new BufferedReader(new FileReader(fileName));
+                String ligne;
+                while ((ligne = reader.readLine()) != null) {
+                    lignes.add(ligne);
                 }
-            }
+                reader.close();
 
-            // Réécrire tout le fichier avec les modifications
-            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-            for (String l : lignes) {
-                writer.write(l);
-                writer.newLine(); // Recrée les sauts de ligne
+                for (FileLine fileLine : fileLines) {
+
+                    // Modifier la ligne spécifique
+                    if (fileLine.numeroLigne() <= lignes.size()) {
+                        lignes.set(fileLine.numeroLigne() - 1, fileLine.valeur());
+                    } else {
+                        System.out.println("La ligne demandée n'existe pas.");
+                    }
+                }
+
+                // Réécrire tout le fichier avec les modifications
+                BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+                for (String l : lignes) {
+                    writer.write(l);
+                    writer.newLine(); // Recrée les sauts de ligne
+                }
+                writer.close();
+                System.out.println("Le fichier a été modifié avec succès !");
+            } catch (IOException e) {
+                System.err.println("Une erreur est survenue : " + e.getMessage());
             }
-            writer.close();
-            System.out.println("Le fichier a été modifié avec succès !");
-        } catch (IOException e) {
-            System.err.println("Une erreur est survenue : " + e.getMessage());
         }
     }
 }
-

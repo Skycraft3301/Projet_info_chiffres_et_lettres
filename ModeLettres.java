@@ -1,59 +1,36 @@
 import java.util.Arrays;
-import java.util.Objects;
-
-import static java.lang.Math.max;
 
 public class ModeLettres {
 
     private final static String comA = "./comA.txt";
     private final static String comB = "./comB.txt";
 
-    public static void modeLettres(String joueurVoyelles, Joueur joueurA, Joueur joueurB) {
+    public static void modeLettres(Joueur joueurA, Joueur joueurB) {
 
         System.out.println("[ Mode Lettres ]");
 
-        long referenceTime = max(Utils.getLastUpdate(comA), Utils.getLastUpdate(comB));
+        String voyelleFile = joueurB.isVoyellePlayer() ? comB : comA;
+
+        long referenceTime = Utils.getLastUpdate(voyelleFile);
 
         // Attendre le nombre de voyelles
-        int charA;
-        int charB;
-        if (!Objects.equals(Utils.getLine(8, comA), "")) {
-            charA = (int) (Utils.getLine(8, comA)).charAt(0) -48;
-        }else {
-            charA = -1;
-        }
-        if (!Objects.equals(Utils.getLine(8, comB), "")) {
-            charB = (int) (Utils.getLine(8, comB)).charAt(0) -48;
-        }else {
-            charB = -1;
-        }
-
-        while ((LettresUtils.MIN_VOWEL_NUMBER >= charA
-                || charA >= LettresUtils.MAX_VOWEL_NUMBER)
-                && (LettresUtils.MIN_VOWEL_NUMBER >= charB
-                || charB >= LettresUtils.MAX_VOWEL_NUMBER)){
-            referenceTime = FileChecker.waitForUpdate(referenceTime, comA, comB);
-
-            if (!Objects.equals(Utils.getLine(8, comA), "")) {
-                charA = (int) (Utils.getLine(8, comA)).charAt(0) -48;
-            }
-            if (!Objects.equals(Utils.getLine(8, comB), "")) {
-                charB = (int) (Utils.getLine(8, comB)).charAt(0) -48;
-            }
-        }
-
-        // Récupération du nombre de voyelles
         int nbrVoyelles = -1;
-        if (LettresUtils.MIN_VOWEL_NUMBER <= charA && charA <= LettresUtils.MAX_VOWEL_NUMBER
-                && (LettresUtils.MIN_VOWEL_NUMBER >= charB || charB >= LettresUtils.MAX_VOWEL_NUMBER)) {
-            nbrVoyelles = charA;
-        } else if (LettresUtils.MIN_VOWEL_NUMBER <= charB && charB <= LettresUtils.MAX_VOWEL_NUMBER
-                && (LettresUtils.MIN_VOWEL_NUMBER >= charA || charA >= LettresUtils.MAX_VOWEL_NUMBER)) {
-            nbrVoyelles = charB;
-        } else {
-            System.out.println("erreur sur nbrVoyelles");
+
+        while ((LettresUtils.MIN_VOWEL_NUMBER > nbrVoyelles
+                || nbrVoyelles > LettresUtils.MAX_VOWEL_NUMBER)
+        ) {
+            referenceTime = FileChecker.waitForUpdate(referenceTime, voyelleFile);
+
+            String voyelleNumber = Utils.getLine(8, voyelleFile);
+            if (!voyelleNumber.isEmpty()) {
+                try {
+                    nbrVoyelles = Integer.parseInt(voyelleNumber);
+                } catch (NumberFormatException e) {
+                    nbrVoyelles = -1;
+                }
+            }
         }
-        System.out.println("nbrVoyelles : "+nbrVoyelles);
+        System.out.println("nbrVoyelles : " + nbrVoyelles);
 
         // Création de la liste des voyelles
         String listeDesVoyelles = LettresUtils.createListeVoyelle();
@@ -71,20 +48,15 @@ public class ModeLettres {
         Utils.writeLine("all", 6, ConverterUtils.charArrayToString(listeLettresDeBase));
 
         // Attendre les réponses des joueurs
-        while (Objects.equals(Utils.getLine(7, comA), "")) {
-            referenceTime = FileChecker.waitForUpdate(referenceTime, comA);
-        }
-        while (Objects.equals(Utils.getLine(7, comB), "")) {
-            referenceTime = FileChecker.waitForUpdate(referenceTime, comB);
-        }
+        FileChecker.checkForUpdate(comA, 7, referenceTime);
+        FileChecker.checkForUpdate(comB, 7, referenceTime);
+
         String reponseJoueurA = Utils.getLine(7, comA);
         String reponseJoueurB = Utils.getLine(7, comB);
 
         // Test des réponses
-        boolean erreurMotA = false;
-        erreurMotA = testReponse(listeLettresDeBase, reponseJoueurA);
-        boolean erreurMotB = false;
-        erreurMotB = testReponse(listeLettresDeBase, reponseJoueurB);
+        boolean erreurMotA = testReponse(listeLettresDeBase, reponseJoueurA);
+        boolean erreurMotB = testReponse(listeLettresDeBase, reponseJoueurB);
 
         // Calcul du score
         ScoreUtils.scoreLettres(joueurA, comA, reponseJoueurA, reponseJoueurB, erreurMotA, erreurMotB);

@@ -16,10 +16,10 @@
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
-import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
 import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Presentateur {
 
@@ -46,54 +46,58 @@ public class Presentateur {
 
 
         Joueur joueurA = new Joueur(Utils.getLine(1, comA));
-        //System.out.println("nom joueurA : " + joueurA.getNom());
 
         Joueur joueurB = new Joueur(Utils.getLine(1, comB));
-        //System.out.println("nom joueurB : " + joueurB.getNom());
-
-        String joueurVoyelles = joueurB.getNom();
 
         errorDetector.file();
 
         for (int i = 1; i <= 5; i++) {
             // Pour changer à chaque tour le joueur qui choisit le nombre de voyelles
-            if (Objects.equals(joueurVoyelles, joueurA.getNom())) {
-                joueurVoyelles = joueurB.getNom();
+            if (joueurB.isVoyellePlayer()) {
+                joueurB.setVoyellePlayer(false);
+                joueurA.setVoyellePlayer(true);
             } else {
-                joueurVoyelles = joueurA.getNom();
+                joueurB.setVoyellePlayer(true);
+                joueurA.setVoyellePlayer(false);
             }
-            Utils.writeLine("all", 8, joueurVoyelles);
+            List<FileLine> fileLineList = viderLeFichier();
+            fileLineList.add(new FileLine(8, isPlayerVoyelle(joueurA)));
+            Utils.writeLines(comA, fileLineList);
 
+            fileLineList.removeLast();
+            fileLineList.add(new FileLine(8, isPlayerVoyelle(joueurB)));
+            Utils.writeLines(comB, fileLineList);
 
             ModeChiffres.modeChiffres(joueurA, joueurB);
 
             afficherScore(joueurA, joueurB);
 
-            ModeLettres.modeLettres(joueurVoyelles, joueurA, joueurB);
+            ModeLettres.modeLettres(joueurA, joueurB);
 
             afficherScore(joueurA, joueurB);
 
-            clear();
         }
 
         if (joueurA.getScore() > joueurB.getScore()) {
-            Utils.writeLine(comA, 9, "gagné");
-            Utils.writeLine(comB, 9, "perdu");
+            Utils.writeLine(comA, 9, "gagnant");
+            Utils.writeLine(comB, 9, "perdant");
+        } else if (joueurA.getScore() < joueurB.getScore()) {
+            Utils.writeLine(comB, 9, "gagnant");
+            Utils.writeLine(comA, 9, "perdant");
+        } else if (joueurA.getScore() == joueurB.getScore()) {
+            Utils.writeLine(comB, 9, "à égalité");
+            Utils.writeLine(comA, 9, "à égalité");
         }
-        if (joueurA.getScore() < joueurB.getScore()) {
-            Utils.writeLine(comB, 9, "gagné");
-            Utils.writeLine(comA, 9, "perdu");
-        }
-        //TODO voir égalités
 
     }
 
-    private static void afficherScore(Joueur joueurA, Joueur joueurB) {
-        FileChecker.waitForUpdate(referenceTimeA, comA);
-        FileChecker.waitForUpdate(referenceTimeB, comB);
+    private static String isPlayerVoyelle(Joueur joueur) {
+        return joueur.isVoyellePlayer() ? "true" : "false";
+    }
 
-        System.out.println("Score "+joueurA.getNom()+" : "+Utils.getLine(2, comA));
-        System.out.println("Score "+joueurB.getNom()+" : "+Utils.getLine(2, comB));
+    private static void afficherScore(Joueur joueurA, Joueur joueurB) {
+        System.out.println("Score " + joueurA.getNom() + " : " + Utils.getLine(2, comA));
+        System.out.println("Score " + joueurB.getNom() + " : " + Utils.getLine(2, comB));
     }
 
 
@@ -120,7 +124,7 @@ public class Presentateur {
         try {
             if (os.contains("win")) {
                 // Commande pour Windows
-                String commande = String.format("cmd /c start \"%s\" cmd.exe /k \"java -cp %s %s\"", "joueur "+joueur, cheminFichierClasse, classeJava);
+                String commande = String.format("cmd /c start \"%s\" cmd.exe /k \"java -cp %s %s\"", "joueur " + joueur, cheminFichierClasse, classeJava);
                 /* Ajuster la taille de la console (ne fonctionne pas)  && mode con: cols=%d lines=%d" ,largeurConsole, hauteurConsole*/
                 System.out.println("Commande : " + commande);
 
@@ -131,12 +135,12 @@ public class Presentateur {
                 // Commande pour Linux
                 String commande = "xterm -geometry 100x30+200+200 -hold -e java -cp " + cheminFichierClasse + " " + classeJava;
                 System.out.println("Commande : " + commande);
-                Runtime.getRuntime().exec(new String[] { "bash", "-c", commande });
+                Runtime.getRuntime().exec(new String[]{"bash", "-c", commande});
             } else if (os.contains("mac")) {
                 // Commande pour macOS
                 String commande = "osascript -e 'tell application \"Terminal\" to do script \"java -cp " + cheminFichierClasse + " " + classeJava + "\"'";
                 System.out.println("Commande : " + commande);
-                Runtime.getRuntime().exec(new String[] { "bash", "-c", commande });
+                Runtime.getRuntime().exec(new String[]{"bash", "-c", commande});
             } else {
                 System.out.println("Système d'exploitation non pris en charge.");
             }
@@ -147,7 +151,7 @@ public class Presentateur {
 
 
     public static void CompilerTout() {
-        String[] ListeProgrammes = {"ConsoleJoueur", "Consonne", "ConverterUtils", "FileLine", "Joueur", "LettresUtils", "Lire", "ModeChiffres", "ModeLettres", "OperationUtils", "SaisieChiffre", "SaisieLettres", "ScoreUtils", "Utils", "Voyelle"};
+        String[] ListeProgrammes = {"FileChecker", "ConsoleJoueur", "Consonne", "ConverterUtils", "FileLine", "Joueur", "LettresUtils", "Lire", "ModeChiffres", "ModeLettres", "OperationUtils", "SaisieChiffre", "SaisieLettres", "ScoreUtils", "Utils", "Voyelle"};
 
         for (String nomFichier : ListeProgrammes) {
             // Chemin du fichier source Java à compiler
@@ -172,9 +176,11 @@ public class Presentateur {
         }
     }
 
-    public static void clear() {
-        for (int i=3 ; i<=8 ; i++) {
-            Utils.writeLine("all", i, "");
+    public static List<FileLine> viderLeFichier() {
+        List<FileLine> fileLineList = new ArrayList<>();
+        for (int i = 3; i < 8; i++) {
+            fileLineList.add(new FileLine(i, ""));
         }
+        return fileLineList;
     }
 }

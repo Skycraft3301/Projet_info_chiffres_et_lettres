@@ -19,7 +19,6 @@ public class ScoreUtils {
             points = 7;
         }
         joueur.setScore(joueur.getScore() + points);
-        //ConsoleJoueur.waitForUpdate(file, 2, String.valueOf(joueur.getScore()));
         Utils.writeLine(file, 2, String.valueOf(joueur.getScore()));
         System.out.println(joueur.getNom() + " a gagné " + points + " points sur ce tour");
         System.out.println("Son score est maintenant de " + joueur.getScore() + "\n");

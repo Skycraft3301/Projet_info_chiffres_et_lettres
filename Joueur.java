@@ -1,12 +1,9 @@
 public class Joueur {
-    private String nom;
+    private final String nom;
     private int score = 0;
+    private boolean isVoyellePlayer = false;
 
     public Joueur(String nom) {
-        this.nom = nom;
-    }
-
-    public void setNom(String nom) {
         this.nom = nom;
     }
 
@@ -22,4 +19,11 @@ public class Joueur {
         this.score = score;
     }
 
+    public boolean isVoyellePlayer() {
+        return isVoyellePlayer;
+    }
+
+    public void setVoyellePlayer(boolean voyellePlayer) {
+        isVoyellePlayer = voyellePlayer;
+    }
 }

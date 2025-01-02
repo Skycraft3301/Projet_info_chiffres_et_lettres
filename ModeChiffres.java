@@ -44,17 +44,6 @@ public class ModeChiffres {
         int charA = Integer.parseInt(Utils.getLine(5, comA));
         int charB = Integer.parseInt(Utils.getLine(5, comB));
         
-        //int charA = (int) (Utils.getLine(5, comA)).charAt(0) -48;
-        //int charB = (int) (Utils.getLine(5, comB)).charAt(0) -48;
-        /*while ((OperationUtils.LOWER_BOUND >= charA
-                || charA >= OperationUtils.UPPER_BOUND)
-                && (OperationUtils.LOWER_BOUND >= charB
-                || charB >= OperationUtils.UPPER_BOUND)){
-            referenceTime = ConsoleJoueur.waitForUpdate(referenceTime, comA, comB);
-            charA = (int) (Utils.getLine(5, comA)).charAt(0) -48;
-            charB = (int) (Utils.getLine(5, comB)).charAt(0) -48;
-        }*/
-
         System.out.println("charA : " + charA + " | charB : " + charB);
 
         ScoreUtils.scoreChiffre(joueurA, Presentateur.comA, charA, charB, Integer.parseInt(Utils.getLine(4, comA)));
