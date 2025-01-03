@@ -40,17 +40,17 @@ public class ScoreUtils {
                     new FileLine(2, Score + " "),
                     new FileLine(10, Points + " ")
             ));
-        } else if ((joueur.getScore() > 10) && (points < 10)) {
+        } else if ((joueur.getScore() >= 10) && (points < 10)) {
             Utils.writeLines(file, List.of(
                     new FileLine(2, Score),
                     new FileLine(10, Points + " ")
             ));
-        } else if ((joueur.getScore() < 10) && (points > 10)) {
+        } else if ((joueur.getScore() < 10) && (points >= 10)) {
             Utils.writeLines(file, List.of(
                     new FileLine(2, Score + " "),
                     new FileLine(10, Points)
             ));
-        } else if ((joueur.getScore() > 10) && (points > 10)) {
+        } else if ((joueur.getScore() >= 10) && (points >= 10)) {
             Utils.writeLines(file, List.of(
                     new FileLine(2, Score),
                     new FileLine(10, Points)
@@ -67,19 +67,19 @@ public class ScoreUtils {
                     new FileLine(11, messageErreur.getMessage()),
                     new FileLine(10, Points + " ")
             ));
-        } else if ((joueur.getScore() > 10) && (points < 10)) {
+        } else if ((joueur.getScore() >= 10) && (points < 10)) {
             Utils.writeLines(file, List.of(
                     new FileLine(2, Score),
                     new FileLine(11, messageErreur.getMessage()),
                     new FileLine(10, Points + " ")
             ));
-        } else if ((joueur.getScore() < 10) && (points > 10)) {
+        } else if ((joueur.getScore() < 10) && (points >= 10)) {
             Utils.writeLines(file, List.of(
                     new FileLine(2, Score + " "),
                     new FileLine(11, messageErreur.getMessage()),
                     new FileLine(10, Points)
             ));
-        } else if ((joueur.getScore() > 10) && (points > 10)) {
+        } else if ((joueur.getScore() >= 10) && (points >= 10)) {
             Utils.writeLines(file, List.of(
                     new FileLine(2, Score),
                     new FileLine(11, messageErreur.getMessage()),
