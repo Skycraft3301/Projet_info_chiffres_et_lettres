@@ -1,15 +1,15 @@
-jb
-0 
-6,50,10,6,5,5
+ktdkd
+3 
+3,25,8,8,1,25
 230
+0
+A,E,G,I,N,O,O,S,S,T
+age
+false
+perdant
+3 
+Le mot age est valide
 
-
-
-true
-
-
-
-6/6=1 ,5+50=55 ,55-10=45 ,45+1=46 ,5*46=230 ,
-indecis
+agissent
 
 

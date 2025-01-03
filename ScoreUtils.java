@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Objects;
 
 public class ScoreUtils {
@@ -25,7 +26,7 @@ public class ScoreUtils {
         System.out.println("Son score est maintenant de " + joueur.getScore() + "\n");
     }
 
-    public static void scoreLettres(Joueur joueur, String file, String reponseJoueur, String reponseAdversaire, boolean erreurMotJoueur, boolean erreurMotAdversaire) {
+    public static void scoreLettres(Joueur joueur, String file, String reponseJoueur, String reponseAdversaire, boolean erreurMotJoueur, boolean erreurMotAdversaire, MessageErreur messageErreur) {
         int points = 0;
         if ((reponseJoueur.length() >= reponseAdversaire.length()) && (!erreurMotJoueur) && (!erreurMotAdversaire)) {
             points = reponseJoueur.length();
@@ -35,23 +36,64 @@ public class ScoreUtils {
         }
         joueur.setScore(joueur.getScore() + points);
 
-        writeLineScore(joueur, file, points);
+        writeLineScore(joueur, file, points, messageErreur);
         System.out.println(joueur.getNom() + " a gagné " + points + " points sur ce tour");
         System.out.println("Son score est maintenant de " + joueur.getScore() + "\n");
     }
 
-    public static void writeLineScore(Joueur joueur, String file, int points){
+    public static void writeLineScore(Joueur joueur, String file, int points) {
         String Score = String.valueOf(joueur.getScore());
         String Points = String.valueOf(points);
-        if (joueur.getScore() < 10){
-            Utils.writeLine(file, 2, Score + " ");
-        }else {
-            Utils.writeLine(file, 2, Score);
+        if ((joueur.getScore() < 10) && (points < 10)) {
+            Utils.writeLines(file, List.of(
+                    new FileLine(2, Score + " "),
+                    new FileLine(10, Points + " ")
+            ));
+        } else if ((joueur.getScore() > 10) && (points < 10)) {
+            Utils.writeLines(file, List.of(
+                    new FileLine(2, Score),
+                    new FileLine(10, Points + " ")
+            ));
+        } else if ((joueur.getScore() < 10) && (points > 10)) {
+            Utils.writeLines(file, List.of(
+                    new FileLine(2, Score + " "),
+                    new FileLine(10, Points)
+            ));
+        } else if ((joueur.getScore() > 10) && (points > 10)) {
+            Utils.writeLines(file, List.of(
+                    new FileLine(2, Score),
+                    new FileLine(10, Points)
+            ));
         }
-        if (points < 10){
-            Utils.writeLine(file, 10, Points + " ");
-        }else {
-            Utils.writeLine(file, 10, Points);
+    }
+
+    public static void writeLineScore(Joueur joueur, String file, int points, MessageErreur messageErreur) {
+        String Score = String.valueOf(joueur.getScore());
+        String Points = String.valueOf(points);
+        if ((joueur.getScore() < 10) && (points < 10)) {
+            Utils.writeLines(file, List.of(
+                    new FileLine(2, Score + " "),
+                    new FileLine(11, messageErreur.getMessage()),
+                    new FileLine(10, Points + " ")
+            ));
+        } else if ((joueur.getScore() > 10) && (points < 10)) {
+            Utils.writeLines(file, List.of(
+                    new FileLine(2, Score),
+                    new FileLine(11, messageErreur.getMessage()),
+                    new FileLine(10, Points + " ")
+            ));
+        } else if ((joueur.getScore() < 10) && (points > 10)) {
+            Utils.writeLines(file, List.of(
+                    new FileLine(2, Score + " "),
+                    new FileLine(11, messageErreur.getMessage()),
+                    new FileLine(10, Points)
+            ));
+        } else if ((joueur.getScore() > 10) && (points > 10)) {
+            Utils.writeLines(file, List.of(
+                    new FileLine(2, Score),
+                    new FileLine(11, messageErreur.getMessage()),
+                    new FileLine(10, Points)
+            ));
         }
     }
 }

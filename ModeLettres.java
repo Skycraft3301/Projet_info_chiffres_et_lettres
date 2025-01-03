@@ -1,11 +1,12 @@
 import java.util.Arrays;
+import java.util.List;
 
 public class ModeLettres {
 
     private final static String comA = "./comA.txt";
     private final static String comB = "./comB.txt";
 
-    public static void modeLettres(Joueur joueurA, Joueur joueurB) {
+    public static void modeLettres(Joueur joueurA, Joueur joueurB) throws InterruptedException {
 
         System.out.println("[ Mode Lettres ]");
 
@@ -45,37 +46,50 @@ public class ModeLettres {
         Arrays.sort(listeLettresDeBase);
 
         // Écriture dans le fichier
-        Utils.writeLine("all", 6, ConverterUtils.charArrayToString(listeLettresDeBase));
+        long referenceTimeA = Utils.updateFile(comA, List.of(
+                new FileLine(6, ConverterUtils.charArrayToString(listeLettresDeBase)),
+                new FileLine(13, LettresUtils.solutionOptimale(listeLettresDeBase))
+        ));
 
+        long referenceTimeB = Utils.updateFile(comB, List.of(
+                new FileLine(6, ConverterUtils.charArrayToString(listeLettresDeBase)),
+                new FileLine(13, LettresUtils.solutionOptimale(listeLettresDeBase))
+        ));
+
+        //Utils.writeLine("all", 6, ConverterUtils.charArrayToString(listeLettresDeBase));
         // Écrire la solution optimale dans le fichier
-        Utils.writeLine("all", 13, LettresUtils.solutionOptimale(listeLettresDeBase));
+        //Utils.writeLine("all", 13, LettresUtils.solutionOptimale(listeLettresDeBase));
 
         // Attendre les réponses des joueurs
-        FileChecker.checkForUpdate(comA, 7, referenceTime);
-        FileChecker.checkForUpdate(comB, 7, referenceTime);
+        FileChecker.checkForUpdate(comA, comB, 7, referenceTimeA, referenceTimeB);
+        Thread.sleep(500);
+        //FileChecker.checkForUpdate(comA, 7, referenceTime);
+        //FileChecker.checkForUpdate(comB, 7, referenceTime);
 
         String reponseJoueurA = Utils.getLine(7, comA);
         String reponseJoueurB = Utils.getLine(7, comB);
 
         // Test des réponses
-        boolean erreurMotA = testReponse(listeLettresDeBase, reponseJoueurA, comA);
-        boolean erreurMotB = testReponse(listeLettresDeBase, reponseJoueurB, comB);
+        MessageErreur messageErreurA = testReponse(listeLettresDeBase, reponseJoueurA, comA);
+        MessageErreur messageErreurB = testReponse(listeLettresDeBase, reponseJoueurB, comB);
+        boolean erreurMotA = messageErreurA.getErreur();
+        boolean erreurMotB = messageErreurB.getErreur();
 
         // Calcul du score
-        ScoreUtils.scoreLettres(joueurA, comA, reponseJoueurA, reponseJoueurB, erreurMotA, erreurMotB);
-        ScoreUtils.scoreLettres(joueurB, comB, reponseJoueurB, reponseJoueurA, erreurMotB, erreurMotA);
+        ScoreUtils.scoreLettres(joueurA, comA, reponseJoueurA, reponseJoueurB, erreurMotA, erreurMotB, messageErreurA);
+        ScoreUtils.scoreLettres(joueurB, comB, reponseJoueurB, reponseJoueurA, erreurMotB, erreurMotA, messageErreurB);
     }
 
     // Fonction testReponse
-    public static boolean testReponse(char[] listeLettresDeBase, String reponseJoueur, String file) {
-        boolean erreur = false;
+    public static MessageErreur testReponse(char[] listeLettresDeBase, String reponseJoueur, String file) {
+        //boolean erreur = false;
 
         // Test de longueur
         if (reponseJoueur.length() > 10) {
-            erreur = true;
+            //erreur = true;
             System.out.println("Votre réponse est trop longue");
-            Utils.writeLine(file, 11, "Votre réponse est trop longue");
-            return erreur;
+            //Utils.writeLine(file, 11, "Votre réponse est trop longue");
+            return new MessageErreur("Votre réponse est trop longue", true);
         }
 
 
@@ -92,10 +106,10 @@ public class ModeLettres {
         }
 
         if (i == LettresUtils.MAX_LETTER_NUMBER) {
-            erreur = true;
+            //erreur = true;
             System.out.println("Les lettres utilisées ne sont pas toutes dans la liste");
-            Utils.writeLine(file, 11, "Les lettres utilisées ne sont pas toutes dans la liste");
-            return erreur;
+            //Utils.writeLine(file, 11, "Les lettres utilisées ne sont pas toutes dans la liste");
+            return new MessageErreur("Les lettres utilisées ne sont pas toutes dans la liste", true);
         }*/
 
         // Teste si les lettres utilisées sont toutes dans la liste
@@ -104,7 +118,7 @@ public class ModeLettres {
         Arrays.sort(tabReponseJoueur);
 
         int c = 0;
-        for (int i=0 ; i<10 ; i++) {
+        for (int i = 0; i < 10; i++) {
             if (String.valueOf(listeLettresDeBase[i]).equalsIgnoreCase(String.valueOf(tabReponseJoueur[c]))) {
                 c++;
                 if (c == reponseJoueur.length()) {
@@ -113,25 +127,25 @@ public class ModeLettres {
             }
         }
         if (c != reponseJoueur.length()) {
-            erreur = true;
+            //erreur = true;
             System.out.println("Les lettres utilisées ne sont pas toutes dans la liste");
-            Utils.writeLine(file, 11, "Les lettres utilisées ne sont pas toutes dans la liste");
-            return erreur;
+            //Utils.writeLine(file, 11, "Les lettres utilisées ne sont pas toutes dans la liste");
+            return new MessageErreur("Les lettres utilisées ne sont pas toutes dans la liste", true);
         }
 
 
         // Teste si le mot est dans le dictionnaire
         if (!LettresUtils.isInDictionary(reponseJoueur)) {
-            erreur = true;
+            //erreur = true;
             System.out.println("Le mot " + reponseJoueur + " n'est pas dans le dictionnaire");
-            Utils.writeLine(file, 11, "Le mot " + reponseJoueur + " n'est pas dans le dictionnaire");
-            return erreur;
+            //Utils.writeLine(file, 11, "Le mot " + reponseJoueur + " n'est pas dans le dictionnaire");
+            return new MessageErreur("Le mot " + reponseJoueur + " n'est pas dans le dictionnaire", true);
         } else {
             System.out.println("Le mot est dans le dictionnaire");
             //Utils.writeLine(file, 11, "Le mot est dans le dictionnaire");
-            Utils.writeLine(file, 11, " "); // pour éviter de ne rien écrire
+            // Utils.writeLine(file, 11, " "); // pour éviter de ne rien écrire
         }
 
-        return erreur;
+        return new MessageErreur("Le mot " + reponseJoueur + " est valide", false);
     }
 }

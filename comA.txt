@@ -1,15 +1,15 @@
-ja
-7 
-6,50,10,6,5,5
+kydy
+17
+3,25,8,8,1,25
 230
+0
+A,E,G,I,N,O,O,S,S,T
+gin
+5
+gagnant
+0 
+Le mot gin n'est pas dans le dictionnaire
 
-
-
-false
-
-
-
-6/6=1 ,5+50=55 ,55-10=45 ,45+1=46 ,5*46=230 ,
-indecis
+agissent
 
 

@@ -73,13 +73,14 @@ public class Presentateur {
 
             ModeChiffres.modeChiffres(joueurA, joueurB);
 
-            afficherScore(joueurA, joueurB);
+            Thread.sleep(500);
+            //afficherScore(joueurA, joueurB);
 
             ModeLettres.modeLettres(joueurA, joueurB);
 
-            //Thread.sleep(5000);
+            Thread.sleep(500);
 
-            afficherScore(joueurA, joueurB);
+            //afficherScore(joueurA, joueurB);
 
         }
 

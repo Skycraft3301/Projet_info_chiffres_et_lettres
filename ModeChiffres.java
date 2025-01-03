@@ -31,12 +31,12 @@ public class ModeChiffres {
             }
         } while (operandes.getFirst() < OperationUtils.LOWER_BOUND || operandes.getFirst() > OperationUtils.UPPER_BOUND);
 
-        long referenceTimeA = Utils.updateFile(Presentateur.comA, List.of(
+        long referenceTimeA = Utils.updateFile(comA, List.of(
                 new FileLine(3, ConverterUtils.intArrayToString(selectedNumbers)),
                 new FileLine(4, String.valueOf(operandes.getFirst())),
                 new FileLine(12, operations.toString())
         ));
-        long referenceTimeB = Utils.updateFile(Presentateur.comB, List.of(
+        long referenceTimeB = Utils.updateFile(comB, List.of(
                 new FileLine(3, ConverterUtils.intArrayToString(selectedNumbers)),
                 new FileLine(4, String.valueOf(operandes.getFirst())),
                 new FileLine(12, operations.toString())
@@ -44,14 +44,16 @@ public class ModeChiffres {
 
 
         // Attendre les réponses des joueurs
-        FileChecker.checkForUpdate(Presentateur.comA, 5, referenceTimeA);
+        FileChecker.checkForUpdate(comA, comB, 5, referenceTimeA, referenceTimeB);
+        Thread.sleep(500);
+        //FileChecker.checkForUpdate(Presentateur.comA, 5, referenceTimeA);
         int charA = Integer.parseInt(Utils.getLine(5, comA));
-        FileChecker.checkForUpdate(Presentateur.comB, 5, referenceTimeB);
+        //FileChecker.checkForUpdate(Presentateur.comB, 5, referenceTimeB);
         int charB = Integer.parseInt(Utils.getLine(5, comB));
 
         System.out.println("charA : " + charA + " | charB : " + charB);
 
-        ScoreUtils.scoreChiffre(joueurA, Presentateur.comA, charA, charB, Integer.parseInt(Utils.getLine(4, comA)));
-        ScoreUtils.scoreChiffre(joueurB, Presentateur.comB, charB, charA, Integer.parseInt(Utils.getLine(4, comB)));
+        ScoreUtils.scoreChiffre(joueurA, comA, charA, charB, Integer.parseInt(Utils.getLine(4, comA)));
+        ScoreUtils.scoreChiffre(joueurB, comB, charB, charA, Integer.parseInt(Utils.getLine(4, comB)));
     }
 }

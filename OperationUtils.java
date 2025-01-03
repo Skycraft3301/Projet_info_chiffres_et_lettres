@@ -39,7 +39,7 @@ public class OperationUtils {
             numberList.add(operande2);
         } else {
             numberList.add(result);
-            return String.valueOf(operande1) + String.valueOf(operateur) + String.valueOf(operande2) + "=" + result + " ,";
+            return String.valueOf(operande1) + String.valueOf(operateur) + String.valueOf(operande2) + "=" + result + ", ";
         }
         return "";
     }
