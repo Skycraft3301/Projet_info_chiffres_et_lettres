@@ -7,8 +7,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ConsoleJoueur {
 
-    private static final int timerChiffres = 4;   // 40
-    private static final int timerLettres = 3;    // 30
+    private static final int timerChiffres = 40;   // 40
+    private static final int timerLettres = 30;    // 30
 
     public static void main(String[] args) throws InterruptedException {
         String COM_TXT = "./com" + (args.length > 0 ? args[0] : "") + ".txt";
