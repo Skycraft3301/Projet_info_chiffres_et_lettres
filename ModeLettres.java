@@ -66,7 +66,7 @@ public class ModeLettres {
         ScoreUtils.scoreLettres(joueurB, comB, reponseJoueurB, reponseJoueurA, erreurMotB, erreurMotA);
     }
 
-    // Fonction testReponse
+
     public static boolean testReponse(char[] listeLettresDeBase, String reponseJoueur, String file) {
         boolean erreur = false;
 
@@ -78,25 +78,6 @@ public class ModeLettres {
             return erreur;
         }
 
-
-        // Teste si les lettres utilisées sont toutes dans la liste
-        /*char[] tabReponseJoueur = reponseJoueur.toCharArray();
-
-        Arrays.sort(tabReponseJoueur);
-
-        int i = 0;
-        for (char c : tabReponseJoueur) {
-            while ((i < LettresUtils.MAX_LETTER_NUMBER) && (!String.valueOf(listeLettresDeBase[i]).equalsIgnoreCase(String.valueOf(c)))) {
-                i++;
-            }
-        }
-
-        if (i == LettresUtils.MAX_LETTER_NUMBER) {
-            erreur = true;
-            System.out.println("Les lettres utilisées ne sont pas toutes dans la liste");
-            Utils.writeLine(file, 11, "Les lettres utilisées ne sont pas toutes dans la liste");
-            return erreur;
-        }*/
 
         // Teste si les lettres utilisées sont toutes dans la liste
         char[] tabReponseJoueur = reponseJoueur.toCharArray();
