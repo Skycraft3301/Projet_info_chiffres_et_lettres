@@ -105,6 +105,7 @@ public class ModeLettres {
         } else {
             System.out.println("Le mot est dans le dictionnaire");
             //Utils.writeLine(file, 11, "Le mot est dans le dictionnaire");
+            Utils.writeLine(file, 11, " "); // pour éviter de ne rien écrire
         }
 
         return erreur;

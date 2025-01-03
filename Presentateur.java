@@ -77,6 +77,8 @@ public class Presentateur {
 
             ModeLettres.modeLettres(joueurA, joueurB);
 
+            //Thread.sleep(5000);
+
             afficherScore(joueurA, joueurB);
 
         }
@@ -115,6 +117,7 @@ public class Presentateur {
         // Programme Java à exécuter
         String classeJava = "ConsoleJoueur " + joueur; // Nom de la classe principale à exécuter (sans .class)
         String cheminFichierClasse = ".";  // Répertoire contenant le fichier .class
+        String nomJoueur = "joueur " + joueur;
 
         // Obtenir les dimensions de l'écran
         Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
@@ -127,13 +130,21 @@ public class Presentateur {
         try {
             if (os.contains("win")) {
                 // Commande pour Windows
-                String commande = String.format("cmd /c start \"%s\" cmd.exe /k \"java -cp %s %s\"", "joueur " + joueur, cheminFichierClasse, classeJava);
+                //String commande = String.format("cmd /c start \"%s\" cmd.exe /k \"java -cp %s %s\"", "joueur " + joueur, cheminFichierClasse, classeJava);
+                String commande = "\"java -cp " + cheminFichierClasse + " " + classeJava + "\"";
                 /* Ajuster la taille de la console (ne fonctionne pas)  && mode con: cols=%d lines=%d" ,largeurConsole, hauteurConsole*/
                 System.out.println("Commande : " + commande);
 
                 //TODO utiliser la 2ème temporairement
                 //Runtime.getRuntime().exec(new String[] { commande });
-                Runtime.getRuntime().exec(commande);    // instruction temporaire, ne marche pas sur l'invite de commande
+                //Runtime.getRuntime().exec(commande, "", );
+                //Runtime.getRuntime().exec(commande);    // instruction temporaire, ne marche pas sur l'invite de commande
+
+                // Créer un ProcessBuilder avec cmd et start pour ouvrir une nouvelle console
+                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "start", nomJoueur, "cmd.exe", "/k", commande);
+
+                // Lancer le processus
+                pb.start();
             } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
                 // Commande pour Linux
                 String commande = "xterm -geometry 100x30+200+200 -hold -e java -cp " + cheminFichierClasse + " " + classeJava;
@@ -181,7 +192,7 @@ public class Presentateur {
 
     public static List<FileLine> viderLeFichier() {
         List<FileLine> fileLineList = new ArrayList<>();
-        for (int i = 3; i <= Utils.NBLIGNES; i++) {
+        for (int i = 3; i <= 9; i++) {
             fileLineList.add(new FileLine(i, ""));
         }
         return fileLineList;

@@ -786,6 +786,7 @@ Ali
 alias
 alibi
 Alice
+alien
 alienation
 aliene
 alieniste
@@ -3345,6 +3346,7 @@ calculee
 calculer
 calculette
 calculs
+cale
 cale en
 calecon
 Caledonie
@@ -3360,6 +3362,7 @@ caline
 calinement
 caliner
 calinerie
+calle
 calleux
 callosite
 calme
@@ -10996,6 +10999,7 @@ hourra
 house
 housse
 housses
+houx
 Howard
 Hubert
 Hughes
@@ -17857,6 +17861,7 @@ rassure
 rassure
 rassurer
 rassures
+rat
 rate
 rate
 rateau

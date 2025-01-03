@@ -29,7 +29,7 @@ public class ConsoleJoueur {
             Thread.sleep(timerChiffres * 1000L);
 
             Utils.writeLine(COM_TXT, 10, "");
-            //Utils.writeLine(COM_TXT, 11, "");
+            Utils.writeLine(COM_TXT, 11, "");
 
             System.out.println();
             System.out.println("Donnez vos étapes de calculs. Les calculs dont le résultat est égal à zéro ne sont pas admis. Indiquez la fin avec " + OperationUtils.END);
@@ -61,14 +61,15 @@ public class ConsoleJoueur {
 
             Utils.writeLine(COM_TXT, 10, "");
             Utils.writeLine(COM_TXT, 11, "");
+            Utils.writeLine(COM_TXT, 12, "");
 
             String resultatLettre = SaisieLettres.getReponseJoueur(joueur);
             referenceTime = Utils.updateFile(COM_TXT, 7, resultatLettre);
             FileChecker.checkForUpdate(COM_TXT, 11, referenceTime);
-            /*while (Objects.equals(Utils.getLine(10, COM_TXT), "")) {
+            while (Objects.equals(Utils.getLine(10, COM_TXT), "")) {
                 System.out.println("l 58");
                 FileChecker.waitForUpdate(referenceTime, COM_TXT);
-            }*/
+            }
             System.out.println(Utils.getLine(11, COM_TXT));
             afficherScore(COM_TXT);
             referenceTime = Utils.getLastUpdate(COM_TXT) - 10;
