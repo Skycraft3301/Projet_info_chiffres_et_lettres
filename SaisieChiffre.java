@@ -5,9 +5,6 @@ public class SaisieChiffre {
     public static Integer computeUserOperations(int[] selectedNumbers) {
         List<Integer> verification = OperationUtils.convertIntArrayIntoIntegerList(selectedNumbers);
 
-        //System.out.println("Donnez vos étapes de calculs. Les calculs dont le résultat est égal à zéro ne sont pas admis. Indiquez la fin avec " + OperationUtils.END);
-        //System.out.println("Pour commencer appuyer sur entrée.");
-
         while (!OperationUtils.isEqualsToEndWord(Lire.S())) {
             int operande1 = OperationUtils.getOperande("Donner un premier opérande", verification);
 

@@ -2,15 +2,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class ScoreUtils {
-    // TODO revoir méthode
-    /*public static void getScores(Joueur joueurA, Joueur joueurB, Integer resultatJoueurA, Integer resultatJoueurB, Integer goal, String reponseJoueurA, String reponseJoueurB, boolean erreurMotA, boolean erreurMotB) {
-        scoreChiffre(joueurA, Presentateur.comB, resultatJoueurA, resultatJoueurB, goal);
-        scoreChiffre(joueurB, Presentateur.comB, resultatJoueurB, resultatJoueurA, goal);
-
-        scoreLettres(joueurA, reponseJoueurA, reponseJoueurB, erreurMotA, erreurMotB);
-        scoreLettres(joueurB, reponseJoueurB, reponseJoueurA, erreurMotB, erreurMotA);
-    }*/
-
     public static void scoreChiffre(Joueur joueur, String file, Integer resultatJoueur, Integer resultatAdversaire, Integer goal) {
         System.out.println("\nLe score de " + joueur.getNom() + " était de " + joueur.getScore());
         int points = 0;

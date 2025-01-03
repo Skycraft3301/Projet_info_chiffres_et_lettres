@@ -1,15 +1,15 @@
-kydy
-17
-3,25,8,8,1,25
-230
+Maia
+4 
+5,7,4,7,7,5
+560
 0
-A,E,G,I,N,O,O,S,S,T
-gin
+A,E,I,M,N,O,Q,R,S,U
+AIME
 5
-gagnant
-0 
-Le mot gin n'est pas dans le dictionnaire
+perdant
+4 
+Le mot AIME est valide
 
-agissent
+roumaines
 
 

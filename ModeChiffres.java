@@ -46,9 +46,8 @@ public class ModeChiffres {
         // Attendre les réponses des joueurs
         FileChecker.checkForUpdate(comA, comB, 5, referenceTimeA, referenceTimeB);
         Thread.sleep(500);
-        //FileChecker.checkForUpdate(Presentateur.comA, 5, referenceTimeA);
+
         int charA = Integer.parseInt(Utils.getLine(5, comA));
-        //FileChecker.checkForUpdate(Presentateur.comB, 5, referenceTimeB);
         int charB = Integer.parseInt(Utils.getLine(5, comB));
 
         System.out.println("charA : " + charA + " | charB : " + charB);

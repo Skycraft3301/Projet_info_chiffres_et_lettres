@@ -56,15 +56,9 @@ public class ModeLettres {
                 new FileLine(13, LettresUtils.solutionOptimale(listeLettresDeBase))
         ));
 
-        //Utils.writeLine("all", 6, ConverterUtils.charArrayToString(listeLettresDeBase));
-        // Écrire la solution optimale dans le fichier
-        //Utils.writeLine("all", 13, LettresUtils.solutionOptimale(listeLettresDeBase));
-
         // Attendre les réponses des joueurs
         FileChecker.checkForUpdate(comA, comB, 7, referenceTimeA, referenceTimeB);
         Thread.sleep(500);
-        //FileChecker.checkForUpdate(comA, 7, referenceTime);
-        //FileChecker.checkForUpdate(comB, 7, referenceTime);
 
         String reponseJoueurA = Utils.getLine(7, comA);
         String reponseJoueurB = Utils.getLine(7, comB);
@@ -86,31 +80,9 @@ public class ModeLettres {
 
         // Test de longueur
         if (reponseJoueur.length() > 10) {
-            //erreur = true;
             System.out.println("Votre réponse est trop longue");
-            //Utils.writeLine(file, 11, "Votre réponse est trop longue");
             return new MessageErreur("Votre réponse est trop longue", true);
         }
-
-
-        // Teste si les lettres utilisées sont toutes dans la liste
-        /*char[] tabReponseJoueur = reponseJoueur.toCharArray();
-
-        Arrays.sort(tabReponseJoueur);
-
-        int i = 0;
-        for (char c : tabReponseJoueur) {
-            while ((i < LettresUtils.MAX_LETTER_NUMBER) && (!String.valueOf(listeLettresDeBase[i]).equalsIgnoreCase(String.valueOf(c)))) {
-                i++;
-            }
-        }
-
-        if (i == LettresUtils.MAX_LETTER_NUMBER) {
-            //erreur = true;
-            System.out.println("Les lettres utilisées ne sont pas toutes dans la liste");
-            //Utils.writeLine(file, 11, "Les lettres utilisées ne sont pas toutes dans la liste");
-            return new MessageErreur("Les lettres utilisées ne sont pas toutes dans la liste", true);
-        }*/
 
         // Teste si les lettres utilisées sont toutes dans la liste
         char[] tabReponseJoueur = reponseJoueur.toCharArray();
@@ -127,23 +99,17 @@ public class ModeLettres {
             }
         }
         if (c != reponseJoueur.length()) {
-            //erreur = true;
             System.out.println("Les lettres utilisées ne sont pas toutes dans la liste");
-            //Utils.writeLine(file, 11, "Les lettres utilisées ne sont pas toutes dans la liste");
             return new MessageErreur("Les lettres utilisées ne sont pas toutes dans la liste", true);
         }
 
 
         // Teste si le mot est dans le dictionnaire
         if (!LettresUtils.isInDictionary(reponseJoueur)) {
-            //erreur = true;
             System.out.println("Le mot " + reponseJoueur + " n'est pas dans le dictionnaire");
-            //Utils.writeLine(file, 11, "Le mot " + reponseJoueur + " n'est pas dans le dictionnaire");
             return new MessageErreur("Le mot " + reponseJoueur + " n'est pas dans le dictionnaire", true);
         } else {
             System.out.println("Le mot est dans le dictionnaire");
-            //Utils.writeLine(file, 11, "Le mot est dans le dictionnaire");
-            // Utils.writeLine(file, 11, " "); // pour éviter de ne rien écrire
         }
 
         return new MessageErreur("Le mot " + reponseJoueur + " est valide", false);

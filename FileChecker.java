@@ -2,10 +2,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class FileChecker {
-    public static long waitForUpdate(String file, int numeroDeLigne, String modifiedText) {
-        long referenceTime = Utils.updateFile(file, numeroDeLigne, modifiedText);
-        return waitForUpdate(referenceTime, file);
-    }
 
     public static long waitForUpdate(long referenceTime, String file) {
         long updateTime = Utils.getLastUpdate(file);
@@ -86,6 +82,4 @@ public class FileChecker {
             }
         }
     }
-
-
 }

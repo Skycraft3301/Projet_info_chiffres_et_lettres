@@ -29,15 +29,12 @@ public class Presentateur {
     public final static String comA = "./comA.txt";
     public final static String comB = "./comB.txt";
 
-    private static long referenceTimeA;
-    private static long referenceTimeB;
-
     public static void main(String[] args) throws InterruptedException {
 
         Utils.checkFile("all");
 
-        referenceTimeA = Utils.getLastUpdate(comA);
-        referenceTimeB = Utils.getLastUpdate(comB);
+        long referenceTimeA = Utils.getLastUpdate(comA);
+        long referenceTimeB = Utils.getLastUpdate(comB);
 
         CompilerTout();
 
@@ -47,9 +44,7 @@ public class Presentateur {
         FileChecker.waitForUpdate(referenceTimeA, comA);
         FileChecker.waitForUpdate(referenceTimeB, comB);
 
-
         Joueur joueurA = new Joueur(Utils.getLine(1, comA));
-
         Joueur joueurB = new Joueur(Utils.getLine(1, comB));
 
         errorDetector.file();
@@ -74,13 +69,10 @@ public class Presentateur {
             ModeChiffres.modeChiffres(joueurA, joueurB);
 
             Thread.sleep(500);
-            //afficherScore(joueurA, joueurB);
 
             ModeLettres.modeLettres(joueurA, joueurB);
 
             Thread.sleep(500);
-
-            //afficherScore(joueurA, joueurB);
 
         }
 
@@ -101,12 +93,6 @@ public class Presentateur {
     private static String isPlayerVoyelle(Joueur joueur) {
         return joueur.isVoyellePlayer() ? "true" : "false";
     }
-
-    private static void afficherScore(Joueur joueurA, Joueur joueurB) {
-        System.out.println("Score " + joueurA.getNom() + " : " + Utils.getLine(2, comA));
-        System.out.println("Score " + joueurB.getNom() + " : " + Utils.getLine(2, comB));
-    }
-
 
     public static void LancerProgramme(char joueur) {
 
