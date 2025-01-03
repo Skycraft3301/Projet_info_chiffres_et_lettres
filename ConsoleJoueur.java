@@ -37,10 +37,6 @@ public class ConsoleJoueur {
             String resultatChiffre = String.valueOf(SaisieChiffre.computeUserOperations(selectedNumbers));
             referenceTime = Utils.updateFile(COM_TXT, 5, resultatChiffre);
             FileChecker.checkForUpdate(COM_TXT, 10, referenceTime);
-            /*while (Objects.equals(Utils.getLine(10, COM_TXT), "")) {
-                System.out.println("l 36");
-                FileChecker.waitForUpdate(referenceTime, COM_TXT);
-            }*/
             System.out.println("Une solution était :");
             System.out.println(Utils.getLine(12, COM_TXT));
             afficherScore(COM_TXT);
@@ -67,14 +63,23 @@ public class ConsoleJoueur {
             referenceTime = Utils.updateFile(COM_TXT, 7, resultatLettre);
             FileChecker.checkForUpdate(COM_TXT, 11, referenceTime);
             while (Objects.equals(Utils.getLine(10, COM_TXT), "")) {
-                System.out.println("l 58");
+                System.out.println("en attente du score lettres");
                 FileChecker.waitForUpdate(referenceTime, COM_TXT);
             }
             System.out.println(Utils.getLine(11, COM_TXT));
+            System.out.println("Une solution était : " + Utils.getLine(13, COM_TXT));
             afficherScore(COM_TXT);
             referenceTime = Utils.getLastUpdate(COM_TXT) - 10;
         }
         System.out.println("Fin du jeu ! Vous êtes " + Utils.getLine(9, COM_TXT));
+        System.out.println("Votre score : " + Utils.getLine(2, COM_TXT));
+        if (Objects.equals(args.length > 0 ? args[0] : "", "A")){
+            System.out.println("Score de l'adversaire : " + Presentateur.comB);
+        }
+        if (Objects.equals(args.length > 0 ? args[0] : "", "B")){
+            System.out.println("Score de l'adversaire : " + Utils.getLine(2, Presentateur.comA));
+        }
+
     }
 
     public static void timer(int duree) {

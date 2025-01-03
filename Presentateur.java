@@ -14,12 +14,12 @@
 10. modification du score
 11. message d'erreur mode lettres
 12. solution optimale chiffre
+13. solution optimale lettres
 */
 
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +83,7 @@ public class Presentateur {
 
         }
 
+        // Affichage du résultat
         if (joueurA.getScore() > joueurB.getScore()) {
             Utils.writeLine(comA, 9, "gagnant");
             Utils.writeLine(comB, 9, "perdant");
@@ -93,8 +94,8 @@ public class Presentateur {
             Utils.writeLine(comB, 9, "à égalité");
             Utils.writeLine(comA, 9, "à égalité");
         }
-
     }
+
 
     private static String isPlayerVoyelle(Joueur joueur) {
         return joueur.isVoyellePlayer() ? "true" : "false";
@@ -106,12 +107,6 @@ public class Presentateur {
     }
 
 
-    private static void actualiserCom(Joueur joueurA, Joueur joueurB) {
-        Utils.writeLine(comA, 2, String.valueOf(joueurA.getScore()));
-        Utils.writeLine(comB, 2, String.valueOf(joueurB.getScore()));
-    }
-
-
     public static void LancerProgramme(char joueur) {
 
         // Programme Java à exécuter
@@ -119,10 +114,6 @@ public class Presentateur {
         String cheminFichierClasse = ".";  // Répertoire contenant le fichier .class
         String nomJoueur = "joueur " + joueur;
 
-        // Obtenir les dimensions de l'écran
-        Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
-        int largeurConsole = (int) (tailleEcran.getWidth() / 10); // Largeur en caractères
-        int hauteurConsole = (int) (tailleEcran.getHeight() / 20); // Hauteur en lignes
 
         // Détecter le système d'exploitation
         String os = System.getProperty("os.name").toLowerCase();
@@ -130,31 +121,26 @@ public class Presentateur {
         try {
             if (os.contains("win")) {
                 // Commande pour Windows
-                //String commande = String.format("cmd /c start \"%s\" cmd.exe /k \"java -cp %s %s\"", "joueur " + joueur, cheminFichierClasse, classeJava);
                 String commande = "\"java -cp " + cheminFichierClasse + " " + classeJava + "\"";
-                /* Ajuster la taille de la console (ne fonctionne pas)  && mode con: cols=%d lines=%d" ,largeurConsole, hauteurConsole*/
                 System.out.println("Commande : " + commande);
-
-                //TODO utiliser la 2ème temporairement
-                //Runtime.getRuntime().exec(new String[] { commande });
-                //Runtime.getRuntime().exec(commande, "", );
-                //Runtime.getRuntime().exec(commande);    // instruction temporaire, ne marche pas sur l'invite de commande
 
                 // Créer un ProcessBuilder avec cmd et start pour ouvrir une nouvelle console
                 ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "start", nomJoueur, "cmd.exe", "/k", commande);
-
                 // Lancer le processus
                 pb.start();
+
             } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
                 // Commande pour Linux
                 String commande = "xterm -geometry 100x30+200+200 -hold -e java -cp " + cheminFichierClasse + " " + classeJava;
                 System.out.println("Commande : " + commande);
                 Runtime.getRuntime().exec(new String[]{"bash", "-c", commande});
+
             } else if (os.contains("mac")) {
                 // Commande pour macOS
                 String commande = "osascript -e 'tell application \"Terminal\" to do script \"java -cp " + cheminFichierClasse + " " + classeJava + "\"'";
                 System.out.println("Commande : " + commande);
                 Runtime.getRuntime().exec(new String[]{"bash", "-c", commande});
+
             } else {
                 System.out.println("Système d'exploitation non pris en charge.");
             }
@@ -189,6 +175,7 @@ public class Presentateur {
             }
         }
     }
+
 
     public static List<FileLine> viderLeFichier() {
         List<FileLine> fileLineList = new ArrayList<>();
