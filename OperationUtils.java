@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class OperationUtils {
-    public final static int[] CHIFFRES = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100};
+    public final static int[] CHIFFRES = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100};
     public final static List<Character> OPERATEURS = List.of('+', '-', '/', '*');
     public final static int LENGTH_SELECTED_NUMBER = 6;
     public static final String END = "end";

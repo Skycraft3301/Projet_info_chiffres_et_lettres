@@ -8,8 +8,6 @@ public class ModeChiffres {
 
     public static void modeChiffres(Joueur joueurA, Joueur joueurB) throws InterruptedException {
 
-        //TODO corriger répartition des nombres
-        // "nombres tirés au hasard (de 1 à 10, 25, 50, 75 et 100). À l'époque où l'émission n'est pas encore informatisée, le jeu comporte vingt-quatre plaques : les nombres de 1 à 10 présents en double exemplaire et les nombres 25, 50, 75 et 100 présents en un seul exemplaire. Sont alors tirées 6 valeurs. " wikipedia
         int[] selectedNumbers = new int[OperationUtils.LENGTH_SELECTED_NUMBER];
 
         Random random = new Random();
